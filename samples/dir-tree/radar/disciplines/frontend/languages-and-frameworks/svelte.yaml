@@ -1,0 +1,22 @@
+label: Svelte
+ring: trial
+timeline:
+  assess: 2025-Q3
+  trial: 2026-Q1
+description: Compiler-first UI framework.
+rationale: >
+  Smaller bundles and simpler mental model
+  for content-heavy pages.
+licence: MIT
+teams: [web]
+tags: [ui, modern]
+links:
+  - type: url
+    uri: https://svelte.dev
+    label: Svelte
+discussions:
+  - type: rfc
+    title: Svelte for marketing pages
+    link:
+      type: confluence
+      uri: /spaces/FE/pages/10200

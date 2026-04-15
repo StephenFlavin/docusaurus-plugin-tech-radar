@@ -1,0 +1,40 @@
+label: DynamoDB
+ring: hold
+timeline:
+  adopt: 2024-Q2
+  hold: 2026-Q1
+description: Operational overhead not justified at our scale.
+rationale: >
+  Hot partition issues and cost unpredictability.
+licence: Proprietary (AWS)
+hold_reason: >
+  Do not start new projects on DynamoDB. Existing
+  workloads should plan migration by 2027-Q1.
+sunset_date: 2027-Q1
+migration_target: postgresql
+teams: [payments]
+tags: [nosql, legacy]
+links:
+  - type: slack
+    uri: "#dynamo-migration"
+    label: Migration coordination
+  - type: jira
+    uri: PLAT-2200
+    label: Migration epic
+discussions:
+  - type: post-mortem
+    title: "INC-4412: Checkout outage from hot partition"
+    date: 2025-08-03
+    link:
+      type: confluence
+      uri: /spaces/SRE/pages/50200
+  - type: meeting
+    title: DynamoDB sunset decision
+    date: 2025-Q4
+    link:
+      type: recording
+      uri: https://recordings.acme.internal/mtg-9870
+sections:
+  migration-status: |
+    **Payments**: 60% migrated, ETA 2026-Q3.
+    **Legacy batch jobs**: Not started, blocked on PLAT-2210.

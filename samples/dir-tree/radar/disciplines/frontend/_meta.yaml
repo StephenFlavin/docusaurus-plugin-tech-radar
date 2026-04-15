@@ -1,0 +1,15 @@
+label: Frontend Engineering
+description: >
+  Client-side languages, frameworks, build tools,
+  and design systems for web and mobile.
+key-individuals:
+  - name: Mei Wong
+    role: Frontend Lead
+tags: [web, ui, dx]
+links:
+  - type: slack
+    uri: "#frontend-engineering"
+    label: Frontend community
+  - type: confluence
+    uri: /spaces/FE/pages/00001
+    label: Frontend engineering hub

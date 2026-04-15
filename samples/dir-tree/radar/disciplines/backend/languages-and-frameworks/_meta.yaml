@@ -1,0 +1,9 @@
+label: Languages & Frameworks
+description: Primary languages and their ecosystems.
+guidance: >
+  Prefer JVM-based languages unless a compelling
+  case exists for an alternative runtime.
+links:
+  - type: confluence
+    uri: /spaces/ENG/pages/00100
+    label: Language selection criteria

@@ -1,0 +1,6 @@
+label: Languages & Frameworks
+description: UI frameworks and rendering strategies.
+guidance: >
+  React is the default for new web projects.
+  Evaluate alternatives only for specific use cases
+  with architecture review approval.

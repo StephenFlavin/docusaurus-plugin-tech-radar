@@ -2,29 +2,52 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Repository structure
+
+```
+/                              ← plugin source (the production deliverable)
+  src/
+    index.js                   ← Docusaurus plugin entry (CJS)
+    parser.js                  ← YAML → radar object (CJS)
+    validator.js               ← validation rules (CJS)
+    theme/                     ← React components (ESM)
+      RadarLayout/
+      RadarComponents/
+      RadarOverview/
+      RadarDiscipline/
+      RadarEntry/
+  tests/                       ← unit tests (Bun test runner)
+  validate.js                  ← standalone CLI validator
+  package.json
+
+samples/
+  uber-yaml/                   ← single-file YAML demo (radar.yaml)
+  dir-tree/                    ← directory-mode demo (radar/)
+```
+
 ## Commands
 
 ```bash
-bun install          # Install dependencies
-bun start            # Dev server with hot-reload (watches YAML changes too)
-bun run build        # Production static build → build/
+# Plugin (run from repo root)
+bun install          # Install plugin dependencies
 bun run test         # Run unit tests (parser + validator)
-bun run validate     # Validate radar.yaml without a full build (reads path from docusaurus.config.js)
-bun run clear        # Clear Docusaurus cache
 
-# Validate a specific file or directory directly
-node plugins/docusaurus-plugin-tech-radar/validate.js radar.yaml
-node plugins/docusaurus-plugin-tech-radar/validate.js radar/
+# Validate a sample directly
+node validate.js samples/uber-yaml/radar.yaml
+node validate.js samples/dir-tree/radar/
+
+# Samples (run from the sample directory)
+cd samples/uber-yaml && bun install && bun run build
+cd samples/dir-tree  && bun install && bun run build
+
+# Validate from within a sample
+cd samples/uber-yaml && bun run validate
+cd samples/dir-tree  && bun run validate
 ```
 
-Unit tests live in `plugins/docusaurus-plugin-tech-radar/tests/` and use Bun's built-in test runner. `bun run validate` is the integration-level correctness check against the actual `radar.yaml`.
+Unit tests live in `tests/` and use Bun's built-in test runner. `validate.js` is the integration-level correctness check without running Docusaurus.
 
 ## Architecture
-
-The repo has two distinct parts:
-
-- **Root Docusaurus site** (`docusaurus.config.js`, `src/`, `docs/`, `radar.yaml`) — exists purely to test the plugin locally. Not production code.
-- **Plugin** (`plugins/docusaurus-plugin-tech-radar/`) — the production deliverable. This is where all real work happens.
 
 ### Plugin data flow
 
@@ -50,6 +73,7 @@ The parsed radar object shape (what all components receive):
     teams: { [key]: { label, description } },
     verticals: { [key]: { label, description } },
   },
+  routeBasePath: 'radar',      // injected by index.js from plugin options
   disciplines: {
     [discSlug]: {
       meta: { label, description, tags?, links?, 'key-individuals'? },
@@ -84,15 +108,15 @@ The parsed radar object shape (what all components receive):
 
 All live under `src/theme/` and are registered via `getThemePath()` in `index.js`. Docusaurus resolves `@theme/RadarXxx` imports from there.
 
-- **`RadarLayout`** — three-column shell (sidebar | content | TOC). Wraps every page. Sidebar is built by `buildSidebar()` in `index.js` and passed as a prop.
-- **`RadarComponents`** — shared logic and UI atoms. Exports: `useRadarFilters`, `FilterBar`, `RingStats`, `RadarViz`, `EntryCard`, `effectiveRing`, `ringOrder`, `linkTypeLabel`.
+- **`RadarLayout`** — three-column shell (sidebar | content | TOC). Wraps every page. Sidebar is built by `buildSidebar()` in `index.js` and passed as a prop. Sidebar items extracted to `Sidebar.js`.
+- **`RadarComponents`** — shared logic and UI atoms. Barrel `index.js` re-exports from sub-modules: `rings.js`, `filters.js`, `FilterBar.js`, `RingStats.js`, `EntryCard.js`, `RadarViz.js`, `links.js`.
 - **`RadarOverview`** — `/radar` page: all entries across all disciplines with filtering.
 - **`RadarDiscipline`** — `/radar/:disc` page: SVG radar viz (`RadarViz`) + entry cards per quadrant.
 - **`RadarEntry`** — `/radar/:disc/:entry` page: full detail view (rationale, timeline, overrides, links, discussions, freeform sections).
 
 ### Ring override system
 
-Entries have an org-wide `ring`. Teams and verticals can override it via `ring-overrides`. The `effectiveRing(entry, teamFilter, verticalFilter)` function in `RadarComponents` resolves which ring to display — team overrides take priority over vertical overrides. Overridden entries are displayed with a ◆ marker and a diamond shape in the SVG viz.
+Entries have an org-wide `ring`. Teams and verticals can override it via `ring-overrides`. The `effectiveRing(entry, teamFilter, verticalFilter)` function in `RadarComponents/rings.js` resolves which ring to display — team overrides take priority over vertical overrides. Overridden entries are displayed with a ◆ marker and a diamond shape in the SVG viz.
 
 ### Input modes
 
@@ -106,51 +130,40 @@ The mode is detected automatically by `parser.js` based on whether the path is a
 
 `validator.js` checks: valid rings (`adopt|trial|assess|hold`), all referenced teams/verticals/link-types exist in `config`, `hold` entries have `hold_reason`, ring override entries have valid rings. Errors abort the build; warnings print and continue.
 
-The standalone `validate.js` script at the plugin root wraps the same parser + validator for CI use without running Docusaurus.
+The standalone `validate.js` script wraps the same parser + validator for CI use without running Docusaurus.
+
+### CJS/ESM boundary
+
+Plugin Node code (`src/index.js`, `src/parser.js`, `src/validator.js`) is CJS. Theme components (`src/theme/`) are ESM. The `ringOrder` utility and `slugToLabel` helper appear in both — this duplication is intentional due to the module boundary. Each copy has a comment noting this.
 
 ## Refactoring priorities
 
-These are the known structural issues to address before this plugin is production-ready, ordered by impact.
+All items below have been resolved. Documented here for context on past decisions.
 
-### 1. `routeBasePath` is not threaded to components — actual bug
+### 1. `routeBasePath` was not threaded to components — fixed
 
-`EntryCard` (`RadarComponents/index.js:328`) hardcodes `/radar/${discSlug}/${slug}` and `RadarEntry` breadcrumbs (`RadarEntry/index.js:40,42`) hardcode `/radar`. Any user who sets `routeBasePath: 'tech-radar'` gets silently broken navigation.
+`EntryCard` hardcoded `/radar/${discSlug}/${slug}` and `RadarEntry` breadcrumbs hardcoded `/radar`. Fixed by injecting `routeBasePath` into `radar.json` at `contentLoaded` time. Components now read it from `radar.routeBasePath`.
 
-Fix: include `routeBasePath` in the JSON written by `contentLoaded` — either add it to `radar.json` alongside `meta`/`config`/`disciplines`, or add it to each `entryData` and `discData` blob. Components then use it to construct paths instead of the hardcoded string.
+### 2. `RadarComponents/index.js` was a god file — fixed
 
-### 2. `RadarComponents/index.js` is a god file
+Split into `rings.js`, `filters.js`, `FilterBar.js`, `RingStats.js`, `EntryCard.js`, `RadarViz.js`, `links.js`. `index.js` is now a pure barrel re-export.
 
-At 376 lines it combines ring constants, pure utility functions, a custom hook, and four distinct UI components that have nothing in common beyond being exports. None share a test strategy or change frequency. Split within the directory (keeping the barrel export intact so `@theme/RadarComponents` imports continue to work):
+### 3. `ringOrder` and `slugToLabel` duplication — accepted
 
-```
-RadarComponents/
-  index.js      ← re-exports everything, no logic
-  rings.js      ← RING_ORDER/COLORS/FILLS constants, ringOrder(), effectiveRing()
-  filters.js    ← entryMatchesFilters() (unexported), useRadarFilters()
-  FilterBar.js
-  RingStats.js
-  EntryCard.js
-  RadarViz.js   ← seededRandom() lives here too
-```
+Intentional due to CJS/ESM boundary. Each copy is commented.
 
-### 3. `ringOrder` and `slugToLabel` are each duplicated
+### 4. `useRadarFilters` recomputed usage counts on every render — fixed
 
-`ringOrder` is defined identically in `src/index.js:164` (CJS) and `RadarComponents/index.js:13` (ESM). `slugToLabel` is defined identically in `src/parser.js:122` (unexported, CJS) and `RadarEntry/index.js:287` (private, ESM).
+Usage tallies are now wrapped in `React.useMemo` keyed on `allEntries`.
 
-The CJS/ESM boundary makes sharing a single module file awkward. The pragmatic fix is to extract `src/utils/rings.js` (CJS) containing `ringOrder` — `index.js` requires it, and `RadarComponents/rings.js` can inline its own copy with a comment noting the intentional duplication. Same pattern for `slugToLabel`. Alternatively, consolidate to a single runtime once the plugin is packaged properly.
+### 5. Inline styles moved to `radar.css` — fixed
 
-### 4. `useRadarFilters` recomputes usage counts on every render
+`RadarEntry` and `RadarDiscipline` inline styles replaced with named CSS classes in `RadarLayout/radar.css`.
 
-The `teamUsage`/`tagUsage`/`verticalUsage` tallies in `RadarComponents/index.js:69–74` run on every render. With a large radar this is O(entries × tags). Wrap them in `React.useMemo` keyed on `allEntries`.
+### 6. `entryData` needlessly duplicated config — fixed
 
-### 5. Inline styles should move to `radar.css`
+`config` removed from per-entry and per-discipline JSON. Components read it from `radar.config`.
 
-`RadarEntry/index.js` has ~15 `style={{...}}` blocks and `RadarDiscipline/index.js` has 3. These make components noisy and make theming via CSS variables impossible for those properties. Move them to named classes in `RadarLayout/radar.css`.
+### 7. Array-index `key` props — fixed
 
-### 6. `entryData` needlessly duplicates config
-
-`index.js:82` embeds `config: radar.config` into every entry's JSON file. With many entries and a large config this multiplies the data. `config` is already available on the `radar` prop (which is passed to every route). Remove `config` from `entryData` and read it from `radar.config` in `RadarEntry`.
-
-### 7. Array-index `key` props
-
-`RadarEntry/index.js` uses `key={i}` for links (line 218), discussions (line 234), and key individuals (line 275). Use a stable property instead: `key={l.uri}`, `key={d.title}`, `key={p.name}`.
+`RadarEntry` links use `key={l.uri}`, discussions use `key={d.title}`, key individuals use `key={p.name}`.

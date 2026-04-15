@@ -1,0 +1,6 @@
+label: Design Systems
+description: Shared component libraries and design tokens.
+links:
+  - type: confluence
+    uri: /spaces/FE/pages/30000
+    label: Design system docs

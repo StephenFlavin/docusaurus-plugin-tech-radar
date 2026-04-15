@@ -1,0 +1,9 @@
+label: CI/CD
+description: Continuous integration and delivery pipelines.
+guidance: >
+  All repositories must use GitHub Actions.
+  Argo CD manages deployment to production clusters.
+links:
+  - type: confluence
+    uri: /spaces/PLAT/pages/20000
+    label: CI/CD standards

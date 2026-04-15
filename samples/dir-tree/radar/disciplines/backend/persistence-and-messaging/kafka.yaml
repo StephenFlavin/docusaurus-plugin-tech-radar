@@ -1,0 +1,44 @@
+label: Apache Kafka
+ring: adopt
+timeline:
+  trial: 2024-Q2
+  adopt: 2025-Q1
+description: Primary event streaming platform.
+rationale: >
+  Proven at scale for event-driven architectures
+  and cross-service communication.
+licence: Apache-2.0
+compliance:
+  frameworks: [SOC2]
+  notes: >
+    Topics carrying PII must enable encryption at rest
+    and use schema registry with PII field tagging.
+teams: [payments, inventory, search, data]
+verticals: [supply-chain, digital-commerce]
+tags: [streaming, events, core]
+ring-overrides:
+  verticals:
+    retail-operations:
+      ring: assess
+      reason: >
+        Retail stores use a lightweight MQTT broker.
+        Kafka is overkill for in-store event volumes.
+constraints:
+  hosting: Confluent Cloud
+  min_version: "3.6"
+links:
+  - type: url
+    uri: https://kafka.apache.org
+    label: Apache Kafka
+  - type: confluence
+    uri: /spaces/ENG/pages/41000
+    label: Kafka conventions and topic naming
+  - type: slack
+    uri: "#kafka-users"
+    label: Kafka users channel
+discussions:
+  - type: adr
+    title: "ADR-007: Kafka for inter-service events"
+    link:
+      type: confluence
+      uri: /spaces/ENG/pages/41010

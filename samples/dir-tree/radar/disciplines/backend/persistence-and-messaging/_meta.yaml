@@ -1,0 +1,9 @@
+label: Persistence & Messaging
+description: Data stores, caches, queues, and brokers.
+guidance: >
+  Default to PostgreSQL for relational needs.
+  Any new data store requires an architecture review.
+links:
+  - type: confluence
+    uri: /spaces/ENG/pages/40000
+    label: Data store selection guide

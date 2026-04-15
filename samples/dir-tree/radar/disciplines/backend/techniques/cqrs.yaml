@@ -1,0 +1,19 @@
+label: CQRS
+ring: assess
+timeline:
+  assess: 2026-Q2
+description: Command Query Responsibility Segregation.
+rationale: >
+  Exploring for read-heavy services where write
+  and read models have diverged significantly.
+teams: [search]
+tags: [architecture, patterns]
+key-individuals:
+  - name: James Okafor
+    role: Sponsor
+discussions:
+  - type: proposal
+    title: CQRS for search indexing
+    link:
+      type: confluence
+      uri: /spaces/ENG/pages/60200

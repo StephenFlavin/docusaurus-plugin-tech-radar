@@ -1,0 +1,27 @@
+label: Kubernetes
+ring: adopt
+timeline:
+  adopt: 2024-Q1
+description: Container orchestration for all services.
+rationale: >
+  Industry standard with strong ecosystem.
+licence: Apache-2.0
+compliance:
+  frameworks: [SOC2, ISO27001]
+  notes: >
+    Clusters must run CIS-benchmarked node images.
+teams: [platform, payments, inventory, auth, search]
+tags: [containers, orchestration, core]
+constraints:
+  min_version: "1.29"
+  hosting: AWS EKS
+links:
+  - type: url
+    uri: https://kubernetes.io
+    label: Kubernetes
+  - type: confluence
+    uri: /spaces/PLAT/pages/10100
+    label: Cluster provisioning guide
+  - type: slack
+    uri: "#k8s-help"
+    label: Kubernetes help

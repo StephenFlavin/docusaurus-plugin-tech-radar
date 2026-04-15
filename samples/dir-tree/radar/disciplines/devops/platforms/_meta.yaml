@@ -1,0 +1,5 @@
+label: Platforms
+description: Compute, container orchestration, and managed services.
+guidance: >
+  All new workloads run on Kubernetes unless
+  there is a documented exception.

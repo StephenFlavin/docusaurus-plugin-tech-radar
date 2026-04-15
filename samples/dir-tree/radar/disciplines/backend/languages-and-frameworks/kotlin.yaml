@@ -1,0 +1,50 @@
+label: Kotlin
+ring: trial
+timeline:
+  assess: 2025-Q2
+  trial: 2025-Q3
+description: Gaining traction for new JVM services.
+rationale: >
+  Coroutine support and null safety reduce
+  boilerplate and defect rates.
+licence: Apache-2.0
+teams: [inventory, search]
+verticals: [supply-chain, digital-commerce]
+tags: [jvm, modern]
+ring-overrides:
+  teams:
+    inventory:
+      ring: adopt
+      reason: >
+        Inventory has fully adopted Kotlin for all new
+        services since 2025-Q4.
+  verticals:
+    digital-commerce:
+      ring: adopt
+      reason: >
+        Digital Commerce standardised on Kotlin for
+        the new storefront API layer.
+links:
+  - type: url
+    uri: https://kotlinlang.org
+    label: Kotlin site
+  - type: slack
+    uri: "#backend-kotlin"
+    label: Kotlin community
+discussions:
+  - type: rfc
+    title: Kotlin adoption proposal
+    link:
+      type: confluence
+      uri: /spaces/ENG/pages/20891
+  - type: meeting
+    title: Kotlin trial kickoff
+    date: 2025-Q3
+    link:
+      type: recording
+      uri: https://recordings.acme.internal/mtg-9210
+  - type: thread
+    title: Coroutines vs Loom discussion
+    link:
+      type: slack
+      uri: "#backend-kotlin/t/1685000000"

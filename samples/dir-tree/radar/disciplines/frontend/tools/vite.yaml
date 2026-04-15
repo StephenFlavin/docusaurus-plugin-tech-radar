@@ -1,0 +1,15 @@
+label: Vite
+ring: adopt
+timeline:
+  trial: 2025-Q1
+  adopt: 2025-Q3
+description: Frontend build tool with native ES module support.
+rationale: >
+  Fast dev server, clean plugin API, replaced Webpack.
+licence: MIT
+teams: [web, search]
+tags: [build, dx, core]
+links:
+  - type: url
+    uri: https://vitejs.dev
+    label: Vite

@@ -1,0 +1,41 @@
+label: OpenTelemetry
+ring: trial
+timeline:
+  assess: 2025-Q2
+  trial: 2026-Q1
+description: Vendor-neutral telemetry collection.
+rationale: >
+  Unifies traces, metrics, and logs; reduces vendor lock-in.
+licence: Apache-2.0
+compliance:
+  frameworks: [SOC2, ISO27001]
+  notes: Trace data must not contain PII.
+teams: [platform, payments, inventory]
+tags: [tracing, vendor-neutral]
+links:
+  - type: url
+    uri: https://opentelemetry.io
+    label: OpenTelemetry
+  - type: confluence
+    uri: /spaces/PLAT/pages/30200
+    label: OTel rollout plan
+  - type: slack
+    uri: "#observability"
+    label: Observability channel
+discussions:
+  - type: rfc
+    title: OTel as telemetry standard
+    link:
+      type: confluence
+      uri: /spaces/PLAT/pages/30210
+  - type: meeting
+    title: OTel trial review
+    date: 2026-Q1
+    link:
+      type: recording
+      uri: https://recordings.acme.internal/mtg-10200
+  - type: thread
+    title: Datadog exporter gotchas
+    link:
+      type: slack
+      uri: "#observability/t/1700000000"

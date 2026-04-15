@@ -1,0 +1,33 @@
+label: Go
+ring: assess
+timeline:
+  assess: 2026-Q2
+description: Exploring for CLI tooling and network services.
+rationale: >
+  Fast compilation, small binaries, strong
+  concurrency primitives.
+licence: BSD-3-Clause
+teams: [platform]
+tags: [polyglot, networking]
+key-individuals:
+  - name: Priya Patel
+    role: Evaluator
+links:
+  - type: url
+    uri: https://go.dev
+    label: Go site
+discussions:
+  - type: proposal
+    title: Go for edge proxies
+    link:
+      type: confluence
+      uri: /spaces/ENG/pages/30122
+sections:
+  evaluation-scope: |
+    The initial evaluation focuses on two use cases:
+
+    1. Replacing shell scripts in the deployment pipeline
+    2. A proof-of-concept API gateway for edge routing
+
+    We are *not* evaluating Go as a general replacement
+    for JVM services.

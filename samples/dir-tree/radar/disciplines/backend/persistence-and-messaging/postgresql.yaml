@@ -1,0 +1,35 @@
+label: PostgreSQL
+ring: adopt
+timeline:
+  adopt: 2024-Q1
+description: Primary relational data store.
+rationale: >
+  Battle-tested with excellent extension ecosystem.
+licence: PostgreSQL (MIT-style)
+compliance:
+  frameworks: [SOC2, ISO27001, PCI-DSS]
+  notes: PII columns must use column-level encryption.
+teams: [payments, inventory, auth, search]
+verticals: [supply-chain, digital-commerce, retail-operations]
+tags: [relational, core]
+constraints:
+  min_version: "16"
+  hosting: AWS RDS
+links:
+  - type: url
+    uri: https://postgresql.org
+    label: PostgreSQL
+  - type: slack
+    uri: "#data-platform"
+    label: Data platform support
+discussions:
+  - type: adr
+    title: "ADR-003: PostgreSQL as default RDBMS"
+    link:
+      type: confluence
+      uri: /spaces/ENG/pages/40010
+sections:
+  connection-pooling: |
+    All services must connect via PgBouncer.
+    Direct connections are blocked in production.
+    See the [pooling guide](/spaces/ENG/pages/40050).

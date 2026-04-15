@@ -1,0 +1,14 @@
+label: HashiCorp Nomad
+ring: assess
+timeline:
+  assess: 2026-Q2
+description: Evaluating for batch and ML workloads.
+rationale: >
+  Simpler operational model than Kubernetes
+  for non-HTTP batch jobs.
+licence: BSL-1.1
+teams: [data]
+tags: [orchestration, batch]
+key-individuals:
+  - name: Dana Reyes
+    role: Evaluator
