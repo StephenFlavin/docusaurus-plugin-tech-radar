@@ -1,0 +1,935 @@
+radar:
+  meta:
+    title: Acme Corp Engineering Technology Radar
+    version: 4
+    date: 2026-04-13
+    cadence: quarterly
+    changelog:
+      - version: 4
+        date: 2026-04-13
+        summary: >
+          Added data discipline. Promoted OpenTelemetry to trial.
+          Moved DynamoDB to hold with sunset plan.
+      - version: 3
+        date: 2026-01-10
+        summary: Introduced devops quadrants and frontend discipline.
+      - version: 2
+        date: 2025-10-01
+        summary: First backend quadrants published.
+      - version: 1
+        date: 2025-07-01
+        summary: Initial radar with languages and frameworks only.
+
+  config:
+    link-types:
+      url:
+        label: Website
+        icon-url: https://cdn.acme.internal/icons/link.svg
+      slack:
+        label: Slack
+        icon-url: https://cdn.acme.internal/icons/slack.svg
+        uri-pattern: "^#[a-z0-9_-]+(/t/[0-9]+)?$"
+      confluence:
+        label: Confluence
+        icon-url: https://cdn.acme.internal/icons/confluence.svg
+        uri-pattern: "^/spaces/[A-Z]+/pages/[0-9]+.*$"
+      jira:
+        label: Jira
+        icon-url: https://cdn.acme.internal/icons/jira.svg
+        uri-pattern: "^[A-Z]+-[0-9]+$"
+      github:
+        label: GitHub
+        icon-url: https://cdn.acme.internal/icons/github.svg
+        uri-pattern: "^https://github\\.com/.+"
+      recording:
+        label: Recording
+        icon-url: https://cdn.acme.internal/icons/video.svg
+        uri-pattern: "^https://recordings\\.acme\\.internal/.+"
+
+    teams:
+      payments:
+        label: Payments
+        description: Checkout, billing, invoicing, and payment processing.
+      inventory:
+        label: Inventory
+        description: Stock management, warehousing, and fulfilment.
+      auth:
+        label: Auth
+        description: Identity, authentication, and access control.
+      search:
+        label: Search
+        description: Product search, ranking, and recommendations.
+      platform:
+        label: Platform Engineering
+        description: Developer tooling, CI/CD, infrastructure, and observability.
+      data:
+        label: Data Engineering
+        description: Pipelines, warehousing, analytics, and ML infrastructure.
+      web:
+        label: Web
+        description: Customer-facing web applications and design systems.
+      mobile:
+        label: Mobile
+        description: iOS and Android applications.
+
+    verticals:
+      supply-chain:
+        label: Supply Chain
+        description: Warehousing, logistics, and fulfilment systems.
+      retail-operations:
+        label: Retail Operations
+        description: In-store POS, merchandising, and store systems.
+      digital-commerce:
+        label: Digital Commerce
+        description: Online storefront, checkout, and customer experience.
+
+  disciplines:
+    backend:
+      meta:
+        label: Backend Engineering
+        description: >
+          Server-side languages, frameworks, data stores,
+          and patterns powering our service layer.
+        key-individuals:
+          - name: Sarah Chen
+            role: Tech Lead
+          - name: James Okafor
+            role: Principal Engineer
+        tags: [services, apis, jvm]
+        links:
+          - type: slack
+            uri: "#backend-engineering"
+            label: Backend community
+          - type: confluence
+            uri: /spaces/ENG/pages/00001
+            label: Backend engineering hub
+          - type: url
+            uri: https://wiki.acme.internal/backend-onboarding
+            label: Onboarding guide
+
+      quadrants:
+        languages-and-frameworks:
+          meta:
+            label: Languages & Frameworks
+            description: Primary languages and their ecosystems.
+            guidance: >
+              Prefer JVM-based languages unless a compelling
+              case exists for an alternative runtime.
+            links:
+              - type: confluence
+                uri: /spaces/ENG/pages/00100
+                label: Language selection criteria
+
+          entries:
+            java:
+              label: Java
+              ring: adopt
+              timeline:
+                assess: 2023-Q4
+                trial: 2024-Q1
+                adopt: 2024-Q3
+              description: Core backend language across services.
+              rationale: >
+                Mature ecosystem, strong hiring pipeline,
+                well-understood operationally.
+              licence: GPL-2.0 WITH Classpath-exception-2.0
+              compliance:
+                frameworks: [SOC2]
+              teams: [payments, inventory, auth]
+              verticals: [supply-chain, digital-commerce, retail-operations]
+              tags: [jvm, core]
+              ring-overrides:
+                teams:
+                  payments:
+                    ring: hold
+                    reason: >
+                      Payments is migrating to Kotlin for all new
+                      microservices. No new Java services after 2026-Q2.
+                verticals:
+                  retail-operations:
+                    ring: trial
+                    reason: >
+                      POS team evaluating Go as an alternative for
+                      latency-critical in-store services.
+              constraints:
+                min_version: "21"
+                approved_distributions:
+                  - Eclipse Temurin
+                  - Amazon Corretto
+              links:
+                - type: url
+                  uri: https://openjdk.org
+                  label: OpenJDK
+                - type: confluence
+                  uri: /spaces/ENG/pages/10500
+                  label: Internal standards
+                - type: slack
+                  uri: "#backend-java"
+                  label: Java support channel
+              discussions:
+                - type: rfc
+                  title: Java as primary backend language
+                  link:
+                    type: confluence
+                    uri: /spaces/ENG/pages/10234
+                - type: meeting
+                  title: Language selection review
+                  date: 2024-Q1
+                  link:
+                    type: recording
+                    uri: https://recordings.acme.internal/mtg-8821
+              sections:
+                getting-started: |
+                  Use the `eng-bootstrap` CLI to scaffold a new Java service:
+
+                  ```
+                  eng-bootstrap new --lang java --template service
+                  ```
+
+                  This gives you a Gradle project with our standard
+                  dependency versions and CI config pre-wired.
+                migration-notes: |
+                  Teams moving from Java 17 should review the
+                  [Virtual Threads guide](/spaces/ENG/pages/10600)
+                  before upgrading. Key breaking changes around
+                  `synchronized` blocks and thread-local usage.
+
+            kotlin:
+              label: Kotlin
+              ring: trial
+              timeline:
+                assess: 2025-Q2
+                trial: 2025-Q3
+              description: Gaining traction for new JVM services.
+              rationale: >
+                Coroutine support and null safety reduce
+                boilerplate and defect rates.
+              licence: Apache-2.0
+              teams: [inventory, search]
+              verticals: [supply-chain, digital-commerce]
+              tags: [jvm, modern]
+              ring-overrides:
+                teams:
+                  inventory:
+                    ring: adopt
+                    reason: >
+                      Inventory has fully adopted Kotlin for all new
+                      services since 2025-Q4.
+                verticals:
+                  digital-commerce:
+                    ring: adopt
+                    reason: >
+                      Digital Commerce standardised on Kotlin for
+                      the new storefront API layer.
+              links:
+                - type: url
+                  uri: https://kotlinlang.org
+                  label: Kotlin site
+                - type: slack
+                  uri: "#backend-kotlin"
+                  label: Kotlin community
+              discussions:
+                - type: rfc
+                  title: Kotlin adoption proposal
+                  link:
+                    type: confluence
+                    uri: /spaces/ENG/pages/20891
+                - type: meeting
+                  title: Kotlin trial kickoff
+                  date: 2025-Q3
+                  link:
+                    type: recording
+                    uri: https://recordings.acme.internal/mtg-9210
+                - type: thread
+                  title: Coroutines vs Loom discussion
+                  link:
+                    type: slack
+                    uri: "#backend-kotlin/t/1685000000"
+
+            go:
+              label: Go
+              ring: assess
+              timeline:
+                assess: 2026-Q2
+              description: Exploring for CLI tooling and network services.
+              rationale: >
+                Fast compilation, small binaries, strong
+                concurrency primitives.
+              licence: BSD-3-Clause
+              teams: [platform]
+              tags: [polyglot, networking]
+              key-individuals:
+                - name: Priya Patel
+                  role: Evaluator
+              links:
+                - type: url
+                  uri: https://go.dev
+                  label: Go site
+              discussions:
+                - type: proposal
+                  title: Go for edge proxies
+                  link:
+                    type: confluence
+                    uri: /spaces/ENG/pages/30122
+              sections:
+                evaluation-scope: |
+                  The initial evaluation focuses on two use cases:
+
+                  1. Replacing shell scripts in the deployment pipeline
+                  2. A proof-of-concept API gateway for edge routing
+
+                  We are *not* evaluating Go as a general replacement
+                  for JVM services.
+
+        persistence-and-messaging:
+          meta:
+            label: Persistence & Messaging
+            description: Data stores, caches, queues, and brokers.
+            guidance: >
+              Default to PostgreSQL for relational needs.
+              Any new data store requires an architecture review.
+            links:
+              - type: confluence
+                uri: /spaces/ENG/pages/40000
+                label: Data store selection guide
+
+          entries:
+            postgresql:
+              label: PostgreSQL
+              ring: adopt
+              timeline:
+                adopt: 2024-Q1
+              description: Primary relational data store.
+              rationale: >
+                Battle-tested with excellent extension ecosystem.
+              licence: PostgreSQL (MIT-style)
+              compliance:
+                frameworks: [SOC2, ISO27001, PCI-DSS]
+                notes: PII columns must use column-level encryption.
+              teams: [payments, inventory, auth, search]
+              verticals: [supply-chain, digital-commerce, retail-operations]
+              tags: [relational, core]
+              constraints:
+                min_version: "16"
+                hosting: AWS RDS
+              links:
+                - type: url
+                  uri: https://postgresql.org
+                  label: PostgreSQL
+                - type: slack
+                  uri: "#data-platform"
+                  label: Data platform support
+              discussions:
+                - type: adr
+                  title: "ADR-003: PostgreSQL as default RDBMS"
+                  link:
+                    type: confluence
+                    uri: /spaces/ENG/pages/40010
+              sections:
+                connection-pooling: |
+                  All services must connect via PgBouncer.
+                  Direct connections are blocked in production.
+                  See the [pooling guide](/spaces/ENG/pages/40050).
+
+            kafka:
+              label: Apache Kafka
+              ring: adopt
+              timeline:
+                trial: 2024-Q2
+                adopt: 2025-Q1
+              description: Primary event streaming platform.
+              rationale: >
+                Proven at scale for event-driven architectures
+                and cross-service communication.
+              licence: Apache-2.0
+              compliance:
+                frameworks: [SOC2]
+                notes: >
+                  Topics carrying PII must enable encryption at rest
+                  and use schema registry with PII field tagging.
+              teams: [payments, inventory, search, data]
+              verticals: [supply-chain, digital-commerce]
+              tags: [streaming, events, core]
+              ring-overrides:
+                verticals:
+                  retail-operations:
+                    ring: assess
+                    reason: >
+                      Retail stores use a lightweight MQTT broker.
+                      Kafka is overkill for in-store event volumes.
+              constraints:
+                hosting: Confluent Cloud
+                min_version: "3.6"
+              links:
+                - type: url
+                  uri: https://kafka.apache.org
+                  label: Apache Kafka
+                - type: confluence
+                  uri: /spaces/ENG/pages/41000
+                  label: Kafka conventions and topic naming
+                - type: slack
+                  uri: "#kafka-users"
+                  label: Kafka users channel
+              discussions:
+                - type: adr
+                  title: "ADR-007: Kafka for inter-service events"
+                  link:
+                    type: confluence
+                    uri: /spaces/ENG/pages/41010
+
+            redis:
+              label: Redis
+              ring: trial
+              timeline:
+                assess: 2025-Q1
+                trial: 2025-Q3
+              description: In-memory cache and session store.
+              rationale: >
+                Sub-millisecond reads for hot-path caching.
+                Evaluating as a session store replacement.
+              licence: RSALv2 / SSPLv1 (post 7.4), BSD-3 (forks)
+              teams: [auth, search]
+              tags: [caching, sessions]
+              constraints:
+                hosting: AWS ElastiCache
+              links:
+                - type: url
+                  uri: https://redis.io
+                  label: Redis
+              sections:
+                licence-note: |
+                  Redis changed licensing in 2024. We are tracking
+                  Valkey as a potential BSD-licensed alternative.
+                  See the [licence review thread](#redis-licence-review).
+
+            dynamodb:
+              label: DynamoDB
+              ring: hold
+              timeline:
+                adopt: 2024-Q2
+                hold: 2026-Q1
+              description: Operational overhead not justified at our scale.
+              rationale: >
+                Hot partition issues and cost unpredictability.
+              licence: Proprietary (AWS)
+              hold_reason: >
+                Do not start new projects on DynamoDB. Existing
+                workloads should plan migration by 2027-Q1.
+              sunset_date: 2027-Q1
+              migration_target: postgresql
+              teams: [payments]
+              tags: [nosql, legacy]
+              links:
+                - type: slack
+                  uri: "#dynamo-migration"
+                  label: Migration coordination
+                - type: jira
+                  uri: PLAT-2200
+                  label: Migration epic
+              discussions:
+                - type: post-mortem
+                  title: "INC-4412: Checkout outage from hot partition"
+                  date: 2025-08-03
+                  link:
+                    type: confluence
+                    uri: /spaces/SRE/pages/50200
+                - type: meeting
+                  title: DynamoDB sunset decision
+                  date: 2025-Q4
+                  link:
+                    type: recording
+                    uri: https://recordings.acme.internal/mtg-9870
+              sections:
+                migration-status: |
+                  **Payments**: 60% migrated, ETA 2026-Q3.
+                  **Legacy batch jobs**: Not started, blocked on PLAT-2210.
+
+        techniques:
+          meta:
+            label: Techniques
+            description: Architectural patterns, design approaches, and engineering practices.
+            guidance: >
+              New patterns should be validated with a spike
+              or proof-of-concept before broader adoption.
+
+          entries:
+            structured-concurrency:
+              label: Structured Concurrency
+              ring: trial
+              timeline:
+                assess: 2025-Q3
+                trial: 2026-Q1
+              description: Managing concurrent tasks as a single unit of work.
+              rationale: >
+                Reduces leaked threads and simplifies error
+                handling in concurrent code.
+              teams: [payments, platform]
+              tags: [concurrency, reliability]
+              discussions:
+                - type: rfc
+                  title: Structured concurrency with Java 21
+                  link:
+                    type: confluence
+                    uri: /spaces/ENG/pages/60100
+
+            cqrs:
+              label: CQRS
+              ring: assess
+              timeline:
+                assess: 2026-Q2
+              description: Command Query Responsibility Segregation.
+              rationale: >
+                Exploring for read-heavy services where write
+                and read models have diverged significantly.
+              teams: [search]
+              tags: [architecture, patterns]
+              key-individuals:
+                - name: James Okafor
+                  role: Sponsor
+              discussions:
+                - type: proposal
+                  title: CQRS for search indexing
+                  link:
+                    type: confluence
+                    uri: /spaces/ENG/pages/60200
+
+        tools:
+          meta:
+            label: Tools
+            description: Build systems, developer tooling, and local development.
+
+          entries:
+            gradle:
+              label: Gradle
+              ring: adopt
+              timeline:
+                adopt: 2024-Q1
+              description: Build tool for all JVM projects.
+              rationale: >
+                Flexible build system with strong dependency management.
+              licence: Apache-2.0
+              teams: [payments, inventory, auth, search]
+              tags: [build, jvm]
+              constraints:
+                min_version: "8.5"
+              links:
+                - type: url
+                  uri: https://gradle.org
+                  label: Gradle
+                - type: confluence
+                  uri: /spaces/ENG/pages/70100
+                  label: Gradle conventions
+
+    devops:
+      meta:
+        label: DevOps & Platform
+        description: >
+          CI/CD, infrastructure, observability, and
+          operational tooling.
+        key-individuals:
+          - name: Alex Kim
+            role: Platform Lead
+          - name: Dana Reyes
+            role: SRE Manager
+        tags: [infrastructure, reliability]
+        links:
+          - type: slack
+            uri: "#platform-engineering"
+            label: Platform engineering channel
+          - type: confluence
+            uri: /spaces/PLAT/pages/00001
+            label: Platform hub
+          - type: url
+            uri: https://wiki.acme.internal/on-call
+            label: On-call handbook
+
+      quadrants:
+        platforms:
+          meta:
+            label: Platforms
+            description: Compute, container orchestration, and managed services.
+            guidance: >
+              All new workloads run on Kubernetes unless
+              there is a documented exception.
+
+          entries:
+            kubernetes:
+              label: Kubernetes
+              ring: adopt
+              timeline:
+                adopt: 2024-Q1
+              description: Container orchestration for all services.
+              rationale: >
+                Industry standard with strong ecosystem.
+              licence: Apache-2.0
+              compliance:
+                frameworks: [SOC2, ISO27001]
+                notes: >
+                  Clusters must run CIS-benchmarked node images.
+              teams: [platform, payments, inventory, auth, search]
+              tags: [containers, orchestration, core]
+              constraints:
+                min_version: "1.29"
+                hosting: AWS EKS
+              links:
+                - type: url
+                  uri: https://kubernetes.io
+                  label: Kubernetes
+                - type: confluence
+                  uri: /spaces/PLAT/pages/10100
+                  label: Cluster provisioning guide
+                - type: slack
+                  uri: "#k8s-help"
+                  label: Kubernetes help
+
+            nomad:
+              label: HashiCorp Nomad
+              ring: assess
+              timeline:
+                assess: 2026-Q2
+              description: Evaluating for batch and ML workloads.
+              rationale: >
+                Simpler operational model than Kubernetes
+                for non-HTTP batch jobs.
+              licence: BSL-1.1
+              teams: [data]
+              tags: [orchestration, batch]
+              key-individuals:
+                - name: Dana Reyes
+                  role: Evaluator
+
+        ci-cd:
+          meta:
+            label: CI/CD
+            description: Continuous integration and delivery pipelines.
+            guidance: >
+              All repositories must use GitHub Actions.
+              Argo CD manages deployment to production clusters.
+            links:
+              - type: confluence
+                uri: /spaces/PLAT/pages/20000
+                label: CI/CD standards
+
+          entries:
+            github-actions:
+              label: GitHub Actions
+              ring: adopt
+              timeline:
+                adopt: 2024-Q2
+              description: CI platform for build, test, and release.
+              rationale: >
+                Tight GitHub integration, reusable workflows,
+                large marketplace.
+              licence: Proprietary (GitHub)
+              teams: [platform, payments, inventory, auth, search, web, mobile]
+              tags: [ci, automation, core]
+              links:
+                - type: github
+                  uri: https://github.com/acme-corp/.github
+                  label: Shared workflows
+                - type: confluence
+                  uri: /spaces/PLAT/pages/20100
+                  label: Workflow authoring guide
+
+            argo-cd:
+              label: Argo CD
+              ring: trial
+              timeline:
+                assess: 2025-Q3
+                trial: 2026-Q1
+              description: GitOps-based continuous delivery for Kubernetes.
+              rationale: >
+                Declarative deployments with drift detection.
+              licence: Apache-2.0
+              teams: [platform, payments]
+              tags: [cd, gitops]
+              links:
+                - type: url
+                  uri: https://argoproj.github.io/cd
+                  label: Argo CD
+                - type: slack
+                  uri: "#argo-cd"
+                  label: Argo CD channel
+              discussions:
+                - type: rfc
+                  title: GitOps deployment model
+                  link:
+                    type: confluence
+                    uri: /spaces/PLAT/pages/20200
+
+        observability:
+          meta:
+            label: Observability
+            description: Monitoring, tracing, logging, and alerting.
+            guidance: >
+              All services must emit OpenTelemetry-compatible
+              traces by 2026-Q4.
+
+          entries:
+            datadog:
+              label: Datadog
+              ring: adopt
+              timeline:
+                adopt: 2024-Q1
+              description: Primary observability platform.
+              rationale: >
+                Unified metrics, traces, and logs with strong alerting.
+              licence: Proprietary
+              compliance:
+                frameworks: [SOC2]
+              teams: [platform, payments, inventory, auth, search]
+              tags: [monitoring, alerting, core]
+              links:
+                - type: url
+                  uri: https://datadoghq.com
+                  label: Datadog
+                - type: confluence
+                  uri: /spaces/PLAT/pages/30100
+                  label: Datadog tagging standards
+                - type: slack
+                  uri: "#observability"
+                  label: Observability channel
+
+            opentelemetry:
+              label: OpenTelemetry
+              ring: trial
+              timeline:
+                assess: 2025-Q2
+                trial: 2026-Q1
+              description: Vendor-neutral telemetry collection.
+              rationale: >
+                Unifies traces, metrics, and logs; reduces vendor lock-in.
+              licence: Apache-2.0
+              compliance:
+                frameworks: [SOC2, ISO27001]
+                notes: Trace data must not contain PII.
+              teams: [platform, payments, inventory]
+              tags: [tracing, vendor-neutral]
+              links:
+                - type: url
+                  uri: https://opentelemetry.io
+                  label: OpenTelemetry
+                - type: confluence
+                  uri: /spaces/PLAT/pages/30200
+                  label: OTel rollout plan
+                - type: slack
+                  uri: "#observability"
+                  label: Observability channel
+              discussions:
+                - type: rfc
+                  title: OTel as telemetry standard
+                  link:
+                    type: confluence
+                    uri: /spaces/PLAT/pages/30210
+                - type: meeting
+                  title: OTel trial review
+                  date: 2026-Q1
+                  link:
+                    type: recording
+                    uri: https://recordings.acme.internal/mtg-10200
+                - type: thread
+                  title: Datadog exporter gotchas
+                  link:
+                    type: slack
+                    uri: "#observability/t/1700000000"
+
+        infrastructure-as-code:
+          meta:
+            label: Infrastructure as Code
+            description: Provisioning and managing cloud resources declaratively.
+            guidance: >
+              Terraform is the default. All infrastructure changes
+              go through code review and plan approval.
+            links:
+              - type: confluence
+                uri: /spaces/PLAT/pages/40000
+                label: IaC standards
+
+          entries:
+            terraform:
+              label: Terraform
+              ring: adopt
+              timeline:
+                adopt: 2024-Q1
+              description: Infrastructure provisioning for AWS.
+              rationale: >
+                Mature, well-understood, strong module ecosystem.
+              licence: BSL-1.1
+              teams: [platform]
+              tags: [iac, core]
+              constraints:
+                min_version: "1.7"
+              links:
+                - type: url
+                  uri: https://terraform.io
+                  label: Terraform
+                - type: github
+                  uri: https://github.com/acme-corp/terraform-modules
+                  label: Internal modules
+
+            pulumi:
+              label: Pulumi
+              ring: assess
+              timeline:
+                assess: 2026-Q2
+              description: IaC using general-purpose languages.
+              rationale: >
+                Enables TypeScript/Python for infrastructure,
+                reducing context-switching for application teams.
+              licence: Apache-2.0
+              teams: [platform]
+              tags: [iac, modern]
+              key-individuals:
+                - name: Alex Kim
+                  role: Evaluator
+              links:
+                - type: url
+                  uri: https://pulumi.com
+                  label: Pulumi
+              discussions:
+                - type: proposal
+                  title: Pulumi for application-owned infra
+                  link:
+                    type: confluence
+                    uri: /spaces/PLAT/pages/40100
+
+    frontend:
+      meta:
+        label: Frontend Engineering
+        description: >
+          Client-side languages, frameworks, build tools,
+          and design systems for web and mobile.
+        key-individuals:
+          - name: Mei Wong
+            role: Frontend Lead
+        tags: [web, ui, dx]
+        links:
+          - type: slack
+            uri: "#frontend-engineering"
+            label: Frontend community
+          - type: confluence
+            uri: /spaces/FE/pages/00001
+            label: Frontend engineering hub
+
+      quadrants:
+        languages-and-frameworks:
+          meta:
+            label: Languages & Frameworks
+            description: UI frameworks and rendering strategies.
+            guidance: >
+              React is the default for new web projects.
+              Evaluate alternatives only for specific use cases
+              with architecture review approval.
+
+          entries:
+            react:
+              label: React
+              ring: adopt
+              timeline:
+                adopt: 2024-Q1
+              description: Primary UI framework.
+              rationale: >
+                Large ecosystem, strong hiring pipeline,
+                well-integrated with our design system.
+              licence: MIT
+              teams: [web, search]
+              verticals: [digital-commerce, retail-operations]
+              tags: [ui, core]
+              ring-overrides:
+                verticals:
+                  retail-operations:
+                    ring: hold
+                    reason: >
+                      POS terminals use a native embedded UI.
+                      React is not suitable for in-store kiosk hardware.
+              constraints:
+                min_version: "19"
+              links:
+                - type: url
+                  uri: https://react.dev
+                  label: React
+                - type: confluence
+                  uri: /spaces/FE/pages/10100
+                  label: React conventions
+                - type: slack
+                  uri: "#frontend-react"
+                  label: React channel
+
+            svelte:
+              label: Svelte
+              ring: trial
+              timeline:
+                assess: 2025-Q3
+                trial: 2026-Q1
+              description: Compiler-first UI framework.
+              rationale: >
+                Smaller bundles and simpler mental model
+                for content-heavy pages.
+              licence: MIT
+              teams: [web]
+              tags: [ui, modern]
+              links:
+                - type: url
+                  uri: https://svelte.dev
+                  label: Svelte
+              discussions:
+                - type: rfc
+                  title: Svelte for marketing pages
+                  link:
+                    type: confluence
+                    uri: /spaces/FE/pages/10200
+
+        tools:
+          meta:
+            label: Tools
+            description: Build tooling, bundlers, and developer experience.
+
+          entries:
+            vite:
+              label: Vite
+              ring: adopt
+              timeline:
+                trial: 2025-Q1
+                adopt: 2025-Q3
+              description: Frontend build tool with native ES module support.
+              rationale: >
+                Fast dev server, clean plugin API, replaced Webpack.
+              licence: MIT
+              teams: [web, search]
+              tags: [build, dx, core]
+              links:
+                - type: url
+                  uri: https://vitejs.dev
+                  label: Vite
+
+        design-systems:
+          meta:
+            label: Design Systems
+            description: Shared component libraries and design tokens.
+            links:
+              - type: confluence
+                uri: /spaces/FE/pages/30000
+                label: Design system docs
+
+          entries:
+            acme-ds:
+              label: Acme Design System
+              ring: adopt
+              timeline:
+                adopt: 2025-Q1
+              description: Internal component library and design tokens.
+              rationale: >
+                Consistency across products, accessibility built in.
+              licence: Proprietary (internal)
+              teams: [web, mobile]
+              tags: [design, components, core]
+              links:
+                - type: github
+                  uri: https://github.com/acme-corp/design-system
+                  label: Source repo
+                - type: url
+                  uri: https://ds.acme.internal
+                  label: Storybook
+                - type: slack
+                  uri: "#design-system"
+                  label: Design system channel
