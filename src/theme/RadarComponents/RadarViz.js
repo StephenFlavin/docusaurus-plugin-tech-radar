@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import { RING_COLORS, RING_FILLS, effectiveRing } from './rings';
 import { entryMatchesFilters } from './filters';
 
@@ -96,7 +97,7 @@ export function RadarViz({ quadrants, basePath, filters }) {
                 const showLabel = visibleEntries.length <= 10;
 
                 return (
-                  <a key={eSlug} href={`${basePath}/${eSlug}`}>
+                  <Link key={eSlug} to={`${basePath}/${eSlug}`}>
                     <g className="radar-viz-dot">
                       <circle cx={ex} cy={ey} r={10} fill="transparent" className="radar-viz-dot-hover" />
                       {override ? (
@@ -120,7 +121,7 @@ export function RadarViz({ quadrants, basePath, filters }) {
                         {override ? ` — overridden from ${entry.ring}` : ''}
                       </title>
                     </g>
-                  </a>
+                  </Link>
                 );
               })}
             </g>
