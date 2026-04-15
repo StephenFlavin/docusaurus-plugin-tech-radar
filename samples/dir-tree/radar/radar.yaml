@@ -1,83 +1,84 @@
-meta:
-  title: Acme Corp Engineering Technology Radar
-  version: 4
-  date: 2026-04-13
-  cadence: quarterly
-  changelog:
-    - version: 4
-      date: 2026-04-13
-      summary: >
-        Added data discipline. Promoted OpenTelemetry to trial.
-        Moved DynamoDB to hold with sunset plan.
-    - version: 3
-      date: 2026-01-10
-      summary: Introduced devops quadrants and frontend discipline.
-    - version: 2
-      date: 2025-10-01
-      summary: First backend quadrants published.
-    - version: 1
-      date: 2025-07-01
-      summary: Initial radar with languages and frameworks only.
-
-config:
-  link-types:
-    url:
-      label: Website
-      icon-url: https://cdn.acme.internal/icons/link.svg
-    slack:
-      label: Slack
-      icon-url: https://cdn.acme.internal/icons/slack.svg
-      uri-pattern: "^#[a-z0-9_-]+(/t/[0-9]+)?$"
-    confluence:
-      label: Confluence
-      icon-url: https://cdn.acme.internal/icons/confluence.svg
-      uri-pattern: "^/spaces/[A-Z]+/pages/[0-9]+.*$"
-    jira:
-      label: Jira
-      icon-url: https://cdn.acme.internal/icons/jira.svg
-      uri-pattern: "^[A-Z]+-[0-9]+$"
-    github:
-      label: GitHub
-      icon-url: https://cdn.acme.internal/icons/github.svg
-      uri-pattern: "^https://github\\.com/.+"
-    recording:
-      label: Recording
-      icon-url: https://cdn.acme.internal/icons/video.svg
-      uri-pattern: "^https://recordings\\.acme\\.internal/.+"
-
-  teams:
-    payments:
-      label: Payments
-      description: Checkout, billing, invoicing, and payment processing.
-    inventory:
-      label: Inventory
-      description: Stock management, warehousing, and fulfilment.
-    auth:
-      label: Auth
-      description: Identity, authentication, and access control.
-    search:
-      label: Search
-      description: Product search, ranking, and recommendations.
-    platform:
-      label: Platform Engineering
-      description: Developer tooling, CI/CD, infrastructure, and observability.
-    data:
-      label: Data Engineering
-      description: Pipelines, warehousing, analytics, and ML infrastructure.
-    web:
-      label: Web
-      description: Customer-facing web applications and design systems.
-    mobile:
-      label: Mobile
-      description: iOS and Android applications.
-
-  verticals:
-    supply-chain:
-      label: Supply Chain
-      description: Warehousing, logistics, and fulfilment systems.
-    retail-operations:
-      label: Retail Operations
-      description: In-store POS, merchandising, and store systems.
-    digital-commerce:
-      label: Digital Commerce
-      description: Online storefront, checkout, and customer experience.
+radar:
+  meta:
+    title: Acme Corp Engineering Technology Radar
+    version: 4
+    date: 2026-04-13
+    cadence: quarterly
+    changelog:
+      - version: 4
+        date: 2026-04-13
+        summary: >
+          Added data discipline. Promoted OpenTelemetry to trial.
+          Moved DynamoDB to hold with sunset plan.
+      - version: 3
+        date: 2026-01-10
+        summary: Introduced devops quadrants and frontend discipline.
+      - version: 2
+        date: 2025-10-01
+        summary: First backend quadrants published.
+      - version: 1
+        date: 2025-07-01
+        summary: Initial radar with languages and frameworks only.
+  
+  config:
+    link-types:
+      url:
+        label: Website
+        icon-url: https://cdn.acme.internal/icons/link.svg
+      slack:
+        label: Slack
+        icon-url: https://cdn.acme.internal/icons/slack.svg
+        uri-pattern: "^#[a-z0-9_-]+(/t/[0-9]+)?$"
+      confluence:
+        label: Confluence
+        icon-url: https://cdn.acme.internal/icons/confluence.svg
+        uri-pattern: "^/spaces/[A-Z]+/pages/[0-9]+.*$"
+      jira:
+        label: Jira
+        icon-url: https://cdn.acme.internal/icons/jira.svg
+        uri-pattern: "^[A-Z]+-[0-9]+$"
+      github:
+        label: GitHub
+        icon-url: https://cdn.acme.internal/icons/github.svg
+        uri-pattern: "^https://github\\.com/.+"
+      recording:
+        label: Recording
+        icon-url: https://cdn.acme.internal/icons/video.svg
+        uri-pattern: "^https://recordings\\.acme\\.internal/.+"
+  
+    teams:
+      payments:
+        label: Payments
+        description: Checkout, billing, invoicing, and payment processing.
+      inventory:
+        label: Inventory
+        description: Stock management, warehousing, and fulfilment.
+      auth:
+        label: Auth
+        description: Identity, authentication, and access control.
+      search:
+        label: Search
+        description: Product search, ranking, and recommendations.
+      platform:
+        label: Platform Engineering
+        description: Developer tooling, CI/CD, infrastructure, and observability.
+      data:
+        label: Data Engineering
+        description: Pipelines, warehousing, analytics, and ML infrastructure.
+      web:
+        label: Web
+        description: Customer-facing web applications and design systems.
+      mobile:
+        label: Mobile
+        description: iOS and Android applications.
+  
+    verticals:
+      supply-chain:
+        label: Supply Chain
+        description: Warehousing, logistics, and fulfilment systems.
+      retail-operations:
+        label: Retail Operations
+        description: In-store POS, merchandising, and store systems.
+      digital-commerce:
+        label: Digital Commerce
+        description: Online storefront, checkout, and customer experience.
