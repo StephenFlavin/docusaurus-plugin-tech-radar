@@ -32,8 +32,8 @@ function parseSingleFile(filePath) {
 
 /**
  * Directory layout:
- *   radar/
- *   ├── radar.yaml              # { radar: { meta, config } }
+ *   tech-radar/
+ *   ├── _meta.yaml              # { meta: {...}, config: {...} }
  *   └── disciplines/
  *       └── <discipline>/
  *           ├── _meta.yaml      # discipline meta fields
@@ -42,17 +42,16 @@ function parseSingleFile(filePath) {
  *               └── <entry>.yaml
  */
 function parseDirectory(dirPath) {
-  const rootFile = path.join(dirPath, 'radar.yaml');
-  if (!fs.existsSync(rootFile)) {
-    throw new Error(`Directory mode requires radar.yaml at: ${rootFile}`);
+  const metaFile = findRootMeta(dirPath);
+  if (!metaFile) {
+    throw new Error(`Directory mode requires _meta.yaml at: ${path.join(dirPath, '_meta.yaml')}`);
   }
 
-  const rootDoc = yaml.load(fs.readFileSync(rootFile, 'utf-8'));
-  if (!rootDoc || !rootDoc.radar) {
-    throw new Error(`Expected top-level "radar:" key in ${rootFile}`);
-  }
-
-  const radar = rootDoc.radar;
+  const rootDoc = yaml.load(fs.readFileSync(metaFile, 'utf-8')) || {};
+  const radar = {
+    meta: rootDoc.meta || {},
+    config: rootDoc.config || {},
+  };
   radar.disciplines = {};
 
   const discDir = path.join(dirPath, 'disciplines');
@@ -97,6 +96,15 @@ function parseQuadrantDir(dirPath) {
   }
 
   return { meta, entries };
+}
+
+/** Find _meta.yaml / _meta.yml in directory root */
+function findRootMeta(dirPath) {
+  for (const name of ['_meta.yaml', '_meta.yml']) {
+    const p = path.join(dirPath, name);
+    if (fs.existsSync(p)) return p;
+  }
+  return null;
 }
 
 /** Read _meta.yaml from a directory, falling back to defaults */

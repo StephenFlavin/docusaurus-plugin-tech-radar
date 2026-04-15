@@ -1,0 +1,8 @@
+meta:
+  title: Dir Radar
+  version: 1
+  date: 2026-01-01
+config:
+  link-types: {}
+  teams: {}
+  verticals: {}

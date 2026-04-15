@@ -6,7 +6,7 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "clear": "docusaurus clear",
-    "validate": "node ../../validate.js radar.yaml"
+    "validate": "node ../../validate.js"
   },
   "dependencies": {
     "@docusaurus/core": "3.7.0",

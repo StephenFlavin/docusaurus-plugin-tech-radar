@@ -8,7 +8,8 @@ A Docusaurus plugin that renders a Technology Radar from YAML definitions. Suppo
 - **Discipline page** — SVG radar visualisation + entry cards per quadrant
 - **Entry page** — full detail view: rationale, timeline, ring overrides, constraints, links, discussions, and freeform sections
 - **Ring overrides** — teams or verticals can hold a different ring than the org-wide default; displayed with a ◆ marker
-- **Two input modes** — single `radar.yaml` file or a `radar/` directory tree (one file per entry)
+- **Two input modes** — single `tech-radar.yaml` file or a `tech-radar/` directory tree (one file per entry)
+- **Auto-detection** — no `path` option needed; the plugin looks for `tech-radar.yaml` then `tech-radar/` in your site root
 - **Build-time validation** — invalid rings, missing hold reasons, unknown team/vertical references all abort the build with a clear error
 - **Docusaurus theme integration** — uses `--ifm-*` CSS variables so it inherits your site's colour scheme
 
@@ -30,7 +31,6 @@ Until then, clone this repository and reference it directly:
 // docusaurus.config.js
 plugins: [
   ['./path/to/docusaurus-plugin-tech-radar', {
-    path: 'radar.yaml',
     routeBasePath: 'radar',
   }],
 ],
@@ -44,11 +44,13 @@ plugins: [
 // docusaurus.config.js
 plugins: [
   ['docusaurus-plugin-tech-radar', {
-    path: 'radar.yaml',      // path to your YAML file or directory (relative to siteDir)
-    routeBasePath: 'radar',  // URL prefix — default: 'radar'
+    // path: 'tech-radar.yaml',  // optional — auto-detected if omitted
+    routeBasePath: 'radar',      // URL prefix — default: 'radar'
   }],
 ],
 ```
+
+The plugin auto-detects `tech-radar.yaml` (single-file mode) or `tech-radar/` (directory mode) in your site root. Pass `path` explicitly only if you use a non-standard name or location.
 
 Add a navbar link:
 
@@ -68,7 +70,7 @@ themeConfig: {
 
 ### Single-file mode
 
-A single `radar.yaml` with a top-level `radar:` key:
+Name your file `tech-radar.yaml` at the Docusaurus site root. The file must have a top-level `radar:` key:
 
 ```yaml
 radar:
@@ -182,8 +184,8 @@ dynamodb:
 Split the radar across individual files. Useful for large radars or teams that want per-entry pull requests.
 
 ```
-radar/
-├── radar.yaml                                # meta + config (with radar: wrapper)
+tech-radar/
+├── _meta.yaml                                # meta + config (flat — no radar: wrapper)
 └── disciplines/
     └── backend/
         ├── _meta.yaml                        # discipline meta
@@ -193,15 +195,35 @@ radar/
             └── kotlin.yaml
 ```
 
-`radar/radar.yaml` contains the same `meta:` and `config:` sections as the single-file format, wrapped in `radar:`. Discipline and quadrant `_meta.yaml` files contain just their meta fields directly. Entry files contain just the entry fields directly.
+`tech-radar/_meta.yaml` contains `meta:` and `config:` as top-level keys — no `radar:` wrapper:
 
-Configure the plugin to point at the directory:
+```yaml
+meta:
+  title: Acme Engineering Technology Radar
+  version: 4
+  date: 2026-04-13
+  cadence: quarterly
+  changelog:
+    - version: 4
+      date: 2026-04-13
+      summary: Added data discipline.
 
-```js
-plugins: [
-  ['docusaurus-plugin-tech-radar', { path: 'radar/', routeBasePath: 'radar' }],
-],
+config:
+  link-types:
+    url:
+      label: Website
+      icon-url: https://example.com/icons/link.svg
+  teams:
+    platform:
+      label: Platform Engineering
+      description: Developer tooling, CI/CD, infrastructure.
+  verticals:
+    digital-commerce:
+      label: Digital Commerce
+      description: Online storefront and checkout.
 ```
+
+Discipline and quadrant `_meta.yaml` files contain their meta fields directly (same as before). Entry files contain just the entry fields directly.
 
 ---
 
@@ -241,9 +263,12 @@ Overridden entries show a ◆ marker in both the SVG viz and entry cards. Team o
 The plugin validates your YAML at build time and provides a standalone CLI:
 
 ```bash
-# Validate without building
-node validate.js radar.yaml
-node validate.js radar/
+# Validate without building (auto-detects tech-radar.yaml or tech-radar/)
+node validate.js
+
+# Validate an explicit path
+node validate.js tech-radar.yaml
+node validate.js tech-radar/
 
 # From a sample directory
 bun run validate
@@ -293,8 +318,8 @@ cd samples/dir-tree  && bun install && bun run validate && bun run build
   validate.js            ← standalone CLI validator
 
 samples/
-  uber-yaml/             ← single-file YAML demo
-  dir-tree/              ← directory-mode demo
+  uber-yaml/             ← single-file YAML demo (tech-radar.yaml)
+  dir-tree/              ← directory-mode demo (tech-radar/)
 ```
 
 ---

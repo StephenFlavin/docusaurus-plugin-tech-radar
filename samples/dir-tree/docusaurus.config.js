@@ -33,10 +33,9 @@ const config = {
     ],
   ],
 
-  // ━━━ Directory-mode: point path at a folder instead of a single file ━━━
+  // ━━━ Directory-mode: auto-detects tech-radar/ with no path option needed ━━━
   plugins: [
     ['../..', {
-      path: 'radar/',
       routeBasePath: 'radar',
     }],
   ],

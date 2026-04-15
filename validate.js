@@ -4,12 +4,13 @@
  * Validate a radar YAML file or directory.
  *
  * Usage:
- *   node validate.js radar.yaml
- *   node validate.js radar/
- *   bun run validate           # uses the path from docusaurus.config.js
+ *   node validate.js tech-radar.yaml
+ *   node validate.js tech-radar/
+ *   bun run validate           # auto-detects tech-radar.yaml or tech-radar/
  */
 
 const path = require('path');
+const fs = require('fs');
 const { parseRadar } = require('./src/parser');
 const { validate } = require('./src/validator');
 
@@ -32,8 +33,18 @@ if (!inputPath) {
 }
 
 if (!inputPath) {
-  console.error('Usage: node validate.js <radar.yaml|radar-dir/>');
-  console.error('   or: add to package.json scripts and run from project root');
+  // Auto-detect: look for tech-radar.yaml or tech-radar/ in cwd
+  for (const candidate of ['tech-radar.yaml', 'tech-radar']) {
+    if (fs.existsSync(path.resolve(process.cwd(), candidate))) {
+      inputPath = candidate;
+      break;
+    }
+  }
+}
+
+if (!inputPath) {
+  console.error('Usage: node validate.js <tech-radar.yaml|tech-radar-dir/>');
+  console.error('   or: run from a directory containing tech-radar.yaml or tech-radar/');
   process.exit(1);
 }
 

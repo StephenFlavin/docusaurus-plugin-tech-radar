@@ -6,12 +6,12 @@ const { validate } = require('./validator');
 /** @type {import('@docusaurus/types').Plugin} */
 module.exports = function pluginTechRadar(context, options) {
   const {
-    path: radarPath = 'radar.yaml',
+    path: radarPath,
     routeBasePath = 'radar',
   } = options;
 
   const { baseUrl } = context.siteConfig;
-  const resolvedPath = path.resolve(context.siteDir, radarPath);
+  const resolvedPath = resolveRadarPath(context.siteDir, radarPath);
 
   // Build absolute route paths that include baseUrl.
   // Docusaurus's Link component prepends baseUrl to all href props, so addRoute
@@ -118,6 +118,30 @@ module.exports = function pluginTechRadar(context, options) {
     },
   };
 };
+
+/**
+ * Resolve the radar input path.
+ * If the user passed a `path` option, resolve it relative to siteDir.
+ * Otherwise auto-detect: look for tech-radar.yaml then tech-radar/ in siteDir.
+ */
+function resolveRadarPath(siteDir, radarPath) {
+  if (radarPath) {
+    return path.resolve(siteDir, radarPath);
+  }
+
+  const candidates = [
+    path.join(siteDir, 'tech-radar.yaml'),
+    path.join(siteDir, 'tech-radar'),
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) return candidate;
+  }
+
+  throw new Error(
+    '[docusaurus-plugin-tech-radar] Could not find tech-radar.yaml or tech-radar/ ' +
+    `in ${siteDir}. Pass a path option to the plugin to specify the location explicitly.`
+  );
+}
 
 /**
  * Build a sidebar structure that Docusaurus components can render.
