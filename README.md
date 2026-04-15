@@ -1,77 +1,314 @@
-# Tech Radar — Docusaurus Example
+# docusaurus-plugin-tech-radar
 
-A minimal Docusaurus site with the `docusaurus-plugin-tech-radar` plugin pre-installed.
+A Docusaurus plugin that renders a Technology Radar from YAML definitions. Supports a multi-discipline radar with quadrants, ring overrides per team or vertical, timeline tracking, compliance metadata, and full-text search.
 
-## Run it
+## Features
+
+- **Overview page** — all entries across every discipline with ring stats, filters (ring, team, tag, search), and a changelog
+- **Discipline page** — SVG radar visualisation + entry cards per quadrant
+- **Entry page** — full detail view: rationale, timeline, ring overrides, constraints, links, discussions, and freeform sections
+- **Ring overrides** — teams or verticals can hold a different ring than the org-wide default; displayed with a ◆ marker
+- **Two input modes** — single `radar.yaml` file or a `radar/` directory tree (one file per entry)
+- **Build-time validation** — invalid rings, missing hold reasons, unknown team/vertical references all abort the build with a clear error
+- **Docusaurus theme integration** — uses `--ifm-*` CSS variables so it inherits your site's colour scheme
+
+---
+
+## Installation
+
+> **Note:** The package is not yet published to npm. Once published, install with:
 
 ```bash
-bun install
-bun start
+npm install docusaurus-plugin-tech-radar
+# or
+bun add docusaurus-plugin-tech-radar
 ```
 
-Then open http://localhost:3000 and click **Tech Radar** in the navbar.
-
-`bun run build` produces a static site in `build/`.
-
-`bun run validate` checks your YAML without building — useful in CI.
-
-## What's in here
-
-```
-├── radar.yaml                              # ← Your radar definition
-├── docusaurus.config.js                    # ← Plugin wired up here (2 additions)
-├── docs/                                   # Normal Docusaurus docs
-├── src/pages/index.js                      # Homepage
-└── plugins/
-    └── docusaurus-plugin-tech-radar/       # ← The plugin
-        ├── package.json
-        └── src/
-            ├── index.js                    # Plugin entry (loadContent → addRoute)
-            ├── parser.js                   # YAML → JSON
-            ├── validator.js                # Build-time validation
-            └── theme/
-                ├── RadarLayout/            # 3-column layout (sidebar, content, TOC)
-                ├── RadarOverview/          # /radar
-                ├── RadarDiscipline/        # /radar/:discipline
-                └── RadarEntry/             # /radar/:discipline/:entry
-```
-
-## Pages created by the plugin
-
-| URL | What it shows |
-|---|---|
-| `/radar` | Overview — stats + all disciplines |
-| `/radar/backend` | Backend Engineering — quadrants + entry cards |
-| `/radar/backend/java` | Java — full detail with timeline, links, discussions |
-
-## Editing the radar
-
-Edit `radar.yaml` and the site hot-reloads. The plugin's `getPathsToWatch()` hook watches
-the YAML file (or all `*.yaml` in a directory if you use directory mode).
-
-## Directory mode
-
-To use one-file-per-entry, change the config:
+Until then, clone this repository and reference it directly:
 
 ```js
+// docusaurus.config.js
 plugins: [
-  ['./plugins/docusaurus-plugin-tech-radar', {
-    path: 'radar/',          // point to a directory
+  ['./path/to/docusaurus-plugin-tech-radar', {
+    path: 'radar.yaml',
     routeBasePath: 'radar',
   }],
 ],
 ```
 
-Then structure your `radar/` directory as:
+---
+
+## Configuration
+
+```js
+// docusaurus.config.js
+plugins: [
+  ['docusaurus-plugin-tech-radar', {
+    path: 'radar.yaml',      // path to your YAML file or directory (relative to siteDir)
+    routeBasePath: 'radar',  // URL prefix — default: 'radar'
+  }],
+],
+```
+
+Add a navbar link:
+
+```js
+themeConfig: {
+  navbar: {
+    items: [
+      { to: '/radar', label: 'Tech Radar', position: 'left' },
+    ],
+  },
+},
+```
+
+---
+
+## YAML format
+
+### Single-file mode
+
+A single `radar.yaml` with a top-level `radar:` key:
+
+```yaml
+radar:
+  meta:
+    title: Acme Engineering Technology Radar
+    version: 4
+    date: 2026-04-13
+    cadence: quarterly
+    changelog:
+      - version: 4
+        date: 2026-04-13
+        summary: Added data discipline.
+
+  config:
+    link-types:
+      url:
+        label: Website
+        icon-url: https://example.com/icons/link.svg
+      slack:
+        label: Slack
+        icon-url: https://example.com/icons/slack.svg
+        uri-pattern: "^#[a-z0-9_-]+"   # optional validation regex
+
+    teams:
+      platform:
+        label: Platform Engineering
+        description: Developer tooling, CI/CD, infrastructure.
+
+    verticals:
+      digital-commerce:
+        label: Digital Commerce
+        description: Online storefront and checkout.
+
+  disciplines:
+    backend:
+      meta:
+        label: Backend Engineering
+        description: Server-side languages and frameworks.
+        tags: [services, apis]
+        key-individuals:
+          - name: Sarah Chen
+            role: Tech Lead
+        links:
+          - type: slack
+            uri: "#backend-engineering"
+            label: Backend community
+
+      quadrants:
+        languages-and-frameworks:
+          meta:
+            label: Languages & Frameworks
+            description: Primary languages and their ecosystems.
+            guidance: Prefer JVM languages unless a compelling case exists.
+
+          entries:
+            java:
+              label: Java
+              ring: adopt              # adopt | trial | assess | hold
+              timeline:
+                assess: 2023-Q4
+                trial: 2024-Q1
+                adopt: 2024-Q3
+              description: Core backend language.
+              rationale: Mature ecosystem, strong hiring pipeline.
+              licence: GPL-2.0 WITH Classpath-exception-2.0
+              compliance:
+                frameworks: [SOC2]
+                notes: PII fields require encryption.
+              teams: [platform]
+              verticals: [digital-commerce]
+              tags: [jvm, core]
+              constraints:
+                min_version: "21"
+              links:
+                - type: url
+                  uri: https://openjdk.org
+                  label: OpenJDK
+              discussions:
+                - type: rfc
+                  title: Java as primary backend language
+                  link:
+                    type: confluence
+                    uri: /spaces/ENG/pages/10234
+              sections:
+                getting-started: |
+                  Use the eng-bootstrap CLI to scaffold a new Java service.
+              ring-overrides:
+                teams:
+                  platform:
+                    ring: hold
+                    reason: Platform is migrating to Kotlin.
+                verticals:
+                  digital-commerce:
+                    ring: trial
+                    reason: Evaluating Go for edge services.
+```
+
+**Hold entries** must include `hold_reason`. Optionally add `sunset_date` and `migration_target`:
+
+```yaml
+dynamodb:
+  label: DynamoDB
+  ring: hold
+  hold_reason: Cost unpredictability and hot partition issues.
+  sunset_date: 2027-Q1
+  migration_target: postgresql
+```
+
+### Directory mode
+
+Split the radar across individual files. Useful for large radars or teams that want per-entry pull requests.
 
 ```
 radar/
-├── radar.yaml                       # meta + config
+├── radar.yaml                                # meta + config (with radar: wrapper)
 └── disciplines/
     └── backend/
-        ├── _meta.yaml
+        ├── _meta.yaml                        # discipline meta
         └── languages-and-frameworks/
-            ├── _meta.yaml
-            ├── java.yaml
+            ├── _meta.yaml                    # quadrant meta
+            ├── java.yaml                     # entry (fields directly, no wrapper)
             └── kotlin.yaml
 ```
+
+`radar/radar.yaml` contains the same `meta:` and `config:` sections as the single-file format, wrapped in `radar:`. Discipline and quadrant `_meta.yaml` files contain just their meta fields directly. Entry files contain just the entry fields directly.
+
+Configure the plugin to point at the directory:
+
+```js
+plugins: [
+  ['docusaurus-plugin-tech-radar', { path: 'radar/', routeBasePath: 'radar' }],
+],
+```
+
+---
+
+## Ring system
+
+Four rings, in order of maturity:
+
+| Ring | Meaning |
+|------|---------|
+| `adopt` | Proven, recommended for all new work |
+| `trial` | Worth pursuing — active pilot in progress |
+| `assess` | Worth exploring — spike or proof-of-concept |
+| `hold` | Pause new investment; migrate existing usage |
+
+### Ring overrides
+
+An entry has one org-wide `ring`. Teams and verticals can override it independently:
+
+```yaml
+ring-overrides:
+  teams:
+    payments:
+      ring: hold
+      reason: Payments is migrating away from this technology.
+  verticals:
+    retail-operations:
+      ring: assess
+      reason: Evaluating a lighter-weight alternative for in-store systems.
+```
+
+Overridden entries show a ◆ marker in both the SVG viz and entry cards. Team overrides take priority over vertical overrides when both filters are active simultaneously.
+
+---
+
+## Validation
+
+The plugin validates your YAML at build time and provides a standalone CLI:
+
+```bash
+# Validate without building
+node validate.js radar.yaml
+node validate.js radar/
+
+# From a sample directory
+bun run validate
+```
+
+Validation checks:
+- All `ring` values are `adopt`, `trial`, `assess`, or `hold`
+- `hold` entries have a `hold_reason`
+- All referenced `teams`, `verticals`, and link `type` keys exist in `config`
+- Ring override values are valid ring names
+
+Errors abort the build. Warnings print and continue.
+
+---
+
+## Development
+
+```bash
+# Install plugin dependencies
+bun install
+
+# Run unit tests
+bun run test
+
+# Try a sample (single-file mode)
+cd samples/uber-yaml && bun install && bun run validate && bun run build
+
+# Try a sample (directory mode)
+cd samples/dir-tree  && bun install && bun run validate && bun run build
+```
+
+### Repository structure
+
+```
+/                        ← plugin source (the publishable package)
+  src/
+    index.js             ← Docusaurus plugin entry (CJS)
+    parser.js            ← YAML → radar object
+    validator.js         ← validation rules
+    theme/               ← React components (ESM)
+      RadarLayout/       ← three-column shell + sidebar
+      RadarComponents/   ← shared atoms: rings, filters, cards, SVG viz
+      RadarOverview/     ← /radar overview page
+      RadarDiscipline/   ← /radar/:disc discipline page
+      RadarEntry/        ← /radar/:disc/:entry detail page
+  tests/                 ← unit tests (Bun)
+  validate.js            ← standalone CLI validator
+
+samples/
+  uber-yaml/             ← single-file YAML demo
+  dir-tree/              ← directory-mode demo
+```
+
+---
+
+## Pages created by the plugin
+
+| URL | Page |
+|-----|------|
+| `/radar` | Overview — ring stats, all entries, changelog |
+| `/radar/:discipline` | Discipline — SVG radar + entry cards per quadrant |
+| `/radar/:discipline/:entry` | Entry — full detail (rationale, timeline, overrides, links) |
+
+---
+
+## License
+
+MIT

@@ -57,9 +57,12 @@ function SidebarCategory({ item }) {
             {item.label}
           </Link>
         ) : (
-          <span className="radar-sidebar-link radar-sidebar-category-label">
+          <button
+            className="radar-sidebar-link radar-sidebar-category-label radar-sidebar-category-label--toggle"
+            onClick={() => setOpen(!open)}
+          >
             {item.label}
-          </span>
+          </button>
         )}
         <button
           className={`radar-sidebar-toggle ${open ? 'radar-sidebar-toggle--open' : ''}`}
