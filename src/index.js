@@ -10,7 +10,18 @@ module.exports = function pluginTechRadar(context, options) {
     routeBasePath = 'radar',
   } = options;
 
+  const { baseUrl } = context.siteConfig;
   const resolvedPath = path.resolve(context.siteDir, radarPath);
+
+  // Build absolute route paths that include baseUrl.
+  // Docusaurus's Link component prepends baseUrl to all href props, so addRoute
+  // paths must include it too or the broken-links checker reports mismatches.
+  function routePath(...parts) {
+    const segments = [baseUrl, routeBasePath, ...parts]
+      .map(p => String(p).replace(/^\/+|\/+$/g, ''))
+      .filter(Boolean);
+    return segments.length ? '/' + segments.join('/') : '/';
+  }
 
   return {
     name: 'docusaurus-plugin-tech-radar',
@@ -55,7 +66,7 @@ module.exports = function pluginTechRadar(context, options) {
 
       // Overview route
       addRoute({
-        path: `/${routeBasePath}`,
+        path: routePath(),
         component: '@theme/RadarOverview',
         modules: { radar: dataPath, sidebar: sidebarPath },
         exact: true,
@@ -70,7 +81,7 @@ module.exports = function pluginTechRadar(context, options) {
         );
 
         addRoute({
-          path: `/${routeBasePath}/${discSlug}`,
+          path: routePath(discSlug),
           component: '@theme/RadarDiscipline',
           modules: { radar: dataPath, discData: discData, sidebar: sidebarPath },
           exact: true,
@@ -92,7 +103,7 @@ module.exports = function pluginTechRadar(context, options) {
             );
 
             addRoute({
-              path: `/${routeBasePath}/${discSlug}/${entrySlug}`,
+              path: routePath(discSlug, entrySlug),
               component: '@theme/RadarEntry',
               modules: { radar: dataPath, entryData: entryData, sidebar: sidebarPath },
               exact: true,
