@@ -847,6 +847,121 @@
 .radar-ring-text--assess { color: var(--radar-assess); }
 .radar-ring-text--hold { color: var(--radar-hold); }
 
+/* ── Entry card subtitle (overview page) ────────────────────── */
+
+.radar-entry-card-subtitle {
+  font-size: 0.72rem;
+  color: var(--ifm-font-color-secondary);
+  margin-top: 0.15rem;
+}
+
+/* ── Entry detail page ───────────────────────────────────────── */
+
+.radar-breadcrumb {
+  font-size: 0.82rem;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-font-color-secondary);
+}
+
+.radar-entry-title {
+  margin-bottom: 0.3rem;
+}
+
+.radar-entry-ring-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.radar-entry-ring-orgwide {
+  margin-left: 0.3rem;
+  opacity: 0.7;
+}
+
+.radar-entry-licence {
+  font-size: 0.78rem;
+  color: var(--ifm-font-color-secondary);
+}
+
+.radar-entry-description {
+  font-size: 1rem;
+  color: var(--ifm-font-color-secondary);
+  line-height: 1.6;
+}
+
+.radar-overrides-intro {
+  font-size: 0.88rem;
+  color: var(--ifm-font-color-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.radar-entry-detail-tags {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.radar-section-pre {
+  white-space: pre-wrap;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Smaller badge variant used inside discussion link refs */
+.radar-link-type-badge--sm {
+  font-size: 0.55rem;
+}
+
+/* ── Discipline page ─────────────────────────────────────────── */
+
+.radar-disc-description {
+  color: var(--ifm-font-color-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.radar-disc-tags {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.radar-quadrant-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.radar-quadrant-link-item {
+  font-size: 0.78rem;
+  color: var(--ifm-font-color-secondary);
+}
+
+/* ── Overview page ───────────────────────────────────────────── */
+
+.radar-overview-meta {
+  color: var(--ifm-font-color-secondary);
+}
+
+/* ── Changelog (overview page) ───────────────────────────────── */
+
+.radar-changelog-item {
+  margin-bottom: 1rem;
+}
+
+.radar-changelog-summary {
+  color: var(--ifm-font-color-secondary);
+  margin: 0.2rem 0 0;
+}
+
 /* ── Responsive ──────────────────────────────────────────────── */
 
 @media (max-width: 996px) {
