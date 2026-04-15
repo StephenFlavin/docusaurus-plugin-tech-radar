@@ -161,18 +161,32 @@ Plugin Node code (`src/index.js`, `src/parser.js`, `src/validator.js`) is CJS. T
 - **Styling lives in `radar.css`.** Components apply class names; no inline `style` objects for anything structural.
 - **`routeBasePath` flows through data, not constants.** Components read `radar.routeBasePath` — never hardcode `/radar`.
 
+## Testing
+
+Unit tests (`tests/parser.test.js`, `tests/validator.test.js`) cover:
+
+- **Parser**: single-file parsing, directory parsing, both happy paths and missing-`radar:`-key / missing-root-`_meta.yaml` failures; meta-label fallback to `slugToLabel()` when a discipline or quadrant has no `_meta.yaml`; mixed `.yaml` / `.yml` entry files; entries prefixed with `_` are skipped.
+- **Validator**: ring, team, vertical, link-type, hold-reason, timeline, and team/vertical ring-override rules, plus structural edge cases (no disciplines, discipline without quadrants, quadrant without entries, radar with no `config`) and multi-entry / multi-timeline error accumulation. Error-path shape (`disc.quad.entry[.field]`) is asserted to keep it stable for tooling.
+
+Fixtures live in `tests/fixtures/`:
+
+- `valid-single.yaml`, `no-radar-key.yaml` — single-file mode cases.
+- `valid-dir/` — happy-path directory mode with all `_meta.yaml` files present.
+- `dir-no-root-yaml/` — missing-root-meta failure case.
+- `dir-meta-fallbacks/` — discipline and quadrant without `_meta.yaml`, plus a `.yml` entry and a `_`-prefixed entry that must be skipped.
+
+What is **not** unit-tested and intentionally left to the sample sites (`samples/uber-yaml`, `samples/dir-tree`):
+
+- Theme components (no DOM harness configured).
+- `src/index.js` Docusaurus plugin wiring (route registration, `createData`, `getPathsToWatch`).
+- `validate.js` CLI behaviour (argv handling, `docusaurus.config.js` discovery).
+
+Running the two sample `bun run build`s and `bun run validate`s is the integration gate for those.
+
 ## Follow-ups
 
-The code is in a good place. The items below are small cleanliness nits worth
-picking up opportunistically — not blockers.
-
-1. **Residual array-index key in `RadarDiscipline`.** `src/theme/RadarDiscipline/index.js` still uses `key={i}` when rendering `quad.meta.links`. Every other list in the codebase now keys on a stable field; switch this to `key={l.uri}` (or a composite if `uri` can repeat) for consistency with the convention above.
-
-2. **Inline link-type lookup in `RadarEntry`.** `src/theme/RadarEntry/index.js` builds `const lt = config['link-types'] || {}` and does `lt[l.type]?.label || l.type` inline in two places. `RadarDiscipline` uses the shared `linkTypeLabel()` helper — `RadarEntry` should too, so there's one source of truth.
-
-3. **Placeholder tests in `parser.test.js`.** The "falls back to slug-derived label…" test and the `slugToLabel (via directory parsing)` describe block document intent but don't actually exercise the fallback path. Either add a fixture with a missing discipline/quadrant `_meta.yaml` and assert `slugToLabel()`'s output, or export `slugToLabel` from `parser.js` and unit-test it directly.
-
-4. **Silent `catch {}` in `validate.js`.** The `docusaurus.config.js` auto-detect swallows every error. That's fine when the file simply doesn't exist, but it also hides real bugs (e.g. a syntax error in a user's config). Narrow it to `ENOENT` / `MODULE_NOT_FOUND` and surface a hint for anything else.
+None open — previous items have been addressed. Add new entries here when
+review surfaces fresh cleanliness nits.
 
 ## Resolved refactors (history)
 
@@ -184,4 +198,7 @@ Documented for context on past decisions — all fixed in the current tree.
 4. **`useRadarFilters` recomputed usage counts every render.** Wrapped in `React.useMemo` keyed on `allEntries`.
 5. **Inline styles moved to `radar.css`.**
 6. **`entryData` duplicated `config`.** Removed; components read it from `radar.config`.
-7. **Array-index `key` props.** Replaced with stable domain keys everywhere except the `RadarDiscipline` quadrant-links list (see Follow-ups #1).
+7. **Array-index `key` props.** Replaced with stable domain keys everywhere, including `RadarDiscipline`'s quadrant-links list.
+8. **Inline link-type lookup.** Every callsite now uses the shared `linkTypeLabel(config, type)` helper from `RadarComponents/links.js`.
+9. **Silent `catch {}` in `validate.js`.** Now narrowed to `ENOENT` / `MODULE_NOT_FOUND`; real config errors surface as a warning rather than being swallowed.
+10. **Placeholder parser tests.** Replaced with fixtures that actually exercise the `slugToLabel()` fallback, mixed `.yaml`/`.yml` entry extensions, and `_`-prefixed entry exclusion.

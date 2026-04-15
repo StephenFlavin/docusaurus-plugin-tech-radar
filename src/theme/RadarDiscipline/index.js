@@ -88,8 +88,8 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
             )}
             {quad.meta.links && quad.meta.links.length > 0 && (
               <div className="radar-quadrant-links">
-                {quad.meta.links.map((l, i) => (
-                  <span key={i} className="radar-quadrant-link-item">
+                {quad.meta.links.map(l => (
+                  <span key={l.uri} className="radar-quadrant-link-item">
                     <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
                     {' '}{l.label || l.uri}
                   </span>

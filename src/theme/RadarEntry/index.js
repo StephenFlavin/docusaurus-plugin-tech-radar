@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
 import RadarLayout from '@theme/RadarLayout';
+import { linkTypeLabel } from '@theme/RadarComponents';
 
 // NOTE: slugToLabel is also defined in src/parser.js (CJS).
 // The CJS/ESM boundary prevents sharing one file; both copies are intentional.
@@ -11,7 +12,6 @@ function slugToLabel(slug) {
 export default function RadarEntry({ radar, entryData, sidebar }) {
   const { slug, entry, discSlug, discLabel, quadSlug, quadLabel } = entryData;
   const config = radar.config;
-  const lt = config['link-types'] || {};
 
   const ki = entry['key-individuals'] || [];
   const links = entry.links || [];
@@ -198,7 +198,7 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
           <div className="radar-link-list">
             {links.map(l => (
               <div key={l.uri} className="radar-link-item">
-                <span className="radar-link-type-badge">{lt[l.type]?.label || l.type}</span>
+                <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
                 <span className="radar-link-label">{l.label || l.uri}</span>
                 <span className="radar-link-uri">{l.uri}</span>
               </div>
@@ -220,7 +220,7 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
                   {d.link && (
                     <div className="radar-discussion-link-ref">
                       <span className="radar-link-type-badge radar-link-type-badge--sm">
-                        {lt[d.link.type]?.label || d.link.type}
+                        {linkTypeLabel(config, d.link.type)}
                       </span>
                       {' '}{d.link.uri}
                     </div>
