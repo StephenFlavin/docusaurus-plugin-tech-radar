@@ -37,10 +37,10 @@ describe('parseRadar - directory mode', () => {
     expect(radar.disciplines.backend.quadrants.languages.meta.label).toBe('Languages');
   });
 
-  test('throws when root radar.yaml is missing', () => {
+  test('throws when root _meta.yaml is missing', () => {
     expect(() =>
       parseRadar(path.join(fixtures, 'dir-no-root-yaml'))
-    ).toThrow('Directory mode requires radar.yaml');
+    ).toThrow('Directory mode requires _meta.yaml');
   });
 
   test('falls back to slug-derived label when _meta.yaml is absent', () => {

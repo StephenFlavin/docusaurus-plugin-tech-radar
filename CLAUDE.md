@@ -21,8 +21,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   package.json
 
 samples/
-  uber-yaml/                   ← single-file YAML demo (radar.yaml)
-  dir-tree/                    ← directory-mode demo (radar/)
+  uber-yaml/                   ← single-file YAML demo (tech-radar.yaml)
+  dir-tree/                    ← directory-mode demo (tech-radar/)
 ```
 
 ## Commands
@@ -33,14 +33,14 @@ bun install          # Install plugin dependencies
 bun run test         # Run unit tests (parser + validator)
 
 # Validate a sample directly
-node validate.js samples/uber-yaml/radar.yaml
-node validate.js samples/dir-tree/radar/
+node validate.js samples/uber-yaml/tech-radar.yaml
+node validate.js samples/dir-tree/tech-radar/
 
 # Samples (run from the sample directory)
 cd samples/uber-yaml && bun install && bun run build
 cd samples/dir-tree  && bun install && bun run build
 
-# Validate from within a sample
+# Validate from within a sample (auto-detects tech-radar.yaml or tech-radar/)
 cd samples/uber-yaml && bun run validate
 cd samples/dir-tree  && bun run validate
 ```
@@ -121,10 +121,10 @@ Entries have an org-wide `ring`. Teams and verticals can override it via `ring-o
 ### Input modes
 
 The plugin accepts either:
-- **Single file** (`radar.yaml`): top-level `radar:` key containing the full radar.
-- **Directory** (`radar/`): `radar.yaml` at the root for meta/config, disciplines as subdirectories. Each discipline and quadrant has a `_meta.yaml`; each entry is its own YAML file named `<entrySlug>.yaml`.
+- **Single file** (`tech-radar.yaml`): top-level `radar:` key containing the full radar.
+- **Directory** (`tech-radar/`): `_meta.yaml` at the directory root for meta/config (flat — `meta:` and `config:` as top-level keys, no `radar:` wrapper). Disciplines as subdirectories; each discipline and quadrant has a `_meta.yaml`; each entry is its own YAML file named `<entrySlug>.yaml`.
 
-The mode is detected automatically by `parser.js` based on whether the path is a file or directory.
+The mode is detected automatically by `parser.js` based on whether the path is a file or directory. The `path` plugin option is optional — if omitted, `index.js` auto-detects `tech-radar.yaml` then `tech-radar/` in `siteDir`.
 
 ### Validation
 

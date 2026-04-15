@@ -96,6 +96,15 @@
   cursor: pointer;
 }
 
+.radar-sidebar-category-label--toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  font-size: inherit;
+  color: inherit;
+}
+
 .radar-sidebar-toggle {
   background: none;
   border: none;

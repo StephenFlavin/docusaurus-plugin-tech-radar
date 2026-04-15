@@ -36,7 +36,6 @@ const config = {
   // ━━━ This is the only bit you need to add ━━━
   plugins: [
     ['../..', {
-      path: 'radar.yaml',
       routeBasePath: 'radar',
     }],
   ],
