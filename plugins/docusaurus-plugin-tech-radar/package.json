@@ -19,6 +19,9 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
+  "scripts": {
+    "test": "bun test tests/"
+  },
   "dependencies": {
     "js-yaml": "^4.1.0"
   }

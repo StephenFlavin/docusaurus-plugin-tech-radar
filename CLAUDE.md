@@ -8,6 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 bun install          # Install dependencies
 bun start            # Dev server with hot-reload (watches YAML changes too)
 bun run build        # Production static build → build/
+bun run test         # Run unit tests (parser + validator)
 bun run validate     # Validate radar.yaml without a full build (reads path from docusaurus.config.js)
 bun run clear        # Clear Docusaurus cache
 
@@ -16,7 +17,7 @@ node plugins/docusaurus-plugin-tech-radar/validate.js radar.yaml
 node plugins/docusaurus-plugin-tech-radar/validate.js radar/
 ```
 
-There is no test suite yet. `bun run validate` is the main correctness check.
+Unit tests live in `plugins/docusaurus-plugin-tech-radar/tests/` and use Bun's built-in test runner. `bun run validate` is the integration-level correctness check against the actual `radar.yaml`.
 
 ## Architecture
 

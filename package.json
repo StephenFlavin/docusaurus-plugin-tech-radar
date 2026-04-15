@@ -6,6 +6,7 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "clear": "docusaurus clear",
+    "test": "bun test plugins/docusaurus-plugin-tech-radar/tests/",
     "validate": "node plugins/docusaurus-plugin-tech-radar/validate.js"
   },
   "dependencies": {
