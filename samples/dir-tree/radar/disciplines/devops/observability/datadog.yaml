@@ -1,0 +1,22 @@
+label: Datadog
+ring: adopt
+timeline:
+  adopt: 2024-Q1
+description: Primary observability platform.
+rationale: >
+  Unified metrics, traces, and logs with strong alerting.
+licence: Proprietary
+compliance:
+  frameworks: [SOC2]
+teams: [platform, payments, inventory, auth, search]
+tags: [monitoring, alerting, core]
+links:
+  - type: url
+    uri: https://datadoghq.com
+    label: Datadog
+  - type: confluence
+    uri: /spaces/PLAT/pages/30100
+    label: Datadog tagging standards
+  - type: slack
+    uri: "#observability"
+    label: Observability channel

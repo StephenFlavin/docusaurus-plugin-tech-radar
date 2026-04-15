@@ -1,0 +1,19 @@
+label: Terraform
+ring: adopt
+timeline:
+  adopt: 2024-Q1
+description: Infrastructure provisioning for AWS.
+rationale: >
+  Mature, well-understood, strong module ecosystem.
+licence: BSL-1.1
+teams: [platform]
+tags: [iac, core]
+constraints:
+  min_version: "1.7"
+links:
+  - type: url
+    uri: https://terraform.io
+    label: Terraform
+  - type: github
+    uri: https://github.com/acme-corp/terraform-modules
+    label: Internal modules

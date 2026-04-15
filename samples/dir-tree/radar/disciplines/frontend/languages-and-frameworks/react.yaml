@@ -1,0 +1,31 @@
+label: React
+ring: adopt
+timeline:
+  adopt: 2024-Q1
+description: Primary UI framework.
+rationale: >
+  Large ecosystem, strong hiring pipeline,
+  well-integrated with our design system.
+licence: MIT
+teams: [web, search]
+verticals: [digital-commerce, retail-operations]
+tags: [ui, core]
+ring-overrides:
+  verticals:
+    retail-operations:
+      ring: hold
+      reason: >
+        POS terminals use a native embedded UI.
+        React is not suitable for in-store kiosk hardware.
+constraints:
+  min_version: "19"
+links:
+  - type: url
+    uri: https://react.dev
+    label: React
+  - type: confluence
+    uri: /spaces/FE/pages/10100
+    label: React conventions
+  - type: slack
+    uri: "#frontend-react"
+    label: React channel

@@ -1,0 +1,20 @@
+label: Backend Engineering
+description: >
+  Server-side languages, frameworks, data stores,
+  and patterns powering our service layer.
+key-individuals:
+  - name: Sarah Chen
+    role: Tech Lead
+  - name: James Okafor
+    role: Principal Engineer
+tags: [services, apis, jvm]
+links:
+  - type: slack
+    uri: "#backend-engineering"
+    label: Backend community
+  - type: confluence
+    uri: /spaces/ENG/pages/00001
+    label: Backend engineering hub
+  - type: url
+    uri: https://wiki.acme.internal/backend-onboarding
+    label: Onboarding guide

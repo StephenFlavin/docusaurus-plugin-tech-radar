@@ -1,0 +1,18 @@
+label: GitHub Actions
+ring: adopt
+timeline:
+  adopt: 2024-Q2
+description: CI platform for build, test, and release.
+rationale: >
+  Tight GitHub integration, reusable workflows,
+  large marketplace.
+licence: Proprietary (GitHub)
+teams: [platform, payments, inventory, auth, search, web, mobile]
+tags: [ci, automation, core]
+links:
+  - type: github
+    uri: https://github.com/acme-corp/.github
+    label: Shared workflows
+  - type: confluence
+    uri: /spaces/PLAT/pages/20100
+    label: Workflow authoring guide

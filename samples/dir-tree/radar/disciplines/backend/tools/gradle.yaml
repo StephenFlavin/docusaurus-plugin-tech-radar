@@ -1,0 +1,19 @@
+label: Gradle
+ring: adopt
+timeline:
+  adopt: 2024-Q1
+description: Build tool for all JVM projects.
+rationale: >
+  Flexible build system with strong dependency management.
+licence: Apache-2.0
+teams: [payments, inventory, auth, search]
+tags: [build, jvm]
+constraints:
+  min_version: "8.5"
+links:
+  - type: url
+    uri: https://gradle.org
+    label: Gradle
+  - type: confluence
+    uri: /spaces/ENG/pages/70100
+    label: Gradle conventions

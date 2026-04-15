@@ -1,0 +1,71 @@
+label: Java
+ring: adopt
+timeline:
+  assess: 2023-Q4
+  trial: 2024-Q1
+  adopt: 2024-Q3
+description: Core backend language across services.
+rationale: >
+  Mature ecosystem, strong hiring pipeline,
+  well-understood operationally.
+licence: GPL-2.0 WITH Classpath-exception-2.0
+compliance:
+  frameworks: [SOC2]
+teams: [payments, inventory, auth]
+verticals: [supply-chain, digital-commerce, retail-operations]
+tags: [jvm, core]
+ring-overrides:
+  teams:
+    payments:
+      ring: hold
+      reason: >
+        Payments is migrating to Kotlin for all new
+        microservices. No new Java services after 2026-Q2.
+  verticals:
+    retail-operations:
+      ring: trial
+      reason: >
+        POS team evaluating Go as an alternative for
+        latency-critical in-store services.
+constraints:
+  min_version: "21"
+  approved_distributions:
+    - Eclipse Temurin
+    - Amazon Corretto
+links:
+  - type: url
+    uri: https://openjdk.org
+    label: OpenJDK
+  - type: confluence
+    uri: /spaces/ENG/pages/10500
+    label: Internal standards
+  - type: slack
+    uri: "#backend-java"
+    label: Java support channel
+discussions:
+  - type: rfc
+    title: Java as primary backend language
+    link:
+      type: confluence
+      uri: /spaces/ENG/pages/10234
+  - type: meeting
+    title: Language selection review
+    date: 2024-Q1
+    link:
+      type: recording
+      uri: https://recordings.acme.internal/mtg-8821
+sections:
+  getting-started: |
+    Use the `eng-bootstrap` CLI to scaffold a new Java service:
+
+    ```
+    eng-bootstrap new --lang java --template service
+    ```
+
+    This gives you a Gradle project with our standard
+    dependency versions and CI config pre-wired.
+  migration-notes: |
+    Teams moving from Java 17 should review the
+    [Virtual Threads guide](/spaces/ENG/pages/10600)
+    before upgrading. Key breaking changes around
+    `synchronized` blocks and thread-local usage.

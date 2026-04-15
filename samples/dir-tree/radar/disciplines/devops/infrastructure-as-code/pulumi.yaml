@@ -1,0 +1,24 @@
+label: Pulumi
+ring: assess
+timeline:
+  assess: 2026-Q2
+description: IaC using general-purpose languages.
+rationale: >
+  Enables TypeScript/Python for infrastructure,
+  reducing context-switching for application teams.
+licence: Apache-2.0
+teams: [platform]
+tags: [iac, modern]
+key-individuals:
+  - name: Alex Kim
+    role: Evaluator
+links:
+  - type: url
+    uri: https://pulumi.com
+    label: Pulumi
+discussions:
+  - type: proposal
+    title: Pulumi for application-owned infra
+    link:
+      type: confluence
+      uri: /spaces/PLAT/pages/40100

@@ -1,0 +1,23 @@
+label: Redis
+ring: trial
+timeline:
+  assess: 2025-Q1
+  trial: 2025-Q3
+description: In-memory cache and session store.
+rationale: >
+  Sub-millisecond reads for hot-path caching.
+  Evaluating as a session store replacement.
+licence: RSALv2 / SSPLv1 (post 7.4), BSD-3 (forks)
+teams: [auth, search]
+tags: [caching, sessions]
+constraints:
+  hosting: AWS ElastiCache
+links:
+  - type: url
+    uri: https://redis.io
+    label: Redis
+sections:
+  licence-note: |
+    Redis changed licensing in 2024. We are tracking
+    Valkey as a potential BSD-licensed alternative.
+    See the [licence review thread](#redis-licence-review).

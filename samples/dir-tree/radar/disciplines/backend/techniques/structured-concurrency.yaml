@@ -1,0 +1,17 @@
+label: Structured Concurrency
+ring: trial
+timeline:
+  assess: 2025-Q3
+  trial: 2026-Q1
+description: Managing concurrent tasks as a single unit of work.
+rationale: >
+  Reduces leaked threads and simplifies error
+  handling in concurrent code.
+teams: [payments, platform]
+tags: [concurrency, reliability]
+discussions:
+  - type: rfc
+    title: Structured concurrency with Java 21
+    link:
+      type: confluence
+      uri: /spaces/ENG/pages/60100

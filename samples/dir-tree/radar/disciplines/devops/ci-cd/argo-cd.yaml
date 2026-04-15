@@ -1,0 +1,24 @@
+label: Argo CD
+ring: trial
+timeline:
+  assess: 2025-Q3
+  trial: 2026-Q1
+description: GitOps-based continuous delivery for Kubernetes.
+rationale: >
+  Declarative deployments with drift detection.
+licence: Apache-2.0
+teams: [platform, payments]
+tags: [cd, gitops]
+links:
+  - type: url
+    uri: https://argoproj.github.io/cd
+    label: Argo CD
+  - type: slack
+    uri: "#argo-cd"
+    label: Argo CD channel
+discussions:
+  - type: rfc
+    title: GitOps deployment model
+    link:
+      type: confluence
+      uri: /spaces/PLAT/pages/20200

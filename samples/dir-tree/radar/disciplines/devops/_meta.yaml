@@ -1,0 +1,20 @@
+label: DevOps & Platform
+description: >
+  CI/CD, infrastructure, observability, and
+  operational tooling.
+key-individuals:
+  - name: Alex Kim
+    role: Platform Lead
+  - name: Dana Reyes
+    role: SRE Manager
+tags: [infrastructure, reliability]
+links:
+  - type: slack
+    uri: "#platform-engineering"
+    label: Platform engineering channel
+  - type: confluence
+    uri: /spaces/PLAT/pages/00001
+    label: Platform hub
+  - type: url
+    uri: https://wiki.acme.internal/on-call
+    label: On-call handbook

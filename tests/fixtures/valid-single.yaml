@@ -1,0 +1,35 @@
+radar:
+  meta:
+    title: Test Radar
+    version: 1
+    date: 2026-01-01
+  config:
+    link-types:
+      url:
+        label: Website
+    teams:
+      team-a:
+        label: Team A
+    verticals:
+      vert-a:
+        label: Vert A
+  disciplines:
+    engineering:
+      meta:
+        label: Engineering
+      quadrants:
+        tools:
+          meta:
+            label: Tools
+          entries:
+            my-tool:
+              label: My Tool
+              ring: adopt
+              teams: [team-a]
+              verticals: [vert-a]
+              links:
+                - type: url
+                  uri: https://example.com
+              timeline:
+                assess: 2025-Q4
+                adopt: 2026-Q1

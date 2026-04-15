@@ -1,0 +1,5 @@
+label: Techniques
+description: Architectural patterns, design approaches, and engineering practices.
+guidance: >
+  New patterns should be validated with a spike
+  or proof-of-concept before broader adoption.

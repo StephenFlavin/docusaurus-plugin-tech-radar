@@ -1,0 +1,20 @@
+label: Acme Design System
+ring: adopt
+timeline:
+  adopt: 2025-Q1
+description: Internal component library and design tokens.
+rationale: >
+  Consistency across products, accessibility built in.
+licence: Proprietary (internal)
+teams: [web, mobile]
+tags: [design, components, core]
+links:
+  - type: github
+    uri: https://github.com/acme-corp/design-system
+    label: Source repo
+  - type: url
+    uri: https://ds.acme.internal
+    label: Storybook
+  - type: slack
+    uri: "#design-system"
+    label: Design system channel

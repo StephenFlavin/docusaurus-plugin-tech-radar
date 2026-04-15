@@ -1,0 +1,9 @@
+label: Infrastructure as Code
+description: Provisioning and managing cloud resources declaratively.
+guidance: >
+  Terraform is the default. All infrastructure changes
+  go through code review and plan approval.
+links:
+  - type: confluence
+    uri: /spaces/PLAT/pages/40000
+    label: IaC standards
