@@ -6,8 +6,8 @@ const config = {
   tagline: 'Developer Portal',
   favicon: 'img/favicon.ico',
 
-  url: 'https://engineering.acme.internal',
-  baseUrl: '/',
+  url: 'https://stephenflavin.github.io',
+  baseUrl: '/docusaurus-tech-radar/',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
