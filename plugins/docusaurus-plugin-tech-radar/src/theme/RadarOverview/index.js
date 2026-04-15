@@ -34,15 +34,19 @@ export default function RadarOverview({ radar, sidebar }) {
   return (
     <RadarLayout sidebar={sidebar} toc={toc} title="Tech Radar" description={radar.meta.title}>
       <h1>{radar.meta.title}</h1>
-      <p style={{ color: 'var(--ifm-font-color-secondary)' }}>
+      <p className="radar-overview-meta">
         Version {radar.meta.version} · {radar.meta.date}
         {radar.meta.cadence && <> · Reviewed {radar.meta.cadence}</>}
       </p>
 
       <div id="rings">
-        <RingStats entries={allEntries}
-          teamFilter={filters.teamFilter} verticalFilter={filters.verticalFilter}
-          ringFilter={filters.ringFilter} setRingFilter={filters.setRingFilter} />
+        <RingStats
+          entries={allEntries}
+          teamFilter={filters.teamFilter}
+          verticalFilter={filters.verticalFilter}
+          ringFilter={filters.ringFilter}
+          setRingFilter={filters.setRingFilter}
+        />
       </div>
 
       <FilterBar filters={filters} config={radar.config} />
@@ -53,12 +57,15 @@ export default function RadarOverview({ radar, sidebar }) {
         </div>
         <div className="radar-entry-grid">
           {sorted.map(e => (
-            <EntryCard key={`${e.discSlug}-${e.slug}`}
+            <EntryCard
+              key={`${e.discSlug}-${e.slug}`}
               entry={e} slug={e.slug} discSlug={e.discSlug}
+              routeBasePath={radar.routeBasePath}
               subtitle={`${e.discLabel} › ${e.quadLabel}`}
               config={radar.config}
               teamFilter={filters.teamFilter}
-              verticalFilter={filters.verticalFilter} />
+              verticalFilter={filters.verticalFilter}
+            />
           ))}
         </div>
       </div>
@@ -67,11 +74,9 @@ export default function RadarOverview({ radar, sidebar }) {
         <div className="radar-detail-section" id="changelog">
           <h2>Changelog</h2>
           {radar.meta.changelog.map(c => (
-            <div key={c.version} style={{ marginBottom: '1rem' }}>
+            <div key={c.version} className="radar-changelog-item">
               <strong>v{c.version}</strong> — {c.date}
-              <p style={{ color: 'var(--ifm-font-color-secondary)', margin: '0.2rem 0 0' }}>
-                {c.summary}
-              </p>
+              <p className="radar-changelog-summary">{c.summary}</p>
             </div>
           ))}
         </div>

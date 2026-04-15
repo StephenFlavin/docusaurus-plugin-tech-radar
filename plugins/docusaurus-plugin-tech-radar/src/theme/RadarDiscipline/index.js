@@ -6,7 +6,8 @@ import {
 } from '@theme/RadarComponents';
 
 export default function RadarDiscipline({ radar, discData, sidebar }) {
-  const { slug: discSlug, discipline: disc, config } = discData;
+  const { slug: discSlug, discipline: disc } = discData;
+  const config = radar.config;
   const ki = disc.meta['key-individuals'] || [];
   const links = disc.meta.links || [];
 
@@ -30,18 +31,15 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
   ];
 
   return (
-    <RadarLayout sidebar={sidebar} toc={toc}
-      title={disc.meta.label} description={disc.meta.description}>
-
+    <RadarLayout sidebar={sidebar} toc={toc} title={disc.meta.label} description={disc.meta.description}>
       <h1>{disc.meta.label}</h1>
+
       {disc.meta.description && (
-        <p style={{ color: 'var(--ifm-font-color-secondary)', fontSize: '1rem', lineHeight: 1.6 }}>
-          {disc.meta.description}
-        </p>
+        <p className="radar-disc-description">{disc.meta.description}</p>
       )}
 
       {disc.meta.tags && disc.meta.tags.length > 0 && (
-        <div style={{ marginBottom: '1rem', display: 'flex', gap: '0.3rem', flexWrap: 'wrap' }}>
+        <div className="radar-disc-tags">
           {disc.meta.tags.map(t => <span key={t} className="radar-tag">{t}</span>)}
         </div>
       )}
@@ -49,14 +47,18 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
       <div id="radar-viz">
         <RadarViz
           quadrants={Object.entries(disc.quadrants || {})}
-          basePath={`/radar/${discSlug}`}
+          basePath={`/${radar.routeBasePath}/${discSlug}`}
           filters={filters}
         />
       </div>
 
-      <RingStats entries={allEntries}
-        teamFilter={filters.teamFilter} verticalFilter={filters.verticalFilter}
-        ringFilter={filters.ringFilter} setRingFilter={filters.setRingFilter} />
+      <RingStats
+        entries={allEntries}
+        teamFilter={filters.teamFilter}
+        verticalFilter={filters.verticalFilter}
+        ringFilter={filters.ringFilter}
+        setRingFilter={filters.setRingFilter}
+      />
 
       <FilterBar filters={filters} config={config} />
 
@@ -85,9 +87,9 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
               <div className="radar-quadrant-guidance">{quad.meta.guidance}</div>
             )}
             {quad.meta.links && quad.meta.links.length > 0 && (
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+              <div className="radar-quadrant-links">
                 {quad.meta.links.map((l, i) => (
-                  <span key={i} style={{ fontSize: '0.78rem', color: 'var(--ifm-font-color-secondary)' }}>
+                  <span key={i} className="radar-quadrant-link-item">
                     <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
                     {' '}{l.label || l.uri}
                   </span>
@@ -96,11 +98,14 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
             )}
             <div className="radar-entry-grid">
               {entries.map(e => (
-                <EntryCard key={e.slug}
+                <EntryCard
+                  key={e.slug}
                   entry={e} slug={e.slug} discSlug={discSlug}
+                  routeBasePath={radar.routeBasePath}
                   config={config}
                   teamFilter={filters.teamFilter}
-                  verticalFilter={filters.verticalFilter} />
+                  verticalFilter={filters.verticalFilter}
+                />
               ))}
             </div>
           </div>
@@ -111,8 +116,8 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
         <div className="radar-detail-section" id="people">
           <h2>Key Individuals</h2>
           <div className="radar-people">
-            {ki.map((p, i) => (
-              <div key={i} className="radar-person-chip">
+            {ki.map(p => (
+              <div key={p.name} className="radar-person-chip">
                 {p.name}
                 {p.role && <span className="radar-person-role">{p.role}</span>}
               </div>
@@ -125,8 +130,8 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
         <div className="radar-detail-section" id="links">
           <h2>Links</h2>
           <div className="radar-link-list">
-            {links.map((l, i) => (
-              <div key={i} className="radar-link-item">
+            {links.map(l => (
+              <div key={l.uri} className="radar-link-item">
                 <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
                 <span className="radar-link-label">{l.label || l.uri}</span>
                 <span className="radar-link-uri">{l.uri}</span>

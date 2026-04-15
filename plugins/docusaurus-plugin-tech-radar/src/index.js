@@ -45,8 +45,9 @@ module.exports = function pluginTechRadar(context, options) {
     async contentLoaded({ content: radar, actions }) {
       const { createData, addRoute } = actions;
 
-      // Write the full radar data as JSON — components import it
-      const dataPath = await createData('radar.json', JSON.stringify(radar));
+      // Write the full radar data as JSON — components import it.
+      // routeBasePath is injected here so components can build links without hardcoding.
+      const dataPath = await createData('radar.json', JSON.stringify({ ...radar, routeBasePath }));
 
       // Build sidebar items
       const sidebarItems = buildSidebar(radar, routeBasePath);
@@ -65,7 +66,7 @@ module.exports = function pluginTechRadar(context, options) {
         // Discipline overview page
         const discData = await createData(
           `disc-${discSlug}.json`,
-          JSON.stringify({ slug: discSlug, discipline: disc, config: radar.config })
+          JSON.stringify({ slug: discSlug, discipline: disc })
         );
 
         addRoute({
@@ -87,7 +88,6 @@ module.exports = function pluginTechRadar(context, options) {
                 discLabel: disc.meta.label,
                 quadSlug,
                 quadLabel: quad.meta.label,
-                config: radar.config,
               })
             );
 
