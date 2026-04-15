@@ -107,3 +107,50 @@ The mode is detected automatically by `parser.js` based on whether the path is a
 `validator.js` checks: valid rings (`adopt|trial|assess|hold`), all referenced teams/verticals/link-types exist in `config`, `hold` entries have `hold_reason`, ring override entries have valid rings. Errors abort the build; warnings print and continue.
 
 The standalone `validate.js` script at the plugin root wraps the same parser + validator for CI use without running Docusaurus.
+
+## Refactoring priorities
+
+These are the known structural issues to address before this plugin is production-ready, ordered by impact.
+
+### 1. `routeBasePath` is not threaded to components — actual bug
+
+`EntryCard` (`RadarComponents/index.js:328`) hardcodes `/radar/${discSlug}/${slug}` and `RadarEntry` breadcrumbs (`RadarEntry/index.js:40,42`) hardcode `/radar`. Any user who sets `routeBasePath: 'tech-radar'` gets silently broken navigation.
+
+Fix: include `routeBasePath` in the JSON written by `contentLoaded` — either add it to `radar.json` alongside `meta`/`config`/`disciplines`, or add it to each `entryData` and `discData` blob. Components then use it to construct paths instead of the hardcoded string.
+
+### 2. `RadarComponents/index.js` is a god file
+
+At 376 lines it combines ring constants, pure utility functions, a custom hook, and four distinct UI components that have nothing in common beyond being exports. None share a test strategy or change frequency. Split within the directory (keeping the barrel export intact so `@theme/RadarComponents` imports continue to work):
+
+```
+RadarComponents/
+  index.js      ← re-exports everything, no logic
+  rings.js      ← RING_ORDER/COLORS/FILLS constants, ringOrder(), effectiveRing()
+  filters.js    ← entryMatchesFilters() (unexported), useRadarFilters()
+  FilterBar.js
+  RingStats.js
+  EntryCard.js
+  RadarViz.js   ← seededRandom() lives here too
+```
+
+### 3. `ringOrder` and `slugToLabel` are each duplicated
+
+`ringOrder` is defined identically in `src/index.js:164` (CJS) and `RadarComponents/index.js:13` (ESM). `slugToLabel` is defined identically in `src/parser.js:122` (unexported, CJS) and `RadarEntry/index.js:287` (private, ESM).
+
+The CJS/ESM boundary makes sharing a single module file awkward. The pragmatic fix is to extract `src/utils/rings.js` (CJS) containing `ringOrder` — `index.js` requires it, and `RadarComponents/rings.js` can inline its own copy with a comment noting the intentional duplication. Same pattern for `slugToLabel`. Alternatively, consolidate to a single runtime once the plugin is packaged properly.
+
+### 4. `useRadarFilters` recomputes usage counts on every render
+
+The `teamUsage`/`tagUsage`/`verticalUsage` tallies in `RadarComponents/index.js:69–74` run on every render. With a large radar this is O(entries × tags). Wrap them in `React.useMemo` keyed on `allEntries`.
+
+### 5. Inline styles should move to `radar.css`
+
+`RadarEntry/index.js` has ~15 `style={{...}}` blocks and `RadarDiscipline/index.js` has 3. These make components noisy and make theming via CSS variables impossible for those properties. Move them to named classes in `RadarLayout/radar.css`.
+
+### 6. `entryData` needlessly duplicates config
+
+`index.js:82` embeds `config: radar.config` into every entry's JSON file. With many entries and a large config this multiplies the data. `config` is already available on the `radar` prop (which is passed to every route). Remove `config` from `entryData` and read it from `radar.config` in `RadarEntry`.
+
+### 7. Array-index `key` props
+
+`RadarEntry/index.js` uses `key={i}` for links (line 218), discussions (line 234), and key individuals (line 275). Use a stable property instead: `key={l.uri}`, `key={d.title}`, `key={p.name}`.
