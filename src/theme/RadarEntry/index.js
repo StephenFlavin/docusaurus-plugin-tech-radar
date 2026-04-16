@@ -46,9 +46,9 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
   return (
     <RadarLayout sidebar={sidebar} toc={toc} title={entry.label}>
       <nav className="radar-breadcrumb">
-        <Link to={`/${base}`}>Radar</Link>
+        <Link to={base}>Radar</Link>
         {' › '}
-        <Link to={`/${base}/${discSlug}`}>{discLabel}</Link>
+        <Link to={`${base}/${discSlug}`}>{discLabel}</Link>
         {' › '}
         {quadLabel}
       </nav>
