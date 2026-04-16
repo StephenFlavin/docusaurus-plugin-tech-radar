@@ -18,5 +18,5 @@ links:
     uri: /spaces/PLAT/pages/30100
     label: Datadog tagging standards
   - type: slack
-    uri: "#observability"
+    uri: "https://acme.slack.com/archives/C012OBSR01"
     label: Observability channel

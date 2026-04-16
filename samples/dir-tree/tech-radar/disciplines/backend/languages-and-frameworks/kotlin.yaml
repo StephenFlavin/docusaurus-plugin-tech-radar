@@ -29,7 +29,7 @@ links:
     uri: https://kotlinlang.org
     label: Kotlin site
   - type: slack
-    uri: "#backend-kotlin"
+    uri: "https://acme.slack.com/archives/C012KTLN01"
     label: Kotlin community
 discussions:
   - type: rfc
@@ -47,4 +47,4 @@ discussions:
     title: Coroutines vs Loom discussion
     link:
       type: slack
-      uri: "#backend-kotlin/t/1685000000"
+      uri: "https://acme.slack.com/archives/C012KTLN01/p1685000000000"

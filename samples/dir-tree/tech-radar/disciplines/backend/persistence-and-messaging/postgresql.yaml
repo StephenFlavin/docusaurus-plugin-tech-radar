@@ -20,7 +20,7 @@ links:
     uri: https://postgresql.org
     label: PostgreSQL
   - type: slack
-    uri: "#data-platform"
+    uri: "https://acme.slack.com/archives/C012DATA01"
     label: Data platform support
 discussions:
   - type: adr

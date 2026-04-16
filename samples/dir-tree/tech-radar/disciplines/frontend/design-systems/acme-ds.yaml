@@ -16,5 +16,5 @@ links:
     uri: https://ds.acme.internal
     label: Storybook
   - type: slack
-    uri: "#design-system"
+    uri: "https://acme.slack.com/archives/C012DSGN01"
     label: Design system channel

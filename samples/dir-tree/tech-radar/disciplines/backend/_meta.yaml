@@ -10,7 +10,7 @@ key-individuals:
 tags: [services, apis, jvm]
 links:
   - type: slack
-    uri: "#backend-engineering"
+    uri: "https://acme.slack.com/archives/C012BKND01"
     label: Backend community
   - type: confluence
     uri: /spaces/ENG/pages/00001

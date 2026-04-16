@@ -23,5 +23,5 @@ links:
     uri: /spaces/PLAT/pages/10100
     label: Cluster provisioning guide
   - type: slack
-    uri: "#k8s-help"
+    uri: "https://acme.slack.com/archives/C012K8SH01"
     label: Kubernetes help

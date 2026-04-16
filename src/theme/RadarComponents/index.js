@@ -4,4 +4,4 @@ export { FilterBar } from './FilterBar';
 export { RingStats } from './RingStats';
 export { EntryCard } from './EntryCard';
 export { RadarViz } from './RadarViz';
-export { linkTypeLabel } from './links';
+export { linkTypeLabel, resolveHref } from './links';

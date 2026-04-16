@@ -34,7 +34,7 @@ links:
     uri: /spaces/ENG/pages/41000
     label: Kafka conventions and topic naming
   - type: slack
-    uri: "#kafka-users"
+    uri: "https://acme.slack.com/archives/C012KAFK01"
     label: Kafka users channel
 discussions:
   - type: adr

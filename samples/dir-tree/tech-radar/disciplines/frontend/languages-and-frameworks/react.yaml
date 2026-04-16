@@ -27,5 +27,5 @@ links:
     uri: /spaces/FE/pages/10100
     label: React conventions
   - type: slack
-    uri: "#frontend-react"
+    uri: "https://acme.slack.com/archives/C012RECT01"
     label: React channel

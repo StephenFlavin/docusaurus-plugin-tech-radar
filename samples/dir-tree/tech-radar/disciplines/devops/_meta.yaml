@@ -10,7 +10,7 @@ key-individuals:
 tags: [infrastructure, reliability]
 links:
   - type: slack
-    uri: "#platform-engineering"
+    uri: "https://acme.slack.com/archives/C012PLAT01"
     label: Platform engineering channel
   - type: confluence
     uri: /spaces/PLAT/pages/00001

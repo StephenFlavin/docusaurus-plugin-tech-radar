@@ -2,7 +2,7 @@ import React from 'react';
 import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
 import RadarLayout from '@theme/RadarLayout';
-import { linkTypeLabel } from '@theme/RadarComponents';
+import { linkTypeLabel, resolveHref } from '@theme/RadarComponents';
 
 // NOTE: slugToLabel is also defined in src/parser.js (CJS).
 // The CJS/ESM boundary prevents sharing one file; both copies are intentional.
@@ -199,13 +199,21 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
         <div className="radar-detail-section">
           <Heading as="h2" id="links">Links</Heading>
           <div className="radar-link-list">
-            {links.map(l => (
-              <div key={l.uri} className="radar-link-item">
-                <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
-                <span className="radar-link-label">{l.label || l.uri}</span>
-                <span className="radar-link-uri">{l.uri}</span>
-              </div>
-            ))}
+            {links.map(l => {
+              const href = resolveHref(config, l);
+              return (
+                <div key={l.uri} className="radar-link-item">
+                  <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
+                  {href ? (
+                    <a href={href} className="radar-link-label" target="_blank" rel="noopener noreferrer">
+                      {l.label || l.uri}
+                    </a>
+                  ) : (
+                    <span className="radar-link-label">{l.label || l.uri}</span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -214,23 +222,29 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
         <div className="radar-detail-section">
           <Heading as="h2" id="discussions">Discussions</Heading>
           <div className="radar-link-list">
-            {discussions.map(d => (
-              <div key={d.title} className="radar-discussion-item">
-                <span className="radar-discussion-type">{d.type}</span>
-                <div>
-                  <div className="radar-discussion-title">{d.title}</div>
-                  {d.date && <div className="radar-discussion-date">{d.date}</div>}
-                  {d.link && (
-                    <div className="radar-discussion-link-ref">
-                      <span className="radar-link-type-badge radar-link-type-badge--sm">
-                        {linkTypeLabel(config, d.link.type)}
-                      </span>
-                      {' '}{d.link.uri}
-                    </div>
-                  )}
+            {discussions.map(d => {
+              const dlinkHref = d.link ? resolveHref(config, d.link) : null;
+              return (
+                <div key={d.title} className="radar-discussion-item">
+                  <span className="radar-discussion-type">{d.type}</span>
+                  <div>
+                    <div className="radar-discussion-title">{d.title}</div>
+                    {d.date && <div className="radar-discussion-date">{d.date}</div>}
+                    {d.link && (
+                      <div className="radar-discussion-link-ref">
+                        <span className="radar-link-type-badge radar-link-type-badge--sm">
+                          {linkTypeLabel(config, d.link.type)}
+                        </span>
+                        {' '}
+                        {dlinkHref ? (
+                          <a href={dlinkHref} target="_blank" rel="noopener noreferrer">{d.link.uri}</a>
+                        ) : d.link.uri}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

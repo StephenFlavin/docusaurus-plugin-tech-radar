@@ -40,7 +40,7 @@ links:
     uri: /spaces/ENG/pages/10500
     label: Internal standards
   - type: slack
-    uri: "#backend-java"
+    uri: "https://acme.slack.com/archives/C012JAVA01"
     label: Java support channel
 discussions:
   - type: rfc

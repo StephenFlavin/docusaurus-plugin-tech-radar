@@ -20,7 +20,7 @@ links:
     uri: /spaces/PLAT/pages/30200
     label: OTel rollout plan
   - type: slack
-    uri: "#observability"
+    uri: "https://acme.slack.com/archives/C012OBSR01"
     label: Observability channel
 discussions:
   - type: rfc
@@ -38,4 +38,4 @@ discussions:
     title: Datadog exporter gotchas
     link:
       type: slack
-      uri: "#observability/t/1700000000"
+      uri: "https://acme.slack.com/archives/C012OBSR01/p1700000000000"

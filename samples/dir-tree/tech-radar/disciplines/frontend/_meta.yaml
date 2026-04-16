@@ -8,7 +8,7 @@ key-individuals:
 tags: [web, ui, dx]
 links:
   - type: slack
-    uri: "#frontend-engineering"
+    uri: "https://acme.slack.com/archives/C012FRND01"
     label: Frontend community
   - type: confluence
     uri: /spaces/FE/pages/00001

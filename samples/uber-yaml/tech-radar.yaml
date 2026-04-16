@@ -28,14 +28,16 @@ radar:
       slack:
         label: Slack
         icon-url: https://cdn.acme.internal/icons/slack.svg
-        uri-pattern: "^#[a-z0-9_-]+(/t/[0-9]+)?$"
+        # Full workspace URLs — paste from the Slack app (e.g. https://acme.slack.com/archives/C012ABCDEF)
       confluence:
         label: Confluence
         icon-url: https://cdn.acme.internal/icons/confluence.svg
+        base-url: "https://confluence.acme.internal"
         uri-pattern: "^/spaces/[A-Z]+/pages/[0-9]+.*$"
       jira:
         label: Jira
         icon-url: https://cdn.acme.internal/icons/jira.svg
+        base-url: "https://jira.acme.internal/browse/"
         uri-pattern: "^[A-Z]+-[0-9]+$"
       github:
         label: GitHub
@@ -98,7 +100,7 @@ radar:
         tags: [services, apis, jvm]
         links:
           - type: slack
-            uri: "#backend-engineering"
+            uri: "https://acme.slack.com/archives/C012BKND01"
             label: Backend community
           - type: confluence
             uri: /spaces/ENG/pages/00001
@@ -164,7 +166,7 @@ radar:
                   uri: /spaces/ENG/pages/10500
                   label: Internal standards
                 - type: slack
-                  uri: "#backend-java"
+                  uri: "https://acme.slack.com/archives/C012JAVA01"
                   label: Java support channel
               discussions:
                 - type: rfc
@@ -226,7 +228,7 @@ radar:
                   uri: https://kotlinlang.org
                   label: Kotlin site
                 - type: slack
-                  uri: "#backend-kotlin"
+                  uri: "https://acme.slack.com/archives/C012KTLN01"
                   label: Kotlin community
               discussions:
                 - type: rfc
@@ -244,7 +246,7 @@ radar:
                   title: Coroutines vs Loom discussion
                   link:
                     type: slack
-                    uri: "#backend-kotlin/t/1685000000"
+                    uri: "https://acme.slack.com/archives/C012KTLN01/p1685000000000"
 
             go:
               label: Go
@@ -317,7 +319,7 @@ radar:
                   uri: https://postgresql.org
                   label: PostgreSQL
                 - type: slack
-                  uri: "#data-platform"
+                  uri: "https://acme.slack.com/archives/C012DATA01"
                   label: Data platform support
               discussions:
                 - type: adr
@@ -368,7 +370,7 @@ radar:
                   uri: /spaces/ENG/pages/41000
                   label: Kafka conventions and topic naming
                 - type: slack
-                  uri: "#kafka-users"
+                  uri: "https://acme.slack.com/archives/C012KAFK01"
                   label: Kafka users channel
               discussions:
                 - type: adr
@@ -421,7 +423,7 @@ radar:
               tags: [nosql, legacy]
               links:
                 - type: slack
-                  uri: "#dynamo-migration"
+                  uri: "https://acme.slack.com/archives/C012DYNM01"
                   label: Migration coordination
                 - type: jira
                   uri: PLAT-2200
@@ -534,7 +536,7 @@ radar:
         tags: [infrastructure, reliability]
         links:
           - type: slack
-            uri: "#platform-engineering"
+            uri: "https://acme.slack.com/archives/C012PLAT01"
             label: Platform engineering channel
           - type: confluence
             uri: /spaces/PLAT/pages/00001
@@ -579,7 +581,7 @@ radar:
                   uri: /spaces/PLAT/pages/10100
                   label: Cluster provisioning guide
                 - type: slack
-                  uri: "#k8s-help"
+                  uri: "https://acme.slack.com/archives/C012K8SH01"
                   label: Kubernetes help
 
             nomad:
@@ -648,7 +650,7 @@ radar:
                   uri: https://argoproj.github.io/cd
                   label: Argo CD
                 - type: slack
-                  uri: "#argo-cd"
+                  uri: "https://acme.slack.com/archives/C012ARGO01"
                   label: Argo CD channel
               discussions:
                 - type: rfc
@@ -687,7 +689,7 @@ radar:
                   uri: /spaces/PLAT/pages/30100
                   label: Datadog tagging standards
                 - type: slack
-                  uri: "#observability"
+                  uri: "https://acme.slack.com/archives/C012OBSR01"
                   label: Observability channel
 
             opentelemetry:
@@ -713,7 +715,7 @@ radar:
                   uri: /spaces/PLAT/pages/30200
                   label: OTel rollout plan
                 - type: slack
-                  uri: "#observability"
+                  uri: "https://acme.slack.com/archives/C012OBSR01"
                   label: Observability channel
               discussions:
                 - type: rfc
@@ -731,7 +733,7 @@ radar:
                   title: Datadog exporter gotchas
                   link:
                     type: slack
-                    uri: "#observability/t/1700000000"
+                    uri: "https://acme.slack.com/archives/C012OBSR01/p1700000000000"
 
         infrastructure-as-code:
           meta:
@@ -805,7 +807,7 @@ radar:
         tags: [web, ui, dx]
         links:
           - type: slack
-            uri: "#frontend-engineering"
+            uri: "https://acme.slack.com/archives/C012FRND01"
             label: Frontend community
           - type: confluence
             uri: /spaces/FE/pages/00001
@@ -852,7 +854,7 @@ radar:
                   uri: /spaces/FE/pages/10100
                   label: React conventions
                 - type: slack
-                  uri: "#frontend-react"
+                  uri: "https://acme.slack.com/archives/C012RECT01"
                   label: React channel
 
             svelte:
@@ -931,5 +933,5 @@ radar:
                   uri: https://ds.acme.internal
                   label: Storybook
                 - type: slack
-                  uri: "#design-system"
+                  uri: "https://acme.slack.com/archives/C012DSGN01"
                   label: Design system channel

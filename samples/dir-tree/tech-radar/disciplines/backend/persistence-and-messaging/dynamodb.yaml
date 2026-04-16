@@ -16,7 +16,7 @@ teams: [payments]
 tags: [nosql, legacy]
 links:
   - type: slack
-    uri: "#dynamo-migration"
+    uri: "https://acme.slack.com/archives/C012DYNM01"
     label: Migration coordination
   - type: jira
     uri: PLAT-2200

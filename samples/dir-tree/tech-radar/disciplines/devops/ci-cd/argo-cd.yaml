@@ -14,7 +14,7 @@ links:
     uri: https://argoproj.github.io/cd
     label: Argo CD
   - type: slack
-    uri: "#argo-cd"
+    uri: "https://acme.slack.com/archives/C012ARGO01"
     label: Argo CD channel
 discussions:
   - type: rfc

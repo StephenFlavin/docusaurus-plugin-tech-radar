@@ -27,14 +27,16 @@ config:
     slack:
       label: Slack
       icon-url: https://cdn.acme.internal/icons/slack.svg
-      uri-pattern: "^#[a-z0-9_-]+(/t/[0-9]+)?$"
+      # Full workspace URLs — paste from the Slack app (e.g. https://acme.slack.com/archives/C012ABCDEF)
     confluence:
       label: Confluence
       icon-url: https://cdn.acme.internal/icons/confluence.svg
+      base-url: "https://confluence.acme.internal"
       uri-pattern: "^/spaces/[A-Z]+/pages/[0-9]+.*$"
     jira:
       label: Jira
       icon-url: https://cdn.acme.internal/icons/jira.svg
+      base-url: "https://jira.acme.internal/browse/"
       uri-pattern: "^[A-Z]+-[0-9]+$"
     github:
       label: GitHub
