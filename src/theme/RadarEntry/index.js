@@ -202,8 +202,12 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
             {links.map(l => (
               <Link key={l.uri} to={l.uri} className="radar-link-item">
                 <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
-                <span className="radar-link-label">{l.label || l.uri}</span>
-                <span className="radar-link-uri">{l.uri}</span>
+                <div className="radar-link-body">
+                  <div className="radar-link-label">{l.label || l.uri}</div>
+                  {l.description && (
+                    <div className="radar-link-description">{l.description}</div>
+                  )}
+                </div>
               </Link>
             ))}
           </div>

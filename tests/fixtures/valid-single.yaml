@@ -4,7 +4,7 @@ radar:
     version: 1
     date: 2026-01-01
   config:
-    links:
+    link-types:
       url:
         label: Website
     teams:

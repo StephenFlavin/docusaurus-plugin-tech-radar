@@ -439,19 +439,28 @@
 
 .radar-link-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.6rem;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--ifm-toc-border-color);
   border-radius: var(--ifm-global-radius);
   color: inherit;
   text-decoration: none;
+  min-width: 0;
 }
 
 a.radar-link-item:hover {
   text-decoration: none;
   border-color: var(--ifm-color-primary);
   background: var(--ifm-menu-color-background-hover);
+}
+
+.radar-link-body {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
 .radar-link-type-badge {
@@ -468,12 +477,21 @@ a.radar-link-item:hover {
 
 .radar-link-label {
   font-size: 0.85rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.radar-link-description {
+  font-size: 0.75rem;
+  color: var(--ifm-font-color-secondary);
+  overflow-wrap: anywhere;
 }
 
 .radar-link-uri {
   font-size: 0.72rem;
   color: var(--ifm-font-color-secondary);
   font-family: var(--ifm-font-family-monospace);
+  overflow-wrap: anywhere;
 }
 
 /* ── Discussion list ─────────────────────────────────────────── */
@@ -522,6 +540,7 @@ a.radar-discussion-item:hover {
   color: var(--ifm-font-color-secondary);
   font-family: var(--ifm-font-family-monospace);
   margin-top: 0.1rem;
+  overflow-wrap: anywhere;
 }
 
 /* ── Key individuals / person chips ──────────────────────────── */

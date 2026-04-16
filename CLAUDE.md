@@ -74,7 +74,7 @@ The parsed radar object shape (what all components receive):
 {
   meta: { title, version, date, cadence, changelog: [] },
   config: {
-    links: { [key]: { label?, 'icon-uri'?, 'uri-pattern'?, 'label-pattern'? } },
+    'link-types': { [key]: { label?, 'icon-uri'?, 'uri-pattern'?, 'label-pattern'? } },
     teams: { [key]: { label, description } },
     verticals: { [key]: { label, description } },
   },
@@ -164,7 +164,7 @@ Plugin Node code (`src/index.js`, `src/parser.js`, `src/validator.js`) is CJS. T
 
 ## Code conventions
 
-- **Helpers over inline logic.** When a small transformation is needed in more than one place (e.g. looking up a link-type label), put it in a helper in `RadarComponents/*` and import it. New code should prefer `linkTypeLabel(config, type)` over re-implementing `config.links?.[type]?.label || slugToLabel(type)` inline.
+- **Helpers over inline logic.** When a small transformation is needed in more than one place (e.g. looking up a link-type label), put it in a helper in `RadarComponents/*` and import it. New code should prefer `linkTypeLabel(config, type)` over re-implementing `config['link-types']?.[type]?.label || slugToLabel(type)` inline.
 - **Stable React `key`s.** Prefer a domain-stable field (`entry.slug`, `link.uri`, `person.name`). Avoid array indices unless the list is genuinely positional and immutable.
 - **Memoise derived collections in hooks** (see `useRadarFilters` — usage tallies are `useMemo`'d on `allEntries`). Don't recompute per render.
 - **Styling lives in `radar.css`.** Components apply class names; no inline `style` objects for anything structural.

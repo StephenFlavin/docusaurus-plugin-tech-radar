@@ -4,7 +4,7 @@ function validate(radar) {
   const errors = [];
   const validTeams = Object.keys(radar.config?.teams || {});
   const validVerticals = Object.keys(radar.config?.verticals || {});
-  const linkTypes = radar.config?.links || {};
+  const linkTypes = radar.config?.['link-types'] || {};
   const validLinkTypes = Object.keys(linkTypes);
 
   for (const [discSlug, disc] of Object.entries(radar.disciplines || {})) {

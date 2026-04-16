@@ -20,7 +20,7 @@ meta:
       summary: Initial radar with languages and frameworks only.
 
 config:
-  links:
+  link-types:
     url:
       label: Website
       icon-uri: /img/radar-icons/link.svg

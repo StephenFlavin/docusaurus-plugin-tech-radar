@@ -85,7 +85,7 @@ radar:
         summary: Added data discipline.
 
   config:
-    links:
+    link-types:
       url:
         label: Website
         icon-uri: https://example.com/icons/link.svg
@@ -210,7 +210,7 @@ meta:
       summary: Added data discipline.
 
 config:
-  links:
+  link-types:
     url:
       label: Website
       icon-uri: https://example.com/icons/link.svg
