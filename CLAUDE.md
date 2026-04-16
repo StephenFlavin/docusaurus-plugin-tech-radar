@@ -168,7 +168,7 @@ Plugin Node code (`src/index.js`, `src/parser.js`, `src/validator.js`) is CJS. T
 - **Stable React `key`s.** Prefer a domain-stable field (`entry.slug`, `link.uri`, `person.name`). Avoid array indices unless the list is genuinely positional and immutable.
 - **Memoise derived collections in hooks** (see `useRadarFilters` — usage tallies are `useMemo`'d on `allEntries`). Don't recompute per render.
 - **Styling lives in `radar.css`.** Components apply class names; no inline `style` objects for anything structural.
-- **`routeBasePath` flows through data, not constants.** Components read `radar.routeBasePath` — never hardcode `/radar`.
+- **`routeBasePath` flows through data, not constants.** Components read `radar.routeBasePath` — never hardcode `/radar`. The value is normalized by `RouteBasePathSchema` so it *already includes* a leading slash (e.g. `'/radar'`). When building link hrefs, interpolate it as `` `${routeBasePath}/${slug}` ``, not `` `/${routeBasePath}/${slug}` `` — the latter produces `//radar/...` which Docusaurus's `Link` treats as protocol-relative (external) and adds `target="_blank"` to.
 
 ## Testing
 

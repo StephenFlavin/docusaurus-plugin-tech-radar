@@ -11,7 +11,7 @@ export function EntryCard({ entry, slug, discSlug, routeBasePath, subtitle, conf
 
   return (
     <Link
-      to={`/${routeBasePath}/${discSlug}/${slug}`}
+      to={`${routeBasePath}/${discSlug}/${slug}`}
       className={`radar-entry-card radar-entry-card--${effRing}`}
     >
       <div className="radar-entry-card-header">

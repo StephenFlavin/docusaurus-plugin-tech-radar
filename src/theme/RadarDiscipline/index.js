@@ -50,7 +50,7 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
       <Heading as="h2" id="radar-viz">Radar</Heading>
       <RadarViz
         quadrants={Object.entries(disc.quadrants || {})}
-        basePath={`/${radar.routeBasePath}/${discSlug}`}
+        basePath={`${radar.routeBasePath}/${discSlug}`}
         filters={filters}
       />
 
