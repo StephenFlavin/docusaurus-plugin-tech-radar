@@ -23,9 +23,12 @@ links:
   - type: url
     uri: https://react.dev
     label: React
+    description: Official React documentation
   - type: confluence
-    uri: /spaces/FE/pages/10100
+    uri: https://acmecorp.atlassian.net/wiki/spaces/FE/pages/10100
     label: React conventions
+    description: Component patterns, hooks rules, and testing standards
   - type: slack
-    uri: "#frontend-react"
-    label: React channel
+    uri: https://acmecorp.slack.com/archives/C03FEREACT
+    label: "#frontend-react"
+    description: React community channel

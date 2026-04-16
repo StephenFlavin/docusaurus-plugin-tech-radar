@@ -16,26 +16,29 @@ links:
   - type: url
     uri: https://opentelemetry.io
     label: OpenTelemetry
+    description: Official OpenTelemetry project
   - type: confluence
-    uri: /spaces/PLAT/pages/30200
+    uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/30200
     label: OTel rollout plan
+    description: Phased rollout plan and migration checklist
   - type: slack
-    uri: "#observability"
-    label: Observability channel
+    uri: https://acmecorp.slack.com/archives/C02OBSERVE
+    label: "#observability"
+    description: Observability discussion channel
+  - type: slack
+    uri: https://acmecorp.slack.com/archives/C02OBSERVE/p1700000000
+    label: "#observability"
+    description: Datadog exporter gotchas thread
+    variant: thread
 discussions:
   - type: rfc
     title: OTel as telemetry standard
     link:
       type: confluence
-      uri: /spaces/PLAT/pages/30210
+      uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/30210
   - type: meeting
     title: OTel trial review
     date: 2026-Q1
     link:
       type: recording
       uri: https://recordings.acme.internal/mtg-10200
-  - type: thread
-    title: Datadog exporter gotchas
-    link:
-      type: slack
-      uri: "#observability/t/1700000000"

@@ -14,6 +14,8 @@ links:
   - type: url
     uri: https://gradle.org
     label: Gradle
+    description: Official Gradle build tool
   - type: confluence
-    uri: /spaces/ENG/pages/70100
+    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/70100
     label: Gradle conventions
+    description: Build conventions, dependency management, and plugin standards

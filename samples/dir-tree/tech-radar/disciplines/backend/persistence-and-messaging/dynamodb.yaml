@@ -16,18 +16,20 @@ teams: [payments]
 tags: [nosql, legacy]
 links:
   - type: slack
-    uri: "#dynamo-migration"
-    label: Migration coordination
+    uri: https://acmecorp.slack.com/archives/C01DYNMIGR
+    label: "#dynamo-migration"
+    description: Migration coordination channel
   - type: jira
-    uri: PLAT-2200
+    uri: https://acmecorp.atlassian.net/browse/PLAT-2200
     label: Migration epic
+    description: Epic tracking DynamoDB to PostgreSQL migration
 discussions:
   - type: post-mortem
     title: "INC-4412: Checkout outage from hot partition"
     date: 2025-08-03
     link:
       type: confluence
-      uri: /spaces/SRE/pages/50200
+      uri: https://acmecorp.atlassian.net/wiki/spaces/SRE/pages/50200
   - type: meeting
     title: DynamoDB sunset decision
     date: 2025-Q4

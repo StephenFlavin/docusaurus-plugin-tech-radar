@@ -1,5 +1,6 @@
 label: Java
 ring: adopt
+icon-url: /img/radar-entry-icons/java.svg
 timeline:
   assess: 2023-Q4
   trial: 2024-Q1
@@ -36,18 +37,21 @@ links:
   - type: url
     uri: https://openjdk.org
     label: OpenJDK
+    description: Official OpenJDK project
   - type: confluence
-    uri: /spaces/ENG/pages/10500
+    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/10500
     label: Internal standards
+    description: Java coding standards and style guide
   - type: slack
-    uri: "#backend-java"
-    label: Java support channel
+    uri: https://acmecorp.slack.com/archives/C01JAVA01
+    label: "#backend-java"
+    description: Java support channel
 discussions:
   - type: rfc
     title: Java as primary backend language
     link:
       type: confluence
-      uri: /spaces/ENG/pages/10234
+      uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/10234
   - type: meeting
     title: Language selection review
     date: 2024-Q1

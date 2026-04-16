@@ -13,6 +13,8 @@ links:
   - type: github
     uri: https://github.com/acme-corp/.github
     label: Shared workflows
+    description: Reusable GitHub Actions workflows
   - type: confluence
-    uri: /spaces/PLAT/pages/20100
+    uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/20100
     label: Workflow authoring guide
+    description: How to write and test CI workflows

@@ -5,5 +5,5 @@ guidance: >
   go through code review and plan approval.
 links:
   - type: confluence
-    uri: /spaces/PLAT/pages/40000
+    uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/40000
     label: IaC standards

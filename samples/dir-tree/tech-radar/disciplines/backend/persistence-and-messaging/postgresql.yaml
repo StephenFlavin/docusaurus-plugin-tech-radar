@@ -19,15 +19,17 @@ links:
   - type: url
     uri: https://postgresql.org
     label: PostgreSQL
+    description: Official PostgreSQL site
   - type: slack
-    uri: "#data-platform"
-    label: Data platform support
+    uri: https://acmecorp.slack.com/archives/C01DATAPLAT
+    label: "#data-platform"
+    description: Data platform support channel
 discussions:
   - type: adr
     title: "ADR-003: PostgreSQL as default RDBMS"
     link:
       type: confluence
-      uri: /spaces/ENG/pages/40010
+      uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/40010
 sections:
   connection-pooling: |
     All services must connect via PgBouncer.

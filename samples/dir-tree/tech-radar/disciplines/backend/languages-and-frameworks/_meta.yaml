@@ -5,5 +5,5 @@ guidance: >
   case exists for an alternative runtime.
 links:
   - type: confluence
-    uri: /spaces/ENG/pages/00100
+    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/00100
     label: Language selection criteria

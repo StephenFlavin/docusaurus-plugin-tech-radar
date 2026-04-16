@@ -19,9 +19,12 @@ links:
   - type: url
     uri: https://kubernetes.io
     label: Kubernetes
+    description: Official Kubernetes documentation
   - type: confluence
-    uri: /spaces/PLAT/pages/10100
+    uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/10100
     label: Cluster provisioning guide
+    description: How to provision and configure EKS clusters
   - type: slack
-    uri: "#k8s-help"
-    label: Kubernetes help
+    uri: https://acmecorp.slack.com/archives/C02K8SHELP
+    label: "#k8s-help"
+    description: Kubernetes help and troubleshooting

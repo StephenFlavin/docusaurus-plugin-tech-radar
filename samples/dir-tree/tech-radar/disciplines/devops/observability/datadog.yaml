@@ -14,9 +14,12 @@ links:
   - type: url
     uri: https://datadoghq.com
     label: Datadog
+    description: Datadog observability platform
   - type: confluence
-    uri: /spaces/PLAT/pages/30100
+    uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/30100
     label: Datadog tagging standards
+    description: Required tags and naming conventions
   - type: slack
-    uri: "#observability"
-    label: Observability channel
+    uri: https://acmecorp.slack.com/archives/C02OBSERVE
+    label: "#observability"
+    description: Observability discussion channel

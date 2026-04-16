@@ -1,5 +1,6 @@
 label: Go
 ring: assess
+icon-url: /img/radar-entry-icons/go.svg
 timeline:
   assess: 2026-Q2
 description: Exploring for CLI tooling and network services.
@@ -21,7 +22,7 @@ discussions:
     title: Go for edge proxies
     link:
       type: confluence
-      uri: /spaces/ENG/pages/30122
+      uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/30122
 sections:
   evaluation-scope: |
     The initial evaluation focuses on two use cases:

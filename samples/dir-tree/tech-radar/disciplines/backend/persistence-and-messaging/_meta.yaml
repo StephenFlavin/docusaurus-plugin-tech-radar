@@ -5,5 +5,5 @@ guidance: >
   Any new data store requires an architecture review.
 links:
   - type: confluence
-    uri: /spaces/ENG/pages/40000
+    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/40000
     label: Data store selection guide

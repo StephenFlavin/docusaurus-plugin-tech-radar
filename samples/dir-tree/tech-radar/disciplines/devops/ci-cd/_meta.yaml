@@ -5,5 +5,5 @@ guidance: >
   Argo CD manages deployment to production clusters.
 links:
   - type: confluence
-    uri: /spaces/PLAT/pages/20000
+    uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/20000
     label: CI/CD standards

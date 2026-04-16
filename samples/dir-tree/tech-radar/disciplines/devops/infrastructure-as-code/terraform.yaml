@@ -14,6 +14,8 @@ links:
   - type: url
     uri: https://terraform.io
     label: Terraform
+    description: Official Terraform documentation
   - type: github
     uri: https://github.com/acme-corp/terraform-modules
     label: Internal modules
+    description: Shared Terraform modules for AWS infrastructure
