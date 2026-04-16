@@ -42,25 +42,30 @@ describe('parseRadar - directory mode', () => {
       parseRadar(path.join(fixtures, 'dir-no-root-yaml'))
     ).toThrow('Directory mode requires _meta.yaml');
   });
-
-  test('falls back to slug-derived label when _meta.yaml is absent', () => {
-    // The 'backend' discipline has a _meta.yaml so we verify the fallback indirectly:
-    // a quadrant with no _meta.yaml would get its slug title-cased.
-    // 'persistence-and-messaging' → 'Persistence And Messaging'
-    const { parseRadar: _parseRadar } = require('../src/parser');
-    // We test slugToLabel behaviour via a discipline that has no _meta.yaml by
-    // constructing a minimal dir on the fly — covered by the slugToLabel unit below.
-  });
 });
 
-describe('slugToLabel (via directory parsing)', () => {
-  // slugToLabel is not exported, but its output is visible in meta.label fallbacks.
-  // The valid-dir fixture's 'languages' quadrant has a _meta.yaml.
-  // We verify the title-case logic by checking the discipline label is read from _meta.yaml
-  // (not derived), and trust that the fallback path is a straightforward split/capitalise.
-  test('reads label from _meta.yaml when present', () => {
-    const radar = parseRadar(path.join(fixtures, 'valid-dir'));
-    // Comes from _meta.yaml, not derived from slug "backend"
-    expect(radar.disciplines.backend.meta.label).toBe('Backend Engineering');
+describe('parseRadar - directory mode meta fallbacks', () => {
+  const radar = parseRadar(path.join(fixtures, 'dir-meta-fallbacks'));
+  const disc = radar.disciplines['persistence-and-messaging'];
+
+  test('falls back to slug-derived discipline label when _meta.yaml is absent', () => {
+    expect(disc.meta.label).toBe('Persistence And Messaging');
+  });
+
+  test('falls back to slug-derived quadrant label when _meta.yaml is absent', () => {
+    expect(disc.quadrants.datastores.meta.label).toBe('Datastores');
+  });
+
+  test('accepts .yml entry files alongside .yaml', () => {
+    const entries = disc.quadrants.datastores.entries;
+    expect(entries.redis).toBeDefined();
+    expect(entries.kafka).toBeDefined();
+    expect(entries.kafka.ring).toBe('trial');
+  });
+
+  test('ignores entry files starting with _', () => {
+    const entries = disc.quadrants.datastores.entries;
+    expect(entries._draft).toBeUndefined();
+    expect(entries.draft).toBeUndefined();
   });
 });

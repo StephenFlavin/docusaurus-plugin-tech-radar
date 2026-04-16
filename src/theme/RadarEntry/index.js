@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
+import Heading from '@theme/Heading';
 import RadarLayout from '@theme/RadarLayout';
+import { linkTypeLabel } from '@theme/RadarComponents';
 
 // NOTE: slugToLabel is also defined in src/parser.js (CJS).
 // The CJS/ESM boundary prevents sharing one file; both copies are intentional.
@@ -11,7 +13,6 @@ function slugToLabel(slug) {
 export default function RadarEntry({ radar, entryData, sidebar }) {
   const { slug, entry, discSlug, discLabel, quadSlug, quadLabel } = entryData;
   const config = radar.config;
-  const lt = config['link-types'] || {};
 
   const ki = entry['key-individuals'] || [];
   const links = entry.links || [];
@@ -26,17 +27,19 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
   const timeline = Object.entries(entry.timeline || {})
     .sort((a, b) => a[1].localeCompare(b[1]));
 
+  // @theme/TOC expects items shaped like { id, value, level } (same as
+  // mdx-loader's TOCItem). `value` is the display string.
   const toc = [];
-  if (entry.rationale) toc.push({ id: 'rationale', label: 'Rationale', level: 2 });
-  if (entry.ring === 'hold' && entry.hold_reason) toc.push({ id: 'hold-warning', label: 'Hold Warning', level: 2 });
-  if (hasOverrides) toc.push({ id: 'ring-overrides', label: 'Ring Overrides', level: 2 });
-  if (timeline.length > 0) toc.push({ id: 'timeline', label: 'Timeline', level: 2 });
-  toc.push({ id: 'details', label: 'Details', level: 2 });
-  if (constraints.length > 0) toc.push({ id: 'constraints', label: 'Constraints', level: 2 });
-  if (links.length > 0) toc.push({ id: 'links', label: 'Links', level: 2 });
-  if (discussions.length > 0) toc.push({ id: 'discussions', label: 'Discussions', level: 2 });
-  for (const [key] of sections) toc.push({ id: key, label: slugToLabel(key), level: 2 });
-  if (ki.length > 0) toc.push({ id: 'people', label: 'Key Individuals', level: 2 });
+  if (entry.rationale) toc.push({ id: 'rationale', value: 'Rationale', level: 2 });
+  if (entry.ring === 'hold' && entry.hold_reason) toc.push({ id: 'hold-warning', value: 'Hold Warning', level: 2 });
+  if (hasOverrides) toc.push({ id: 'ring-overrides', value: 'Ring Overrides', level: 2 });
+  if (timeline.length > 0) toc.push({ id: 'timeline', value: 'Timeline', level: 2 });
+  toc.push({ id: 'details', value: 'Details', level: 2 });
+  if (constraints.length > 0) toc.push({ id: 'constraints', value: 'Constraints', level: 2 });
+  if (links.length > 0) toc.push({ id: 'links', value: 'Links', level: 2 });
+  if (discussions.length > 0) toc.push({ id: 'discussions', value: 'Discussions', level: 2 });
+  for (const [key] of sections) toc.push({ id: key, value: slugToLabel(key), level: 2 });
+  if (ki.length > 0) toc.push({ id: 'people', value: 'Key Individuals', level: 2 });
 
   const base = radar.routeBasePath;
 
@@ -67,15 +70,15 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
       )}
 
       {entry.rationale && (
-        <div className="radar-detail-section" id="rationale">
-          <h2>Rationale</h2>
+        <div className="radar-detail-section">
+          <Heading as="h2" id="rationale">Rationale</Heading>
           <p className="radar-section-body">{entry.rationale}</p>
         </div>
       )}
 
       {entry.ring === 'hold' && entry.hold_reason && (
-        <div className="radar-detail-section" id="hold-warning">
-          <h2>Hold Warning</h2>
+        <div className="radar-detail-section">
+          <Heading as="h2" id="hold-warning">Hold Warning</Heading>
           <div className="radar-hold-warning">
             <div className="radar-hold-warning-title">⚠ Do not use for new work</div>
             <p>{entry.hold_reason}</p>
@@ -86,8 +89,8 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
       )}
 
       {hasOverrides && (
-        <div className="radar-detail-section" id="ring-overrides">
-          <h2>Ring Overrides</h2>
+        <div className="radar-detail-section">
+          <Heading as="h2" id="ring-overrides">Ring Overrides</Heading>
           <p className="radar-overrides-intro">
             The org-wide ring is <strong className={`radar-ring-text--${entry.ring}`}>{entry.ring}</strong>,
             but these teams or verticals have a different assessment.
@@ -120,8 +123,8 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
       )}
 
       {timeline.length > 0 && (
-        <div className="radar-detail-section" id="timeline">
-          <h2>Timeline</h2>
+        <div className="radar-detail-section">
+          <Heading as="h2" id="timeline">Timeline</Heading>
           <div className="radar-timeline">
             {timeline.map(([ring, date], i) => (
               <React.Fragment key={ring}>
@@ -137,8 +140,8 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
         </div>
       )}
 
-      <div className="radar-detail-section" id="details">
-        <h2>Details</h2>
+      <div className="radar-detail-section">
+        <Heading as="h2" id="details">Details</Heading>
         <div className="radar-detail-grid">
           {entry.teams?.length > 0 && (
             <div className="radar-detail-cell">
@@ -177,8 +180,8 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
       </div>
 
       {constraints.length > 0 && (
-        <div className="radar-detail-section" id="constraints">
-          <h2>Constraints</h2>
+        <div className="radar-detail-section">
+          <Heading as="h2" id="constraints">Constraints</Heading>
           <table className="radar-constraint-table">
             <tbody>
               {constraints.map(([k, v]) => (
@@ -193,12 +196,12 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
       )}
 
       {links.length > 0 && (
-        <div className="radar-detail-section" id="links">
-          <h2>Links</h2>
+        <div className="radar-detail-section">
+          <Heading as="h2" id="links">Links</Heading>
           <div className="radar-link-list">
             {links.map(l => (
               <div key={l.uri} className="radar-link-item">
-                <span className="radar-link-type-badge">{lt[l.type]?.label || l.type}</span>
+                <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
                 <span className="radar-link-label">{l.label || l.uri}</span>
                 <span className="radar-link-uri">{l.uri}</span>
               </div>
@@ -208,8 +211,8 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
       )}
 
       {discussions.length > 0 && (
-        <div className="radar-detail-section" id="discussions">
-          <h2>Discussions</h2>
+        <div className="radar-detail-section">
+          <Heading as="h2" id="discussions">Discussions</Heading>
           <div className="radar-link-list">
             {discussions.map(d => (
               <div key={d.title} className="radar-discussion-item">
@@ -220,7 +223,7 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
                   {d.link && (
                     <div className="radar-discussion-link-ref">
                       <span className="radar-link-type-badge radar-link-type-badge--sm">
-                        {lt[d.link.type]?.label || d.link.type}
+                        {linkTypeLabel(config, d.link.type)}
                       </span>
                       {' '}{d.link.uri}
                     </div>
@@ -233,8 +236,8 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
       )}
 
       {sections.map(([key, content]) => (
-        <div key={key} className="radar-detail-section" id={key}>
-          <h2>{slugToLabel(key)}</h2>
+        <div key={key} className="radar-detail-section">
+          <Heading as="h2" id={key}>{slugToLabel(key)}</Heading>
           <div className="radar-section-body">
             <pre className="radar-section-pre">{content}</pre>
           </div>
@@ -242,8 +245,8 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
       ))}
 
       {ki.length > 0 && (
-        <div className="radar-detail-section" id="people">
-          <h2>Key Individuals</h2>
+        <div className="radar-detail-section">
+          <Heading as="h2" id="people">Key Individuals</Heading>
           <div className="radar-people">
             {ki.map(p => (
               <div key={p.name} className="radar-person-chip">

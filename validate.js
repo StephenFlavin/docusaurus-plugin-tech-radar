@@ -18,9 +18,11 @@ const { validate } = require('./src/validator');
 let inputPath = process.argv[2];
 
 if (!inputPath) {
-  // Try to read from docusaurus.config.js
+  // Try to read from docusaurus.config.js. Missing file is expected (user may
+  // not have one, or may not run from a site root) — any other error means
+  // the config is broken and the user should see why.
+  const configPath = path.resolve(process.cwd(), 'docusaurus.config.js');
   try {
-    const configPath = path.resolve(process.cwd(), 'docusaurus.config.js');
     const config = require(configPath);
     const plugins = config.plugins || [];
     for (const p of plugins) {
@@ -29,7 +31,11 @@ if (!inputPath) {
         break;
       }
     }
-  } catch {}
+  } catch (e) {
+    if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') {
+      console.warn(`\x1b[33mWARN \x1b[0m Failed to read ${configPath}: ${e.message}`);
+    }
+  }
 }
 
 if (!inputPath) {

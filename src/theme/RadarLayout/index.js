@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '@theme/Layout';
+import TOC from '@theme/TOC';
 import { SidebarItems } from './Sidebar';
 
 import './radar.css';
@@ -9,10 +10,16 @@ import './radar.css';
  *
  * Props:
  *   sidebar     - array of sidebar items built by buildSidebar() in index.js
- *   toc         - array of { id, label, level } for the right-hand TOC
+ *   toc         - array of { id, value, level } — the shape @theme/TOC expects
+ *                 (value is the display label). Each heading in a page must
+ *                 render an element with a matching id attribute.
  *   title       - page <title>
  *   description - meta description
  *   children    - main content
+ *
+ * We reuse Docusaurus's @theme/TOC so the right-column TOC gets scroll-based
+ * active-link highlighting for free and matches the docs TOC styling that
+ * users theme via --ifm-toc-* CSS variables.
  */
 export default function RadarLayout({ sidebar, toc, title, description, children }) {
   return (
@@ -30,16 +37,7 @@ export default function RadarLayout({ sidebar, toc, title, description, children
 
         {toc && toc.length > 0 && (
           <div className="radar-toc">
-            <div className="radar-toc-inner">
-              <h4 className="radar-toc-title">On this page</h4>
-              <ul className="radar-toc-list">
-                {toc.map(item => (
-                  <li key={item.id} className={`radar-toc-item radar-toc-level-${item.level}`}>
-                    <a href={`#${item.id}`} className="radar-toc-link">{item.label}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <TOC toc={toc} minHeadingLevel={2} maxHeadingLevel={3} />
           </div>
         )}
       </div>

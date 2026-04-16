@@ -230,4 +230,85 @@ describe('validate - error paths', () => {
     const errors = validate(buildRadar({ teams: ['ghost'] }));
     expect(errors[0].path).toBe('eng.tools.tool.teams');
   });
+
+  test('ring-override team error path includes the team key', () => {
+    const errors = validate(buildRadar({
+      'ring-overrides': { teams: { 'ghost-team': { ring: 'trial', reason: 'r' } } },
+    }));
+    expect(errors.some(e => e.path === 'eng.tools.tool.ring-overrides.teams.ghost-team')).toBe(true);
+  });
+});
+
+describe('validate - structural edge cases', () => {
+  test('handles a radar with no disciplines', () => {
+    const radar = { meta: {}, config: {}, disciplines: {} };
+    expect(validate(radar)).toEqual([]);
+  });
+
+  test('handles a discipline with no quadrants', () => {
+    const radar = {
+      meta: {}, config: {},
+      disciplines: { eng: { meta: { label: 'Eng' } } },
+    };
+    expect(validate(radar)).toEqual([]);
+  });
+
+  test('handles a quadrant with no entries', () => {
+    const radar = {
+      meta: {}, config: {},
+      disciplines: {
+        eng: {
+          meta: { label: 'Eng' },
+          quadrants: { tools: { meta: { label: 'Tools' } } },
+        },
+      },
+    };
+    expect(validate(radar)).toEqual([]);
+  });
+
+  test('handles a radar with no config at all', () => {
+    const radar = {
+      meta: {},
+      disciplines: {
+        eng: {
+          meta: { label: 'Eng' },
+          quadrants: {
+            tools: {
+              meta: { label: 'Tools' },
+              entries: { tool: { label: 'Tool', ring: 'adopt' } },
+            },
+          },
+        },
+      },
+    };
+    // No config means no teams/verticals/link-types known — but an entry that
+    // references none of them should still validate.
+    expect(validate(radar)).toEqual([]);
+  });
+
+  test('reports errors for every invalid entry, not just the first', () => {
+    const radar = buildRadar();
+    // Add a second entry under the same quadrant with a bad ring.
+    radar.disciplines.eng.quadrants.tools.entries.other = { label: 'Other', ring: 'nope' };
+    // And break the first entry too.
+    radar.disciplines.eng.quadrants.tools.entries.tool.ring = 'also-bad';
+
+    const errors = validate(radar);
+    const badRingErrors = errors.filter(e => e.message.includes('Invalid ring'));
+    expect(badRingErrors).toHaveLength(2);
+    expect(badRingErrors.map(e => e.path).sort()).toEqual([
+      'eng.tools.other',
+      'eng.tools.tool',
+    ]);
+  });
+});
+
+describe('validate - timeline', () => {
+  test('collects errors for multiple invalid timeline rings', () => {
+    const errors = validate(buildRadar({
+      timeline: { 'bad-1': '2026-Q1', 'bad-2': '2026-Q2' },
+    }));
+    const timelineErrors = errors.filter(e => e.path.endsWith('.timeline'));
+    expect(timelineErrors).toHaveLength(2);
+  });
 });

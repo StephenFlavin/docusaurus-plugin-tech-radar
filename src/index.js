@@ -1,27 +1,27 @@
 const path = require('path');
 const fs = require('fs');
+const { normalizeUrl } = require('@docusaurus/utils');
+const { Joi, RouteBasePathSchema } = require('@docusaurus/utils-validation');
 const { parseRadar } = require('./parser');
 const { validate } = require('./validator');
 
+const PluginOptionSchema = Joi.object({
+  path: Joi.string().optional(),
+  routeBasePath: RouteBasePathSchema.default('radar'),
+});
+
 /** @type {import('@docusaurus/types').Plugin} */
-module.exports = function pluginTechRadar(context, options) {
-  const {
-    path: radarPath,
-    routeBasePath = 'radar',
-  } = options;
+function pluginTechRadar(context, options) {
+  const { path: radarPath, routeBasePath } = options;
 
   const { baseUrl } = context.siteConfig;
   const resolvedPath = resolveRadarPath(context.siteDir, radarPath);
 
-  // Build absolute route paths that include baseUrl.
-  // Docusaurus's Link component prepends baseUrl to all href props, so addRoute
-  // paths must include it too or the broken-links checker reports mismatches.
-  function routePath(...parts) {
-    const segments = [baseUrl, routeBasePath, ...parts]
-      .map(p => String(p).replace(/^\/+|\/+$/g, ''))
-      .filter(Boolean);
-    return segments.length ? '/' + segments.join('/') : '/';
-  }
+  // Build absolute route paths that include baseUrl. Docusaurus's Link component
+  // prepends baseUrl to href props, so addRoute paths must include it too or
+  // the broken-links checker reports mismatches. normalizeUrl handles the
+  // trailing/leading slashes consistently with the rest of Docusaurus.
+  const routePath = (...parts) => normalizeUrl([baseUrl, routeBasePath, ...parts]);
 
   return {
     name: 'docusaurus-plugin-tech-radar',
@@ -61,7 +61,7 @@ module.exports = function pluginTechRadar(context, options) {
       const dataPath = await createData('radar.json', JSON.stringify({ ...radar, routeBasePath }));
 
       // Build sidebar items
-      const sidebarItems = buildSidebar(radar, routeBasePath);
+      const sidebarItems = buildSidebar(radar, baseUrl, routeBasePath);
       const sidebarPath = await createData('sidebar.json', JSON.stringify(sidebarItems));
 
       // Overview route
@@ -117,6 +117,11 @@ module.exports = function pluginTechRadar(context, options) {
       return path.resolve(__dirname, './theme');
     },
   };
+}
+
+module.exports = pluginTechRadar;
+module.exports.validateOptions = function validateOptions({ validate, options }) {
+  return validate(PluginOptionSchema, options);
 };
 
 /**
@@ -144,26 +149,22 @@ function resolveRadarPath(siteDir, radarPath) {
 }
 
 /**
- * Build a sidebar structure that Docusaurus components can render.
- * Matches the shape our RadarLayout expects.
+ * Build a sidebar structure mirroring Docusaurus's PropSidebarItem shape
+ * ('link' | 'category' with { label, href, items }) so it feels familiar and
+ * would be swizzle-compatible with a future @theme/DocSidebar adoption.
+ * `ring` is a radar-specific extension used by Sidebar.js to render the ring dot.
  */
-function buildSidebar(radar, basePath) {
-  const items = [];
+function buildSidebar(radar, baseUrl, routeBasePath) {
+  const href = (...parts) => normalizeUrl([baseUrl, routeBasePath, ...parts]);
+  const items = [{ type: 'link', label: 'Overview', href: href() }];
 
-  // Overview
-  items.push({
-    type: 'link',
-    label: 'Overview',
-    href: `/${basePath}`,
-  });
-
-  // Disciplines
   for (const [discSlug, disc] of Object.entries(radar.disciplines)) {
     const discItem = {
       type: 'category',
       label: disc.meta.label,
-      href: `/${basePath}/${discSlug}`,
+      href: href(discSlug),
       collapsed: true,
+      collapsible: true,
       items: [],
     };
 
@@ -172,6 +173,7 @@ function buildSidebar(radar, basePath) {
         type: 'category',
         label: quad.meta.label,
         collapsed: true,
+        collapsible: true,
         items: [],
       };
 
@@ -182,7 +184,7 @@ function buildSidebar(radar, basePath) {
         quadItem.items.push({
           type: 'link',
           label: entry.label,
-          href: `/${basePath}/${discSlug}/${entrySlug}`,
+          href: href(discSlug, entrySlug),
           ring: entry.ring,
         });
       }
