@@ -13,12 +13,14 @@ links:
   - type: url
     uri: https://argoproj.github.io/cd
     label: Argo CD
+    description: Official Argo CD documentation
   - type: slack
-    uri: "#argo-cd"
-    label: Argo CD channel
+    uri: https://acmecorp.slack.com/archives/C02ARGOCD1
+    label: "#argo-cd"
+    description: Argo CD discussion channel
 discussions:
   - type: rfc
     title: GitOps deployment model
     link:
       type: confluence
-      uri: /spaces/PLAT/pages/20200
+      uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/20200

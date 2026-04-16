@@ -10,11 +10,14 @@ key-individuals:
 tags: [services, apis, jvm]
 links:
   - type: slack
-    uri: "#backend-engineering"
-    label: Backend community
+    uri: https://acmecorp.slack.com/archives/C01BE001
+    label: "#backend-engineering"
+    description: Backend community discussion
   - type: confluence
-    uri: /spaces/ENG/pages/00001
+    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/00001
     label: Backend engineering hub
+    description: Central hub for backend standards and guides
   - type: url
     uri: https://wiki.acme.internal/backend-onboarding
     label: Onboarding guide
+    description: New joiner onboarding for backend engineers

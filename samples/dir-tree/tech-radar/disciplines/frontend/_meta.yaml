@@ -8,8 +8,10 @@ key-individuals:
 tags: [web, ui, dx]
 links:
   - type: slack
-    uri: "#frontend-engineering"
-    label: Frontend community
+    uri: https://acmecorp.slack.com/archives/C03FRONTEND
+    label: "#frontend-engineering"
+    description: Frontend community discussion
   - type: confluence
-    uri: /spaces/FE/pages/00001
+    uri: https://acmecorp.atlassian.net/wiki/spaces/FE/pages/00001
     label: Frontend engineering hub
+    description: Central hub for frontend standards

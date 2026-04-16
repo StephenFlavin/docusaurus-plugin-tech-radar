@@ -23,26 +23,31 @@ config:
   link-types:
     url:
       label: Website
-      icon-url: https://cdn.acme.internal/icons/link.svg
+      icon-url: /img/radar-icons/link.svg
     slack:
       label: Slack
-      icon-url: https://cdn.acme.internal/icons/slack.svg
-      uri-pattern: "^#[a-z0-9_-]+(/t/[0-9]+)?$"
+      icon-url: /img/radar-icons/slack.svg
+      uri-pattern: "^https://acmecorp\\.slack\\.com/"
+      label-pattern: "^#[a-z0-9_-]+$"
+      variants:
+        thread:
+          label-suffix: "(thread)"
+          icon-url: /img/radar-icons/slack-thread.svg
     confluence:
       label: Confluence
-      icon-url: https://cdn.acme.internal/icons/confluence.svg
-      uri-pattern: "^/spaces/[A-Z]+/pages/[0-9]+.*$"
+      icon-url: /img/radar-icons/confluence.svg
+      uri-pattern: "^https://acmecorp\\.atlassian\\.net/wiki/"
     jira:
       label: Jira
-      icon-url: https://cdn.acme.internal/icons/jira.svg
-      uri-pattern: "^[A-Z]+-[0-9]+$"
+      icon-url: /img/radar-icons/jira.svg
+      uri-pattern: "^https://acmecorp\\.atlassian\\.net/browse/"
     github:
       label: GitHub
-      icon-url: https://cdn.acme.internal/icons/github.svg
+      icon-url: /img/radar-icons/github.svg
       uri-pattern: "^https://github\\.com/.+"
     recording:
       label: Recording
-      icon-url: https://cdn.acme.internal/icons/video.svg
+      icon-url: /img/radar-icons/video.svg
       uri-pattern: "^https://recordings\\.acme\\.internal/.+"
 
   teams:

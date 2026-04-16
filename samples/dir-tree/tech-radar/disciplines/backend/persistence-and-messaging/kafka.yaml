@@ -30,15 +30,18 @@ links:
   - type: url
     uri: https://kafka.apache.org
     label: Apache Kafka
+    description: Official Kafka project
   - type: confluence
-    uri: /spaces/ENG/pages/41000
+    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/41000
     label: Kafka conventions and topic naming
+    description: Topic naming, schema registry, and partitioning rules
   - type: slack
-    uri: "#kafka-users"
-    label: Kafka users channel
+    uri: https://acmecorp.slack.com/archives/C01KAFKAUSR
+    label: "#kafka-users"
+    description: Kafka users support channel
 discussions:
   - type: adr
     title: "ADR-007: Kafka for inter-service events"
     link:
       type: confluence
-      uri: /spaces/ENG/pages/41010
+      uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/41010
