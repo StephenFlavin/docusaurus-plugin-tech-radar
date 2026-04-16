@@ -21,29 +21,29 @@ radar:
         summary: Initial radar with languages and frameworks only.
 
   config:
-    link-types:
+    links:
       url:
         label: Website
-        icon-url: https://cdn.acme.internal/icons/link.svg
+        icon-uri: https://cdn.acme.internal/icons/link.svg
       slack:
         label: Slack
-        icon-url: https://cdn.acme.internal/icons/slack.svg
-        uri-pattern: "^#[a-z0-9_-]+(/t/[0-9]+)?$"
+        icon-uri: https://cdn.acme.internal/icons/slack.svg
+        uri-pattern: "^https://acmecorp\\.slack\\.com/.+"
       confluence:
         label: Confluence
-        icon-url: https://cdn.acme.internal/icons/confluence.svg
-        uri-pattern: "^/spaces/[A-Z]+/pages/[0-9]+.*$"
+        icon-uri: https://cdn.acme.internal/icons/confluence.svg
+        uri-pattern: "^https://acmecorp\\.atlassian\\.net/wiki/"
       jira:
         label: Jira
-        icon-url: https://cdn.acme.internal/icons/jira.svg
-        uri-pattern: "^[A-Z]+-[0-9]+$"
+        icon-uri: https://cdn.acme.internal/icons/jira.svg
+        uri-pattern: "^https://acmecorp\\.atlassian\\.net/browse/[A-Z]+-[0-9]+$"
       github:
         label: GitHub
-        icon-url: https://cdn.acme.internal/icons/github.svg
+        icon-uri: https://cdn.acme.internal/icons/github.svg
         uri-pattern: "^https://github\\.com/.+"
       recording:
         label: Recording
-        icon-url: https://cdn.acme.internal/icons/video.svg
+        icon-uri: https://cdn.acme.internal/icons/video.svg
         uri-pattern: "^https://recordings\\.acme\\.internal/.+"
 
     teams:
@@ -98,10 +98,10 @@ radar:
         tags: [services, apis, jvm]
         links:
           - type: slack
-            uri: "#backend-engineering"
+            uri: "https://acmecorp.slack.com/archives/backend-engineering"
             label: Backend community
           - type: confluence
-            uri: /spaces/ENG/pages/00001
+            uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/00001
             label: Backend engineering hub
           - type: url
             uri: https://wiki.acme.internal/backend-onboarding
@@ -117,7 +117,7 @@ radar:
               case exists for an alternative runtime.
             links:
               - type: confluence
-                uri: /spaces/ENG/pages/00100
+                uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/00100
                 label: Language selection criteria
 
           entries:
@@ -161,17 +161,17 @@ radar:
                   uri: https://openjdk.org
                   label: OpenJDK
                 - type: confluence
-                  uri: /spaces/ENG/pages/10500
+                  uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/10500
                   label: Internal standards
                 - type: slack
-                  uri: "#backend-java"
+                  uri: "https://acmecorp.slack.com/archives/backend-java"
                   label: Java support channel
               discussions:
                 - type: rfc
                   title: Java as primary backend language
                   link:
                     type: confluence
-                    uri: /spaces/ENG/pages/10234
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/10234
                 - type: meeting
                   title: Language selection review
                   date: 2024-Q1
@@ -226,14 +226,14 @@ radar:
                   uri: https://kotlinlang.org
                   label: Kotlin site
                 - type: slack
-                  uri: "#backend-kotlin"
+                  uri: "https://acmecorp.slack.com/archives/backend-kotlin"
                   label: Kotlin community
               discussions:
                 - type: rfc
                   title: Kotlin adoption proposal
                   link:
                     type: confluence
-                    uri: /spaces/ENG/pages/20891
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/20891
                 - type: meeting
                   title: Kotlin trial kickoff
                   date: 2025-Q3
@@ -244,7 +244,7 @@ radar:
                   title: Coroutines vs Loom discussion
                   link:
                     type: slack
-                    uri: "#backend-kotlin/t/1685000000"
+                    uri: "https://acmecorp.slack.com/archives/backend-kotlin/p1685000000"
 
             go:
               label: Go
@@ -270,7 +270,7 @@ radar:
                   title: Go for edge proxies
                   link:
                     type: confluence
-                    uri: /spaces/ENG/pages/30122
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/30122
               sections:
                 evaluation-scope: |
                   The initial evaluation focuses on two use cases:
@@ -290,7 +290,7 @@ radar:
               Any new data store requires an architecture review.
             links:
               - type: confluence
-                uri: /spaces/ENG/pages/40000
+                uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/40000
                 label: Data store selection guide
 
           entries:
@@ -317,14 +317,14 @@ radar:
                   uri: https://postgresql.org
                   label: PostgreSQL
                 - type: slack
-                  uri: "#data-platform"
+                  uri: "https://acmecorp.slack.com/archives/data-platform"
                   label: Data platform support
               discussions:
                 - type: adr
                   title: "ADR-003: PostgreSQL as default RDBMS"
                   link:
                     type: confluence
-                    uri: /spaces/ENG/pages/40010
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/40010
               sections:
                 connection-pooling: |
                   All services must connect via PgBouncer.
@@ -365,17 +365,17 @@ radar:
                   uri: https://kafka.apache.org
                   label: Apache Kafka
                 - type: confluence
-                  uri: /spaces/ENG/pages/41000
+                  uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/41000
                   label: Kafka conventions and topic naming
                 - type: slack
-                  uri: "#kafka-users"
+                  uri: "https://acmecorp.slack.com/archives/kafka-users"
                   label: Kafka users channel
               discussions:
                 - type: adr
                   title: "ADR-007: Kafka for inter-service events"
                   link:
                     type: confluence
-                    uri: /spaces/ENG/pages/41010
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/41010
 
             redis:
               label: Redis
@@ -421,10 +421,10 @@ radar:
               tags: [nosql, legacy]
               links:
                 - type: slack
-                  uri: "#dynamo-migration"
+                  uri: "https://acmecorp.slack.com/archives/dynamo-migration"
                   label: Migration coordination
                 - type: jira
-                  uri: PLAT-2200
+                  uri: https://acmecorp.atlassian.net/browse/PLAT-2200
                   label: Migration epic
               discussions:
                 - type: post-mortem
@@ -432,7 +432,7 @@ radar:
                   date: 2025-08-03
                   link:
                     type: confluence
-                    uri: /spaces/SRE/pages/50200
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/SRE/pages/50200
                 - type: meeting
                   title: DynamoDB sunset decision
                   date: 2025-Q4
@@ -470,7 +470,7 @@ radar:
                   title: Structured concurrency with Java 21
                   link:
                     type: confluence
-                    uri: /spaces/ENG/pages/60100
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/60100
 
             cqrs:
               label: CQRS
@@ -491,7 +491,7 @@ radar:
                   title: CQRS for search indexing
                   link:
                     type: confluence
-                    uri: /spaces/ENG/pages/60200
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/60200
 
         tools:
           meta:
@@ -517,7 +517,7 @@ radar:
                   uri: https://gradle.org
                   label: Gradle
                 - type: confluence
-                  uri: /spaces/ENG/pages/70100
+                  uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/70100
                   label: Gradle conventions
 
     devops:
@@ -534,10 +534,10 @@ radar:
         tags: [infrastructure, reliability]
         links:
           - type: slack
-            uri: "#platform-engineering"
+            uri: "https://acmecorp.slack.com/archives/platform-engineering"
             label: Platform engineering channel
           - type: confluence
-            uri: /spaces/PLAT/pages/00001
+            uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/00001
             label: Platform hub
           - type: url
             uri: https://wiki.acme.internal/on-call
@@ -576,10 +576,10 @@ radar:
                   uri: https://kubernetes.io
                   label: Kubernetes
                 - type: confluence
-                  uri: /spaces/PLAT/pages/10100
+                  uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/10100
                   label: Cluster provisioning guide
                 - type: slack
-                  uri: "#k8s-help"
+                  uri: "https://acmecorp.slack.com/archives/k8s-help"
                   label: Kubernetes help
 
             nomad:
@@ -607,7 +607,7 @@ radar:
               Argo CD manages deployment to production clusters.
             links:
               - type: confluence
-                uri: /spaces/PLAT/pages/20000
+                uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/20000
                 label: CI/CD standards
 
           entries:
@@ -628,7 +628,7 @@ radar:
                   uri: https://github.com/acme-corp/.github
                   label: Shared workflows
                 - type: confluence
-                  uri: /spaces/PLAT/pages/20100
+                  uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/20100
                   label: Workflow authoring guide
 
             argo-cd:
@@ -648,14 +648,14 @@ radar:
                   uri: https://argoproj.github.io/cd
                   label: Argo CD
                 - type: slack
-                  uri: "#argo-cd"
+                  uri: "https://acmecorp.slack.com/archives/argo-cd"
                   label: Argo CD channel
               discussions:
                 - type: rfc
                   title: GitOps deployment model
                   link:
                     type: confluence
-                    uri: /spaces/PLAT/pages/20200
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/20200
 
         observability:
           meta:
@@ -684,10 +684,10 @@ radar:
                   uri: https://datadoghq.com
                   label: Datadog
                 - type: confluence
-                  uri: /spaces/PLAT/pages/30100
+                  uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/30100
                   label: Datadog tagging standards
                 - type: slack
-                  uri: "#observability"
+                  uri: "https://acmecorp.slack.com/archives/observability"
                   label: Observability channel
 
             opentelemetry:
@@ -710,17 +710,17 @@ radar:
                   uri: https://opentelemetry.io
                   label: OpenTelemetry
                 - type: confluence
-                  uri: /spaces/PLAT/pages/30200
+                  uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/30200
                   label: OTel rollout plan
                 - type: slack
-                  uri: "#observability"
+                  uri: "https://acmecorp.slack.com/archives/observability"
                   label: Observability channel
               discussions:
                 - type: rfc
                   title: OTel as telemetry standard
                   link:
                     type: confluence
-                    uri: /spaces/PLAT/pages/30210
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/30210
                 - type: meeting
                   title: OTel trial review
                   date: 2026-Q1
@@ -731,7 +731,7 @@ radar:
                   title: Datadog exporter gotchas
                   link:
                     type: slack
-                    uri: "#observability/t/1700000000"
+                    uri: "https://acmecorp.slack.com/archives/observability/p1700000000"
 
         infrastructure-as-code:
           meta:
@@ -742,7 +742,7 @@ radar:
               go through code review and plan approval.
             links:
               - type: confluence
-                uri: /spaces/PLAT/pages/40000
+                uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/40000
                 label: IaC standards
 
           entries:
@@ -791,7 +791,7 @@ radar:
                   title: Pulumi for application-owned infra
                   link:
                     type: confluence
-                    uri: /spaces/PLAT/pages/40100
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/40100
 
     frontend:
       meta:
@@ -805,10 +805,10 @@ radar:
         tags: [web, ui, dx]
         links:
           - type: slack
-            uri: "#frontend-engineering"
+            uri: "https://acmecorp.slack.com/archives/frontend-engineering"
             label: Frontend community
           - type: confluence
-            uri: /spaces/FE/pages/00001
+            uri: https://acmecorp.atlassian.net/wiki/spaces/FE/pages/00001
             label: Frontend engineering hub
 
       quadrants:
@@ -849,10 +849,10 @@ radar:
                   uri: https://react.dev
                   label: React
                 - type: confluence
-                  uri: /spaces/FE/pages/10100
+                  uri: https://acmecorp.atlassian.net/wiki/spaces/FE/pages/10100
                   label: React conventions
                 - type: slack
-                  uri: "#frontend-react"
+                  uri: "https://acmecorp.slack.com/archives/frontend-react"
                   label: React channel
 
             svelte:
@@ -877,7 +877,7 @@ radar:
                   title: Svelte for marketing pages
                   link:
                     type: confluence
-                    uri: /spaces/FE/pages/10200
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/FE/pages/10200
 
         tools:
           meta:
@@ -908,7 +908,7 @@ radar:
             description: Shared component libraries and design tokens.
             links:
               - type: confluence
-                uri: /spaces/FE/pages/30000
+                uri: https://acmecorp.atlassian.net/wiki/spaces/FE/pages/30000
                 label: Design system docs
 
           entries:
@@ -931,5 +931,5 @@ radar:
                   uri: https://ds.acme.internal
                   label: Storybook
                 - type: slack
-                  uri: "#design-system"
+                  uri: "https://acmecorp.slack.com/archives/design-system"
                   label: Design system channel

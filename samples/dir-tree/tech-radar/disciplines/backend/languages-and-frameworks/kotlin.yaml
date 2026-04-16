@@ -38,7 +38,6 @@ links:
     uri: https://acmecorp.slack.com/archives/C01KOTLIN/p1685000000
     label: "#backend-kotlin"
     description: Coroutines vs Loom discussion thread
-    variant: thread
 discussions:
   - type: rfc
     title: Kotlin adoption proposal

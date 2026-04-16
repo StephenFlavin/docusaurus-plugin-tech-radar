@@ -6,7 +6,7 @@ function buildRadar(entryOverrides = {}, configOverrides = {}) {
   return {
     meta: { title: 'Test', version: 1, date: '2026-01-01' },
     config: {
-      'link-types': { url: { label: 'Website' } },
+      links: { url: { label: 'Website' } },
       teams: { 'team-a': { label: 'Team A' } },
       verticals: { 'vert-a': { label: 'Vert A' } },
       ...configOverrides,
@@ -106,6 +106,83 @@ describe('validate - links', () => {
 
   test('passes with a known link type', () => {
     expect(validate(buildRadar({ links: [{ type: 'url', uri: 'https://x.com' }] }))).toEqual([]);
+  });
+
+  test('errors when link uri does not match uri-pattern', () => {
+    const radar = buildRadar(
+      { links: [{ type: 'jira', uri: 'not-a-ticket' }] },
+      { links: { jira: { label: 'Jira', 'uri-pattern': '^[A-Z]+-[0-9]+$' } } },
+    );
+    expect(validate(radar)).toContainEqual(expect.objectContaining({
+      severity: 'error',
+      message: expect.stringContaining('does not match uri-pattern'),
+    }));
+  });
+
+  test('passes when link uri matches uri-pattern', () => {
+    const radar = buildRadar(
+      { links: [{ type: 'jira', uri: 'ABC-123' }] },
+      { links: { jira: { label: 'Jira', 'uri-pattern': '^[A-Z]+-[0-9]+$' } } },
+    );
+    expect(validate(radar)).toEqual([]);
+  });
+
+  test('errors when link label does not match label-pattern', () => {
+    const radar = buildRadar(
+      { links: [{ type: 'slack', uri: 'x', label: 'not a channel' }] },
+      { links: { slack: { label: 'Slack', 'label-pattern': '^#[a-z0-9_-]+$' } } },
+    );
+    expect(validate(radar)).toContainEqual(expect.objectContaining({
+      severity: 'error',
+      message: expect.stringContaining('does not match label-pattern'),
+    }));
+  });
+
+  test('passes when link label matches label-pattern', () => {
+    const radar = buildRadar(
+      { links: [{ type: 'slack', uri: 'x', label: '#ops-help' }] },
+      { links: { slack: { label: 'Slack', 'label-pattern': '^#[a-z0-9_-]+$' } } },
+    );
+    expect(validate(radar)).toEqual([]);
+  });
+
+  test('label-pattern is skipped when link has no label', () => {
+    const radar = buildRadar(
+      { links: [{ type: 'slack', uri: 'x' }] },
+      { links: { slack: { label: 'Slack', 'label-pattern': '^#[a-z0-9_-]+$' } } },
+    );
+    expect(validate(radar)).toEqual([]);
+  });
+});
+
+describe('validate - discussions', () => {
+  test('errors on unknown discussion link type', () => {
+    const errors = validate(buildRadar({
+      discussions: [{ title: 'X', link: { type: 'ghost', uri: 'x' } }],
+    }));
+    expect(errors).toContainEqual(expect.objectContaining({
+      severity: 'error',
+      path: expect.stringContaining('.discussions'),
+      message: expect.stringContaining('"ghost"'),
+    }));
+  });
+
+  test('discussion link pattern is enforced', () => {
+    const radar = buildRadar(
+      { discussions: [{ title: 'X', link: { type: 'jira', uri: 'not-a-ticket' } }] },
+      { links: { jira: { label: 'Jira', 'uri-pattern': '^[A-Z]+-[0-9]+$' } } },
+    );
+    expect(validate(radar)).toContainEqual(expect.objectContaining({
+      severity: 'error',
+      path: expect.stringContaining('.discussions'),
+      message: expect.stringContaining('does not match uri-pattern'),
+    }));
+  });
+
+  test('discussion without a link is fine', () => {
+    expect(validate(buildRadar({
+      discussions: [{ title: 'Meeting with no link' }],
+    }))).toEqual([]);
   });
 });
 

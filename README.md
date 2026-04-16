@@ -85,14 +85,15 @@ radar:
         summary: Added data discipline.
 
   config:
-    link-types:
+    links:
       url:
         label: Website
-        icon-url: https://example.com/icons/link.svg
+        icon-uri: https://example.com/icons/link.svg
       slack:
         label: Slack
-        icon-url: https://example.com/icons/slack.svg
-        uri-pattern: "^#[a-z0-9_-]+"   # optional validation regex
+        icon-uri: https://example.com/icons/slack.svg
+        uri-pattern: "^https://acme\\.slack\\.com/.+"  # optional validation regex
+        label-pattern: "^#[a-z0-9_-]+$"                # optional validation regex
 
     teams:
       platform:
@@ -209,10 +210,10 @@ meta:
       summary: Added data discipline.
 
 config:
-  link-types:
+  links:
     url:
       label: Website
-      icon-url: https://example.com/icons/link.svg
+      icon-uri: https://example.com/icons/link.svg
   teams:
     platform:
       label: Platform Engineering

@@ -74,7 +74,7 @@ The parsed radar object shape (what all components receive):
 {
   meta: { title, version, date, cadence, changelog: [] },
   config: {
-    'link-types': { [key]: { label, icon-url, uri-pattern? } },
+    links: { [key]: { label?, 'icon-uri'?, 'uri-pattern'?, 'label-pattern'? } },
     teams: { [key]: { label, description } },
     verticals: { [key]: { label, description } },
   },
@@ -154,7 +154,7 @@ The mode is detected automatically by `parser.js` based on whether the path is a
 
 ### Validation
 
-`validator.js` checks: valid rings (`adopt|trial|assess|hold`), all referenced teams/verticals/link-types exist in `config`, `hold` entries have `hold_reason`, ring override entries have valid rings and (as a warning) a `reason`. Errors abort the build; warnings print and continue.
+`validator.js` checks: valid rings (`adopt|trial|assess|hold`), all referenced teams/verticals/link types exist in `config`, `hold` entries have `hold_reason`, ring override entries have valid rings and (as a warning) a `reason`. For each entry link and each discussion's nested `link`, the referenced link type's `uri-pattern` and `label-pattern` (both optional) are enforced as regex against `link.uri` / `link.label`. Errors abort the build; warnings print and continue.
 
 The standalone `validate.js` script wraps the same parser + validator for CI use without running Docusaurus. It also reads `path` from a local `docusaurus.config.js` plugin entry when no argument is given.
 
@@ -164,7 +164,7 @@ Plugin Node code (`src/index.js`, `src/parser.js`, `src/validator.js`) is CJS. T
 
 ## Code conventions
 
-- **Helpers over inline logic.** When a small transformation is needed in more than one place (e.g. looking up a link-type label), put it in a helper in `RadarComponents/*` and import it. New code should prefer `linkTypeLabel(config, type)` over re-implementing `config['link-types']?.[type]?.label || type` inline.
+- **Helpers over inline logic.** When a small transformation is needed in more than one place (e.g. looking up a link-type label), put it in a helper in `RadarComponents/*` and import it. New code should prefer `linkTypeLabel(config, type)` over re-implementing `config.links?.[type]?.label || slugToLabel(type)` inline.
 - **Stable React `key`s.** Prefer a domain-stable field (`entry.slug`, `link.uri`, `person.name`). Avoid array indices unless the list is genuinely positional and immutable.
 - **Memoise derived collections in hooks** (see `useRadarFilters` — usage tallies are `useMemo`'d on `allEntries`). Don't recompute per render.
 - **Styling lives in `radar.css`.** Components apply class names; no inline `style` objects for anything structural.

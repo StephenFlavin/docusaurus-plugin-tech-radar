@@ -200,11 +200,11 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
           <Heading as="h2" id="links">Links</Heading>
           <div className="radar-link-list">
             {links.map(l => (
-              <div key={l.uri} className="radar-link-item">
+              <Link key={l.uri} to={l.uri} className="radar-link-item">
                 <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
                 <span className="radar-link-label">{l.label || l.uri}</span>
                 <span className="radar-link-uri">{l.uri}</span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -214,23 +214,34 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
         <div className="radar-detail-section">
           <Heading as="h2" id="discussions">Discussions</Heading>
           <div className="radar-link-list">
-            {discussions.map(d => (
-              <div key={d.title} className="radar-discussion-item">
-                <span className="radar-discussion-type">{d.type}</span>
-                <div>
-                  <div className="radar-discussion-title">{d.title}</div>
-                  {d.date && <div className="radar-discussion-date">{d.date}</div>}
-                  {d.link && (
-                    <div className="radar-discussion-link-ref">
-                      <span className="radar-link-type-badge radar-link-type-badge--sm">
-                        {linkTypeLabel(config, d.link.type)}
-                      </span>
-                      {' '}{d.link.uri}
-                    </div>
-                  )}
+            {discussions.map(d => {
+              const inner = (
+                <>
+                  <span className="radar-discussion-type">{d.type}</span>
+                  <div>
+                    <div className="radar-discussion-title">{d.title}</div>
+                    {d.date && <div className="radar-discussion-date">{d.date}</div>}
+                    {d.link && (
+                      <div className="radar-discussion-link-ref">
+                        <span className="radar-link-type-badge radar-link-type-badge--sm">
+                          {linkTypeLabel(config, d.link.type)}
+                        </span>
+                        {' '}{d.link.uri}
+                      </div>
+                    )}
+                  </div>
+                </>
+              );
+              return d.link?.uri ? (
+                <Link key={d.title} to={d.link.uri} className="radar-discussion-item">
+                  {inner}
+                </Link>
+              ) : (
+                <div key={d.title} className="radar-discussion-item">
+                  {inner}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

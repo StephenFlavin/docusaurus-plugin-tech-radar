@@ -3,6 +3,6 @@ meta:
   version: 1
   date: 2026-01-01
 config:
-  link-types: {}
+  links: {}
   teams: {}
   verticals: {}
