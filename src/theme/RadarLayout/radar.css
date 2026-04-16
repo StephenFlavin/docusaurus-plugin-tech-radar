@@ -444,6 +444,14 @@
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--ifm-toc-border-color);
   border-radius: var(--ifm-global-radius);
+  color: inherit;
+  text-decoration: none;
+}
+
+a.radar-link-item:hover {
+  text-decoration: none;
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-menu-color-background-hover);
 }
 
 .radar-link-type-badge {
@@ -477,6 +485,14 @@
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--ifm-toc-border-color);
   border-radius: var(--ifm-global-radius);
+  color: inherit;
+  text-decoration: none;
+}
+
+a.radar-discussion-item:hover {
+  text-decoration: none;
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-menu-color-background-hover);
 }
 
 .radar-discussion-type {

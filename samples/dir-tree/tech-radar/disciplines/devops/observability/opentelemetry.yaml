@@ -29,7 +29,6 @@ links:
     uri: https://acmecorp.slack.com/archives/C02OBSERVE/p1700000000
     label: "#observability"
     description: Datadog exporter gotchas thread
-    variant: thread
 discussions:
   - type: rfc
     title: OTel as telemetry standard

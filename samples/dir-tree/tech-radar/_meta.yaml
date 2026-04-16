@@ -20,34 +20,30 @@ meta:
       summary: Initial radar with languages and frameworks only.
 
 config:
-  link-types:
+  links:
     url:
       label: Website
-      icon-url: /img/radar-icons/link.svg
+      icon-uri: /img/radar-icons/link.svg
     slack:
       label: Slack
-      icon-url: /img/radar-icons/slack.svg
+      icon-uri: /img/radar-icons/slack.svg
       uri-pattern: "^https://acmecorp\\.slack\\.com/"
       label-pattern: "^#[a-z0-9_-]+$"
-      variants:
-        thread:
-          label-suffix: "(thread)"
-          icon-url: /img/radar-icons/slack-thread.svg
     confluence:
       label: Confluence
-      icon-url: /img/radar-icons/confluence.svg
+      icon-uri: /img/radar-icons/confluence.svg
       uri-pattern: "^https://acmecorp\\.atlassian\\.net/wiki/"
     jira:
       label: Jira
-      icon-url: /img/radar-icons/jira.svg
+      icon-uri: /img/radar-icons/jira.svg
       uri-pattern: "^https://acmecorp\\.atlassian\\.net/browse/"
     github:
       label: GitHub
-      icon-url: /img/radar-icons/github.svg
+      icon-uri: /img/radar-icons/github.svg
       uri-pattern: "^https://github\\.com/.+"
     recording:
       label: Recording
-      icon-url: /img/radar-icons/video.svg
+      icon-uri: /img/radar-icons/video.svg
       uri-pattern: "^https://recordings\\.acme\\.internal/.+"
 
   teams:

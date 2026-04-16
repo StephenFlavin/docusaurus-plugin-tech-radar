@@ -4,7 +4,8 @@ function validate(radar) {
   const errors = [];
   const validTeams = Object.keys(radar.config?.teams || {});
   const validVerticals = Object.keys(radar.config?.verticals || {});
-  const validLinkTypes = Object.keys(radar.config?.['link-types'] || {});
+  const linkTypes = radar.config?.links || {};
+  const validLinkTypes = Object.keys(linkTypes);
 
   for (const [discSlug, disc] of Object.entries(radar.disciplines || {})) {
     for (const [quadSlug, quad] of Object.entries(disc.quadrants || {})) {
@@ -32,8 +33,13 @@ function validate(radar) {
 
         // Links
         for (const l of (entry.links || [])) {
-          if (!validLinkTypes.includes(l.type)) {
-            errors.push({ path: `${p}.links`, message: `Unknown link type "${l.type}"`, severity: 'error' });
+          validateLink(l, linkTypes, validLinkTypes, `${p}.links`, errors);
+        }
+
+        // Discussions (nested link)
+        for (const d of (entry.discussions || [])) {
+          if (d.link) {
+            validateLink(d.link, linkTypes, validLinkTypes, `${p}.discussions`, errors);
           }
         }
 
@@ -106,6 +112,32 @@ function validate(radar) {
   }
 
   return errors;
+}
+
+function validateLink(link, linkTypes, validLinkTypes, path, errors) {
+  if (!validLinkTypes.includes(link.type)) {
+    errors.push({ path, message: `Unknown link type "${link.type}"`, severity: 'error' });
+    return;
+  }
+  const typeDef = linkTypes[link.type] || {};
+  if (typeDef['uri-pattern'] && link.uri != null) {
+    if (!new RegExp(typeDef['uri-pattern']).test(link.uri)) {
+      errors.push({
+        path,
+        message: `Link uri "${link.uri}" does not match uri-pattern for type "${link.type}"`,
+        severity: 'error',
+      });
+    }
+  }
+  if (typeDef['label-pattern'] && link.label != null) {
+    if (!new RegExp(typeDef['label-pattern']).test(link.label)) {
+      errors.push({
+        path,
+        message: `Link label "${link.label}" does not match label-pattern for type "${link.type}"`,
+        severity: 'error',
+      });
+    }
+  }
 }
 
 module.exports = { validate };
