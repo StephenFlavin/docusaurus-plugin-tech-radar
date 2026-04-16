@@ -113,11 +113,20 @@ The parsed radar object shape (what all components receive):
 
 All live under `src/theme/` and are registered via `getThemePath()` in `index.js`. Docusaurus resolves `@theme/RadarXxx` imports from there.
 
-- **`RadarLayout`** — three-column shell (sidebar | content | TOC). Wraps every page. Sidebar is built by `buildSidebar()` in `index.js` and passed as a prop. Sidebar items extracted to `Sidebar.js`. All radar styling lives in `radar.css` alongside the layout.
+- **`RadarLayout`** — three-column shell (sidebar | content | TOC). Wraps every page. Sidebar is built by `buildSidebar()` in `index.js` and passed as a prop. Sidebar items extracted to `Sidebar.js`. All radar styling lives in `radar.css` alongside the layout. The right-column TOC reuses `@theme/TOC` so active-link highlighting and `--ifm-toc-*` CSS-variable theming match the rest of the site.
 - **`RadarComponents`** — shared logic and UI atoms. Barrel `index.js` re-exports from sub-modules: `rings.js`, `filters.js`, `FilterBar.js`, `RingStats.js`, `EntryCard.js`, `RadarViz.js`, `links.js`.
 - **`RadarOverview`** — `/radar` page: all entries across all disciplines with filtering.
 - **`RadarDiscipline`** — `/radar/:disc` page: SVG radar viz (`RadarViz`) + entry cards per quadrant.
 - **`RadarEntry`** — `/radar/:disc/:entry` page: full detail view (rationale, timeline, overrides, links, discussions, freeform sections).
+
+### Docusaurus conventions
+
+The plugin uses Docusaurus's built-in primitives rather than reinventing them, so sites behave predictably and swizzle rules apply:
+
+- **`validateOptions` + `Joi` schema** (see `src/index.js`). `routeBasePath` flows through `RouteBasePathSchema` from `@docusaurus/utils-validation`, so leading/trailing slashes normalize the same way the docs plugin does.
+- **`normalizeUrl` from `@docusaurus/utils`** is used for every URL assembly — route registration (`addRoute`) and sidebar `href`s — so `baseUrl` handling matches Docusaurus-wide behaviour.
+- **`@theme/Layout`, `@theme/TOC`, `@theme/Heading`** are reused directly. Each page-level h2 is rendered via `<Heading as="h2" id="...">`, which registers the anchor with Docusaurus's broken-link checker (`onBrokenAnchors`) and applies the standard `.anchor` styling + copy-link affordance. Wrapping a `<div id>` around a raw `<h2>` will *not* register with the checker — use `@theme/Heading` for every TOC-referenced heading.
+- **Sidebar** intentionally remains a custom `Sidebar.js` (the shape matches Docusaurus's `PropSidebarItem` but `@theme/DocSidebar` is too coupled to the docs plugin to reuse directly). This is the one component not backed by a built-in.
 
 ### Ring override system
 
@@ -202,3 +211,6 @@ Documented for context on past decisions — all fixed in the current tree.
 8. **Inline link-type lookup.** Every callsite now uses the shared `linkTypeLabel(config, type)` helper from `RadarComponents/links.js`.
 9. **Silent `catch {}` in `validate.js`.** Now narrowed to `ENOENT` / `MODULE_NOT_FOUND`; real config errors surface as a warning rather than being swallowed.
 10. **Placeholder parser tests.** Replaced with fixtures that actually exercise the `slugToLabel()` fallback, mixed `.yaml`/`.yml` entry extensions, and `_`-prefixed entry exclusion.
+11. **Plugin options were unvalidated** and `routeBasePath` handled by hand. `validateOptions` now runs a `Joi` schema using `RouteBasePathSchema`, and `normalizeUrl` assembles route paths so the output matches what Docusaurus's docs plugin would produce.
+12. **Custom right-column TOC.** Swapped for `@theme/TOC`; TOC item objects use `{id, value, level}` (the mdx-loader `TOCItem` shape).
+13. **`<h2>` headings were raw JSX wrapped in `<div id="…">` anchors.** `onBrokenAnchors` only registers ids that go through `collectAnchor()` (via `@theme/Heading`), so the checker reported every TOC link as broken. All TOC-referenced h2s now use `<Heading as="h2" id="…">`.

@@ -1,4 +1,5 @@
 import React from 'react';
+import Heading from '@theme/Heading';
 import RadarLayout from '@theme/RadarLayout';
 import {
   EntryCard, FilterBar, RadarViz, RingStats,
@@ -21,13 +22,15 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
   const filters = useRadarFilters(allEntries);
   const hasFilter = filters.ringFilter || filters.teamFilter || filters.verticalFilter || filters.tagFilter || filters.search;
 
+  // @theme/TOC expects items shaped like { id, value, level } (same as
+  // mdx-loader's TOCItem). `value` is the display string.
   const toc = [
-    { id: 'radar-viz', label: 'Radar', level: 2 },
+    { id: 'radar-viz', value: 'Radar', level: 2 },
     ...Object.entries(disc.quadrants || {}).map(([qSlug, quad]) => ({
-      id: qSlug, label: quad.meta.label, level: 2,
+      id: qSlug, value: quad.meta.label, level: 2,
     })),
-    ...(ki.length > 0 ? [{ id: 'people', label: 'Key Individuals', level: 2 }] : []),
-    ...(links.length > 0 ? [{ id: 'links', label: 'Links', level: 2 }] : []),
+    ...(ki.length > 0 ? [{ id: 'people', value: 'Key Individuals', level: 2 }] : []),
+    ...(links.length > 0 ? [{ id: 'links', value: 'Links', level: 2 }] : []),
   ];
 
   return (
@@ -44,13 +47,12 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
         </div>
       )}
 
-      <div id="radar-viz">
-        <RadarViz
-          quadrants={Object.entries(disc.quadrants || {})}
-          basePath={`/${radar.routeBasePath}/${discSlug}`}
-          filters={filters}
-        />
-      </div>
+      <Heading as="h2" id="radar-viz">Radar</Heading>
+      <RadarViz
+        quadrants={Object.entries(disc.quadrants || {})}
+        basePath={`/${radar.routeBasePath}/${discSlug}`}
+        filters={filters}
+      />
 
       <RingStats
         entries={allEntries}
@@ -78,9 +80,9 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
         if (entries.length === 0 && hasFilter) return null;
 
         return (
-          <div key={qSlug} className="radar-quadrant" id={qSlug}>
+          <div key={qSlug} className="radar-quadrant">
             <div className="radar-quadrant-header">
-              <h2>{quad.meta.label}</h2>
+              <Heading as="h2" id={qSlug}>{quad.meta.label}</Heading>
               <span className="radar-quadrant-count">{entries.length} entries</span>
             </div>
             {quad.meta.guidance && (
@@ -113,8 +115,8 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
       })}
 
       {ki.length > 0 && (
-        <div className="radar-detail-section" id="people">
-          <h2>Key Individuals</h2>
+        <div className="radar-detail-section">
+          <Heading as="h2" id="people">Key Individuals</Heading>
           <div className="radar-people">
             {ki.map(p => (
               <div key={p.name} className="radar-person-chip">
@@ -127,8 +129,8 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
       )}
 
       {links.length > 0 && (
-        <div className="radar-detail-section" id="links">
-          <h2>Links</h2>
+        <div className="radar-detail-section">
+          <Heading as="h2" id="links">Links</Heading>
           <div className="radar-link-list">
             {links.map(l => (
               <div key={l.uri} className="radar-link-item">
