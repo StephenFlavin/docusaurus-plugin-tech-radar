@@ -21,7 +21,7 @@ radar:
         summary: Initial radar with languages and frameworks only.
 
   config:
-    links:
+    link-types:
       url:
         label: Website
         icon-uri: https://cdn.acme.internal/icons/link.svg
@@ -160,12 +160,15 @@ radar:
                 - type: url
                   uri: https://openjdk.org
                   label: OpenJDK
+                  description: Official OpenJDK project site.
                 - type: confluence
                   uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/10500
                   label: Internal standards
+                  description: Approved distributions, baseline versions, and linting rules.
                 - type: slack
                   uri: "https://acmecorp.slack.com/archives/backend-java"
                   label: Java support channel
+                  description: Engineering-wide support and discussion channel for Java.
               discussions:
                 - type: rfc
                   title: Java as primary backend language
@@ -225,9 +228,11 @@ radar:
                 - type: url
                   uri: https://kotlinlang.org
                   label: Kotlin site
+                  description: Official Kotlin language site.
                 - type: slack
                   uri: "https://acmecorp.slack.com/archives/backend-kotlin"
                   label: Kotlin community
+                  description: Kotlin community channel for questions and pairing.
               discussions:
                 - type: rfc
                   title: Kotlin adoption proposal

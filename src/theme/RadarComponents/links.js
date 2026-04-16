@@ -5,9 +5,9 @@ function slugToLabel(slug) {
 }
 
 export function linkTypeLabel(config, typeKey) {
-  return config?.links?.[typeKey]?.label || slugToLabel(typeKey);
+  return config?.['link-types']?.[typeKey]?.label || slugToLabel(typeKey);
 }
 
 export function linkTypeIconUri(config, typeKey) {
-  return config?.links?.[typeKey]?.['icon-uri'];
+  return config?.['link-types']?.[typeKey]?.['icon-uri'];
 }
