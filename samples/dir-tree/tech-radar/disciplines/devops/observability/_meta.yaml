@@ -2,4 +2,4 @@ label: Observability
 description: Monitoring, tracing, logging, and alerting.
 guidance: >
   All services must emit OpenTelemetry-compatible
-  traces by 2026-Q4.
+  traces by 2026-12-31.

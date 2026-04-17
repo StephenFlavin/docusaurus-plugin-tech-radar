@@ -7,7 +7,7 @@ import {
 } from '@theme/RadarComponents';
 
 export default function RadarDiscipline({ radar, discData, sidebar }) {
-  const { slug: discSlug, discipline: disc } = discData;
+  const { slug: discSlug, discipline: disc, pagination } = discData;
   const config = radar.config;
   const ki = disc.meta['key-individuals'] || [];
   const links = disc.meta.links || [];
@@ -33,8 +33,16 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
     ...(links.length > 0 ? [{ id: 'links', value: 'Links', level: 2 }] : []),
   ];
 
+  const breadcrumbs = [
+    { label: 'Tech Radar', href: radar.routeBasePath },
+    { label: disc.meta.label },
+  ];
+
   return (
-    <RadarLayout sidebar={sidebar} toc={toc} title={disc.meta.label} description={disc.meta.description}>
+    <RadarLayout
+      sidebar={sidebar} toc={toc} breadcrumbs={breadcrumbs} pagination={pagination}
+      title={disc.meta.label} description={disc.meta.description}
+    >
       <h1>{disc.meta.label}</h1>
 
       {disc.meta.description && (

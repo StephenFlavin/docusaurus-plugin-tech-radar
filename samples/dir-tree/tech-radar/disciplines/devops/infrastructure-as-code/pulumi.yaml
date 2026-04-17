@@ -1,7 +1,7 @@
 label: Pulumi
 ring: assess
 timeline:
-  assess: 2026-Q2
+  assess: 2026-06-30
 description: IaC using general-purpose languages.
 rationale: >
   Enables TypeScript/Python for infrastructure,

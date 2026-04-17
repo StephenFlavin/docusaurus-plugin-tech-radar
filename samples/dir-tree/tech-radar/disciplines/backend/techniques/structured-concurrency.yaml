@@ -1,8 +1,8 @@
 label: Structured Concurrency
 ring: trial
 timeline:
-  assess: 2025-Q3
-  trial: 2026-Q1
+  assess: 2025-09-30
+  trial: 2026-03-31
 description: Managing concurrent tasks as a single unit of work.
 rationale: >
   Reduces leaked threads and simplifies error

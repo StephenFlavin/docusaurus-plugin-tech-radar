@@ -17,20 +17,16 @@ A Docusaurus plugin that renders a Technology Radar from YAML definitions. Suppo
 
 ## Installation
 
-> **Note:** The package is not yet published to npm. Once published, install with:
-
 ```bash
 npm install docusaurus-plugin-tech-radar
-# or
-bun add docusaurus-plugin-tech-radar
 ```
 
-Until then, clone this repository and reference it directly:
+Then reference it from your Docusaurus config:
 
 ```js
 // docusaurus.config.js
 plugins: [
-  ['./path/to/docusaurus-plugin-tech-radar', {
+  ['docusaurus-plugin-tech-radar', {
     routeBasePath: 'radar',
   }],
 ],
@@ -131,9 +127,9 @@ radar:
               label: Java
               ring: adopt              # adopt | trial | assess | hold
               timeline:
-                assess: 2023-Q4
-                trial: 2024-Q1
-                adopt: 2024-Q3
+                assess: 2023-12-31
+                trial: 2024-03-31
+                adopt: 2024-09-30
               description: Core backend language.
               rationale: Mature ecosystem, strong hiring pipeline.
               licence: GPL-2.0 WITH Classpath-exception-2.0
@@ -176,7 +172,7 @@ dynamodb:
   label: DynamoDB
   ring: hold
   hold_reason: Cost unpredictability and hot partition issues.
-  sunset_date: 2027-Q1
+  sunset_date: 2027-03-31
   migration_target: postgresql
 ```
 
@@ -272,7 +268,7 @@ node validate.js tech-radar.yaml
 node validate.js tech-radar/
 
 # From a sample directory
-bun run validate
+npm run validate
 ```
 
 Validation checks:
@@ -289,16 +285,16 @@ Errors abort the build. Warnings print and continue.
 
 ```bash
 # Install plugin dependencies
-bun install
+npm install
 
 # Run unit tests
-bun run test
+npm test
 
 # Try a sample (single-file mode)
-cd samples/uber-yaml && bun install && bun run validate && bun run build
+cd samples/uber-yaml && npm install && npm run validate && npm run build
 
 # Try a sample (directory mode)
-cd samples/dir-tree  && bun install && bun run validate && bun run build
+cd samples/dir-tree  && npm install && npm run validate && npm run build
 ```
 
 ### Repository structure
@@ -315,7 +311,7 @@ cd samples/dir-tree  && bun install && bun run validate && bun run build
       RadarOverview/     ← /radar overview page
       RadarDiscipline/   ← /radar/:disc discipline page
       RadarEntry/        ← /radar/:disc/:entry detail page
-  tests/                 ← unit tests (Bun)
+  tests/                 ← unit tests (node --test)
   validate.js            ← standalone CLI validator
 
 samples/
@@ -332,6 +328,27 @@ samples/
 | `/radar` | Overview — ring stats, all entries, changelog |
 | `/radar/:discipline` | Discipline — SVG radar + entry cards per quadrant |
 | `/radar/:discipline/:entry` | Entry — full detail (rationale, timeline, overrides, links) |
+
+---
+
+## Releasing
+
+Releases are published to npm by `.github/workflows/publish.yml`. On every
+push to `main` it reads `version` from `package.json` and publishes if that
+version is not yet on the registry — so cutting a release is:
+
+1. Open a PR that bumps `version` in `package.json`.
+2. Merge the PR to `main`.
+3. The `Publish to npm` workflow runs, installs, tests, and publishes.
+
+The workflow needs one repository secret:
+
+| Secret | Where to get it |
+|--------|-----------------|
+| `NPM_TOKEN` | Create an **Automation** token at <https://www.npmjs.com/settings/~/tokens> and add it under **Settings → Secrets and variables → Actions**. |
+
+`npm publish --provenance` is used, so the workflow also needs the
+`id-token: write` permission (already set in the workflow file).
 
 ---
 

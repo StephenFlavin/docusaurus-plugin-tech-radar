@@ -1,4 +1,5 @@
-const { describe, test, expect } = require('bun:test');
+const { describe, test } = require('node:test');
+const { expect } = require('expect');
 const { validate } = require('../src/validator');
 
 // Builds a minimal valid radar. Pass entry field overrides to test specific rules.
@@ -39,7 +40,7 @@ describe('validate - valid radar', () => {
       teams: ['team-a'],
       verticals: ['vert-a'],
       links: [{ type: 'url', uri: 'https://example.com' }],
-      timeline: { assess: '2025-Q1', hold: '2026-Q1' },
+      timeline: { assess: '2025-03-31', hold: '2026-03-31' },
       'ring-overrides': {
         teams: { 'team-a': { ring: 'trial', reason: 'Still evaluating.' } },
         verticals: { 'vert-a': { ring: 'assess', reason: 'Not ready.' } },
@@ -202,7 +203,7 @@ describe('validate - hold entries', () => {
 
 describe('validate - timeline', () => {
   test('errors on invalid ring in timeline', () => {
-    const errors = validate(buildRadar({ timeline: { 'bad-ring': '2026-Q1' } }));
+    const errors = validate(buildRadar({ timeline: { 'bad-ring': '2026-03-31' } }));
     expect(errors).toContainEqual(expect.objectContaining({
       severity: 'error',
       path: expect.stringContaining('timeline'),
@@ -212,7 +213,7 @@ describe('validate - timeline', () => {
 
   test('passes with valid timeline rings', () => {
     expect(validate(buildRadar({
-      timeline: { assess: '2025-Q1', trial: '2025-Q3', adopt: '2026-Q1' },
+      timeline: { assess: '2025-03-31', trial: '2025-09-30', adopt: '2026-03-31' },
     }))).toEqual([]);
   });
 });
@@ -383,7 +384,7 @@ describe('validate - structural edge cases', () => {
 describe('validate - timeline', () => {
   test('collects errors for multiple invalid timeline rings', () => {
     const errors = validate(buildRadar({
-      timeline: { 'bad-1': '2026-Q1', 'bad-2': '2026-Q2' },
+      timeline: { 'bad-1': '2026-03-31', 'bad-2': '2026-06-30' },
     }));
     const timelineErrors = errors.filter(e => e.path.endsWith('.timeline'));
     expect(timelineErrors).toHaveLength(2);

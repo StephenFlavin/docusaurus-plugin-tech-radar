@@ -125,9 +125,9 @@ radar:
               label: Java
               ring: adopt
               timeline:
-                assess: 2023-Q4
-                trial: 2024-Q1
-                adopt: 2024-Q3
+                assess: 2023-12-31
+                trial: 2024-03-31
+                adopt: 2024-09-30
               description: Core backend language across services.
               rationale: >
                 Mature ecosystem, strong hiring pipeline,
@@ -144,7 +144,7 @@ radar:
                     ring: hold
                     reason: >
                       Payments is migrating to Kotlin for all new
-                      microservices. No new Java services after 2026-Q2.
+                      microservices. No new Java services after 2026-06-30.
                 verticals:
                   retail-operations:
                     ring: trial
@@ -177,7 +177,7 @@ radar:
                     uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/10234
                 - type: meeting
                   title: Language selection review
-                  date: 2024-Q1
+                  date: 2024-03-31
                   link:
                     type: recording
                     uri: https://recordings.acme.internal/mtg-8821
@@ -201,8 +201,8 @@ radar:
               label: Kotlin
               ring: trial
               timeline:
-                assess: 2025-Q2
-                trial: 2025-Q3
+                assess: 2025-06-30
+                trial: 2025-09-30
               description: Gaining traction for new JVM services.
               rationale: >
                 Coroutine support and null safety reduce
@@ -217,7 +217,7 @@ radar:
                     ring: adopt
                     reason: >
                       Inventory has fully adopted Kotlin for all new
-                      services since 2025-Q4.
+                      services since 2025-12-31.
                 verticals:
                   digital-commerce:
                     ring: adopt
@@ -241,7 +241,7 @@ radar:
                     uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/20891
                 - type: meeting
                   title: Kotlin trial kickoff
-                  date: 2025-Q3
+                  date: 2025-09-30
                   link:
                     type: recording
                     uri: https://recordings.acme.internal/mtg-9210
@@ -255,7 +255,7 @@ radar:
               label: Go
               ring: assess
               timeline:
-                assess: 2026-Q2
+                assess: 2026-06-30
               description: Exploring for CLI tooling and network services.
               rationale: >
                 Fast compilation, small binaries, strong
@@ -303,7 +303,7 @@ radar:
               label: PostgreSQL
               ring: adopt
               timeline:
-                adopt: 2024-Q1
+                adopt: 2024-03-31
               description: Primary relational data store.
               rationale: >
                 Battle-tested with excellent extension ecosystem.
@@ -340,8 +340,8 @@ radar:
               label: Apache Kafka
               ring: adopt
               timeline:
-                trial: 2024-Q2
-                adopt: 2025-Q1
+                trial: 2024-06-30
+                adopt: 2025-03-31
               description: Primary event streaming platform.
               rationale: >
                 Proven at scale for event-driven architectures
@@ -386,8 +386,8 @@ radar:
               label: Redis
               ring: trial
               timeline:
-                assess: 2025-Q1
-                trial: 2025-Q3
+                assess: 2025-03-31
+                trial: 2025-09-30
               description: In-memory cache and session store.
               rationale: >
                 Sub-millisecond reads for hot-path caching.
@@ -411,16 +411,16 @@ radar:
               label: DynamoDB
               ring: hold
               timeline:
-                adopt: 2024-Q2
-                hold: 2026-Q1
+                adopt: 2024-06-30
+                hold: 2026-03-31
               description: Operational overhead not justified at our scale.
               rationale: >
                 Hot partition issues and cost unpredictability.
               licence: Proprietary (AWS)
               hold_reason: >
                 Do not start new projects on DynamoDB. Existing
-                workloads should plan migration by 2027-Q1.
-              sunset_date: 2027-Q1
+                workloads should plan migration by 2027-03-31.
+              sunset_date: 2027-03-31
               migration_target: postgresql
               teams: [payments]
               tags: [nosql, legacy]
@@ -440,13 +440,13 @@ radar:
                     uri: https://acmecorp.atlassian.net/wiki/spaces/SRE/pages/50200
                 - type: meeting
                   title: DynamoDB sunset decision
-                  date: 2025-Q4
+                  date: 2025-12-31
                   link:
                     type: recording
                     uri: https://recordings.acme.internal/mtg-9870
               sections:
                 migration-status: |
-                  **Payments**: 60% migrated, ETA 2026-Q3.
+                  **Payments**: 60% migrated, ETA 2026-09-30.
                   **Legacy batch jobs**: Not started, blocked on PLAT-2210.
 
         techniques:
@@ -462,8 +462,8 @@ radar:
               label: Structured Concurrency
               ring: trial
               timeline:
-                assess: 2025-Q3
-                trial: 2026-Q1
+                assess: 2025-09-30
+                trial: 2026-03-31
               description: Managing concurrent tasks as a single unit of work.
               rationale: >
                 Reduces leaked threads and simplifies error
@@ -481,7 +481,7 @@ radar:
               label: CQRS
               ring: assess
               timeline:
-                assess: 2026-Q2
+                assess: 2026-06-30
               description: Command Query Responsibility Segregation.
               rationale: >
                 Exploring for read-heavy services where write
@@ -508,7 +508,7 @@ radar:
               label: Gradle
               ring: adopt
               timeline:
-                adopt: 2024-Q1
+                adopt: 2024-03-31
               description: Build tool for all JVM projects.
               rationale: >
                 Flexible build system with strong dependency management.
@@ -562,7 +562,7 @@ radar:
               label: Kubernetes
               ring: adopt
               timeline:
-                adopt: 2024-Q1
+                adopt: 2024-03-31
               description: Container orchestration for all services.
               rationale: >
                 Industry standard with strong ecosystem.
@@ -591,7 +591,7 @@ radar:
               label: HashiCorp Nomad
               ring: assess
               timeline:
-                assess: 2026-Q2
+                assess: 2026-06-30
               description: Evaluating for batch and ML workloads.
               rationale: >
                 Simpler operational model than Kubernetes
@@ -620,7 +620,7 @@ radar:
               label: GitHub Actions
               ring: adopt
               timeline:
-                adopt: 2024-Q2
+                adopt: 2024-06-30
               description: CI platform for build, test, and release.
               rationale: >
                 Tight GitHub integration, reusable workflows,
@@ -640,8 +640,8 @@ radar:
               label: Argo CD
               ring: trial
               timeline:
-                assess: 2025-Q3
-                trial: 2026-Q1
+                assess: 2025-09-30
+                trial: 2026-03-31
               description: GitOps-based continuous delivery for Kubernetes.
               rationale: >
                 Declarative deployments with drift detection.
@@ -668,14 +668,14 @@ radar:
             description: Monitoring, tracing, logging, and alerting.
             guidance: >
               All services must emit OpenTelemetry-compatible
-              traces by 2026-Q4.
+              traces by 2026-12-31.
 
           entries:
             datadog:
               label: Datadog
               ring: adopt
               timeline:
-                adopt: 2024-Q1
+                adopt: 2024-03-31
               description: Primary observability platform.
               rationale: >
                 Unified metrics, traces, and logs with strong alerting.
@@ -699,8 +699,8 @@ radar:
               label: OpenTelemetry
               ring: trial
               timeline:
-                assess: 2025-Q2
-                trial: 2026-Q1
+                assess: 2025-06-30
+                trial: 2026-03-31
               description: Vendor-neutral telemetry collection.
               rationale: >
                 Unifies traces, metrics, and logs; reduces vendor lock-in.
@@ -728,7 +728,7 @@ radar:
                     uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/30210
                 - type: meeting
                   title: OTel trial review
-                  date: 2026-Q1
+                  date: 2026-03-31
                   link:
                     type: recording
                     uri: https://recordings.acme.internal/mtg-10200
@@ -755,7 +755,7 @@ radar:
               label: Terraform
               ring: adopt
               timeline:
-                adopt: 2024-Q1
+                adopt: 2024-03-31
               description: Infrastructure provisioning for AWS.
               rationale: >
                 Mature, well-understood, strong module ecosystem.
@@ -776,7 +776,7 @@ radar:
               label: Pulumi
               ring: assess
               timeline:
-                assess: 2026-Q2
+                assess: 2026-06-30
               description: IaC using general-purpose languages.
               rationale: >
                 Enables TypeScript/Python for infrastructure,
@@ -831,7 +831,7 @@ radar:
               label: React
               ring: adopt
               timeline:
-                adopt: 2024-Q1
+                adopt: 2024-03-31
               description: Primary UI framework.
               rationale: >
                 Large ecosystem, strong hiring pipeline,
@@ -864,8 +864,8 @@ radar:
               label: Svelte
               ring: trial
               timeline:
-                assess: 2025-Q3
-                trial: 2026-Q1
+                assess: 2025-09-30
+                trial: 2026-03-31
               description: Compiler-first UI framework.
               rationale: >
                 Smaller bundles and simpler mental model
@@ -894,8 +894,8 @@ radar:
               label: Vite
               ring: adopt
               timeline:
-                trial: 2025-Q1
-                adopt: 2025-Q3
+                trial: 2025-03-31
+                adopt: 2025-09-30
               description: Frontend build tool with native ES module support.
               rationale: >
                 Fast dev server, clean plugin API, replaced Webpack.
@@ -921,7 +921,7 @@ radar:
               label: Acme Design System
               ring: adopt
               timeline:
-                adopt: 2025-Q1
+                adopt: 2025-03-31
               description: Internal component library and design tokens.
               rationale: >
                 Consistency across products, accessibility built in.

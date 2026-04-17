@@ -6,7 +6,7 @@ import {
   useRadarFilters, ringOrder, effectiveRing,
 } from '@theme/RadarComponents';
 
-export default function RadarOverview({ radar, sidebar }) {
+export default function RadarOverview({ radar, sidebar, pagination }) {
   const allEntries = [];
   for (const [dSlug, disc] of Object.entries(radar.disciplines)) {
     for (const [qSlug, quad] of Object.entries(disc.quadrants || {})) {
@@ -34,8 +34,13 @@ export default function RadarOverview({ radar, sidebar }) {
     ...(radar.meta.changelog?.length ? [{ id: 'changelog', value: 'Changelog', level: 2 }] : []),
   ];
 
+  const breadcrumbs = [{ label: 'Tech Radar' }];
+
   return (
-    <RadarLayout sidebar={sidebar} toc={toc} title="Tech Radar" description={radar.meta.title}>
+    <RadarLayout
+      sidebar={sidebar} toc={toc} breadcrumbs={breadcrumbs} pagination={pagination}
+      title="Tech Radar" description={radar.meta.title}
+    >
       <h1>{radar.meta.title}</h1>
       <p className="radar-overview-meta">
         Version {radar.meta.version} · {radar.meta.date}

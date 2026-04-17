@@ -6,7 +6,7 @@
  * Usage:
  *   node validate.js tech-radar.yaml
  *   node validate.js tech-radar/
- *   bun run validate           # auto-detects tech-radar.yaml or tech-radar/
+ *   npm run validate           # auto-detects tech-radar.yaml or tech-radar/
  */
 
 const path = require('path');

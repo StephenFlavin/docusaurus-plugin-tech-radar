@@ -2,9 +2,9 @@ label: Java
 ring: adopt
 icon-url: /img/radar-entry-icons/java.svg
 timeline:
-  assess: 2023-Q4
-  trial: 2024-Q1
-  adopt: 2024-Q3
+  assess: 2023-12-31
+  trial: 2024-03-31
+  adopt: 2024-09-30
 description: Core backend language across services.
 rationale: >
   Mature ecosystem, strong hiring pipeline,
@@ -21,7 +21,7 @@ ring-overrides:
       ring: hold
       reason: >
         Payments is migrating to Kotlin for all new
-        microservices. No new Java services after 2026-Q2.
+        microservices. No new Java services after 2026-06-30.
   verticals:
     retail-operations:
       ring: trial
@@ -54,7 +54,7 @@ discussions:
       uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/10234
   - type: meeting
     title: Language selection review
-    date: 2024-Q1
+    date: 2024-03-31
     link:
       type: recording
       uri: https://recordings.acme.internal/mtg-8821

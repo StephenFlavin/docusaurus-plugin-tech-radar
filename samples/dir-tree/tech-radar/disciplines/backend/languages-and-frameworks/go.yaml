@@ -2,7 +2,7 @@ label: Go
 ring: assess
 icon-url: /img/radar-entry-icons/go.svg
 timeline:
-  assess: 2026-Q2
+  assess: 2026-06-30
 description: Exploring for CLI tooling and network services.
 rationale: >
   Fast compilation, small binaries, strong
