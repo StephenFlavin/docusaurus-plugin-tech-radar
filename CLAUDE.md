@@ -16,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
       RadarOverview/
       RadarDiscipline/
       RadarEntry/
-  tests/                       ← unit tests (Bun test runner)
+  tests/                       ← unit tests (node --test + `expect`)
     fixtures/                  ← sample YAML/dirs consumed by the tests
   validate.js                  ← standalone CLI validator
   package.json
@@ -30,24 +30,24 @@ samples/
 
 ```bash
 # Plugin (run from repo root)
-bun install          # Install plugin dependencies
-bun run test         # Run unit tests (parser + validator)
+npm install          # Install plugin dependencies
+npm test             # Run unit tests (parser + validator)
 
 # Validate a sample directly
 node validate.js samples/uber-yaml/tech-radar.yaml
 node validate.js samples/dir-tree/tech-radar/
 
 # Samples (run from the sample directory)
-cd samples/uber-yaml && bun install && bun run build
-cd samples/dir-tree  && bun install && bun run build
+cd samples/uber-yaml && npm install && npm run build
+cd samples/dir-tree  && npm install && npm run build
 
 # Validate from within a sample (auto-detects tech-radar.yaml or tech-radar/,
 # or reads the plugin's `path` option from docusaurus.config.js)
-cd samples/uber-yaml && bun run validate
-cd samples/dir-tree  && bun run validate
+cd samples/uber-yaml && npm run validate
+cd samples/dir-tree  && npm run validate
 ```
 
-Unit tests live in `tests/` and use Bun's built-in test runner. `validate.js` is the integration-level correctness check without running Docusaurus.
+Unit tests live in `tests/` and use Node's built-in test runner (`node --test`) with Jest-compatible assertions from the standalone `expect` package. `validate.js` is the integration-level correctness check without running Docusaurus.
 
 ## Architecture
 
@@ -190,7 +190,7 @@ What is **not** unit-tested and intentionally left to the sample sites (`samples
 - `src/index.js` Docusaurus plugin wiring (route registration, `createData`, `getPathsToWatch`).
 - `validate.js` CLI behaviour (argv handling, `docusaurus.config.js` discovery).
 
-Running the two sample `bun run build`s and `bun run validate`s is the integration gate for those.
+Running the two sample `npm run build`s and `npm run validate`s is the integration gate for those.
 
 ## Follow-ups
 

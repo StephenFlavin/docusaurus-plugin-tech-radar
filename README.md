@@ -19,8 +19,6 @@ A Docusaurus plugin that renders a Technology Radar from YAML definitions. Suppo
 
 ```bash
 npm install docusaurus-plugin-tech-radar
-# or
-bun add docusaurus-plugin-tech-radar
 ```
 
 Then reference it from your Docusaurus config:
@@ -270,7 +268,7 @@ node validate.js tech-radar.yaml
 node validate.js tech-radar/
 
 # From a sample directory
-bun run validate
+npm run validate
 ```
 
 Validation checks:
@@ -287,16 +285,16 @@ Errors abort the build. Warnings print and continue.
 
 ```bash
 # Install plugin dependencies
-bun install
+npm install
 
 # Run unit tests
-bun run test
+npm test
 
 # Try a sample (single-file mode)
-cd samples/uber-yaml && bun install && bun run validate && bun run build
+cd samples/uber-yaml && npm install && npm run validate && npm run build
 
 # Try a sample (directory mode)
-cd samples/dir-tree  && bun install && bun run validate && bun run build
+cd samples/dir-tree  && npm install && npm run validate && npm run build
 ```
 
 ### Repository structure
@@ -313,7 +311,7 @@ cd samples/dir-tree  && bun install && bun run validate && bun run build
       RadarOverview/     ← /radar overview page
       RadarDiscipline/   ← /radar/:disc discipline page
       RadarEntry/        ← /radar/:disc/:entry detail page
-  tests/                 ← unit tests (Bun)
+  tests/                 ← unit tests (node --test)
   validate.js            ← standalone CLI validator
 
 samples/

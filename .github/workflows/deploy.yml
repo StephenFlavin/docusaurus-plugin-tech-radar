@@ -21,18 +21,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Install plugin dependencies
-        run: bun install --frozen-lockfile
+        run: npm ci
 
       - name: Install sample dependencies
         working-directory: samples/uber-yaml
-        run: bun install --frozen-lockfile
+        run: npm install
 
       - name: Build
         working-directory: samples/uber-yaml
-        run: bun run build
+        run: npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,4 +1,5 @@
-const { describe, test, expect } = require('bun:test');
+const { describe, test } = require('node:test');
+const { expect } = require('expect');
 const path = require('path');
 const { parseRadar } = require('../src/parser');
 

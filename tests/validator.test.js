@@ -1,4 +1,5 @@
-const { describe, test, expect } = require('bun:test');
+const { describe, test } = require('node:test');
+const { expect } = require('expect');
 const { validate } = require('../src/validator');
 
 // Builds a minimal valid radar. Pass entry field overrides to test specific rules.
