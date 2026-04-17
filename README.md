@@ -1,11 +1,11 @@
 # docusaurus-plugin-tech-radar
 
-A Docusaurus plugin that renders a Technology Radar from YAML definitions. Supports a multi-discipline radar with quadrants, ring overrides per team or vertical, timeline tracking, compliance metadata, and full-text search.
+A Docusaurus plugin that renders a Technology Radar from YAML definitions. Supports a multi-discipline radar with segments, ring overrides per team or vertical, timeline tracking, compliance metadata, and full-text search.
 
 ## Features
 
 - **Overview page** — all entries across every discipline with ring stats, filters (ring, team, tag, search), and a changelog
-- **Discipline page** — SVG radar visualisation + entry cards per quadrant
+- **Discipline page** — SVG radar visualisation + entry cards per segment
 - **Entry page** — full detail view: rationale, timeline, ring overrides, constraints, links, discussions, and freeform sections
 - **Ring overrides** — teams or verticals can hold a different ring than the org-wide default; displayed with a ◆ marker
 - **Two input modes** — single `tech-radar.yaml` file or a `tech-radar/` directory tree (one file per entry)
@@ -115,7 +115,7 @@ radar:
             uri: "#backend-engineering"
             label: Backend community
 
-      quadrants:
+      segments:
         languages-and-frameworks:
           meta:
             label: Languages & Frameworks
@@ -187,7 +187,7 @@ tech-radar/
     └── backend/
         ├── _meta.yaml                        # discipline meta
         └── languages-and-frameworks/
-            ├── _meta.yaml                    # quadrant meta
+            ├── _meta.yaml                    # segment meta
             ├── java.yaml                     # entry (fields directly, no wrapper)
             └── kotlin.yaml
 ```
@@ -220,7 +220,7 @@ config:
       description: Online storefront and checkout.
 ```
 
-Discipline and quadrant `_meta.yaml` files contain their meta fields directly (same as before). Entry files contain just the entry fields directly.
+Discipline and segment `_meta.yaml` files contain their meta fields directly (same as before). Entry files contain just the entry fields directly.
 
 ---
 
@@ -326,7 +326,7 @@ samples/
 | URL | Page |
 |-----|------|
 | `/radar` | Overview — ring stats, all entries, changelog |
-| `/radar/:discipline` | Discipline — SVG radar + entry cards per quadrant |
+| `/radar/:discipline` | Discipline — SVG radar + entry cards per segment |
 | `/radar/:discipline/:entry` | Entry — full detail (rationale, timeline, overrides, links) |
 
 ---

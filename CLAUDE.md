@@ -82,8 +82,8 @@ The parsed radar object shape (what all components receive):
   disciplines: {
     [discSlug]: {
       meta: { label, description, tags?, links?, 'key-individuals'? },
-      quadrants: {
-        [quadSlug]: {
+      segments: {
+        [segSlug]: {
           meta: { label, description?, guidance?, links? },
           entries: {
             [entrySlug]: {
@@ -116,7 +116,7 @@ All live under `src/theme/` and are registered via `getThemePath()` in `index.js
 - **`RadarLayout`** — three-column shell (sidebar | content | TOC). Wraps every page. Sidebar is built by `buildSidebar()` in `index.js` and passed as a prop. Sidebar items extracted to `Sidebar.js`. All radar styling lives in `radar.css` alongside the layout. The right-column TOC reuses `@theme/TOC` so active-link highlighting and `--ifm-toc-*` CSS-variable theming match the rest of the site.
 - **`RadarComponents`** — shared logic and UI atoms. Barrel `index.js` re-exports from sub-modules: `rings.js`, `filters.js`, `FilterBar.js`, `RingStats.js`, `EntryCard.js`, `RadarViz.js`, `links.js`.
 - **`RadarOverview`** — `/radar` page: all entries across all disciplines with filtering.
-- **`RadarDiscipline`** — `/radar/:disc` page: SVG radar viz (`RadarViz`) + entry cards per quadrant.
+- **`RadarDiscipline`** — `/radar/:disc` page: SVG radar viz (`RadarViz`) + entry cards per segment.
 - **`RadarEntry`** — `/radar/:disc/:entry` page: full detail view (rationale, timeline, overrides, links, discussions, freeform sections).
 
 ### Docusaurus conventions
@@ -137,7 +137,7 @@ Entries have an org-wide `ring`. Teams and verticals can override it via `ring-o
 The plugin accepts either:
 
 - **Single file** (`tech-radar.yaml`): top-level `radar:` key containing the full radar.
-- **Directory** (`tech-radar/`) with the layout below. `_meta.yaml` at the directory root holds radar-wide meta/config (flat — `meta:` and `config:` as top-level keys, no `radar:` wrapper). All disciplines live under a `disciplines/` subdirectory; each discipline and quadrant has its own `_meta.yaml`; each entry is its own YAML file named `<entrySlug>.yaml`:
+- **Directory** (`tech-radar/`) with the layout below. `_meta.yaml` at the directory root holds radar-wide meta/config (flat — `meta:` and `config:` as top-level keys, no `radar:` wrapper). All disciplines live under a `disciplines/` subdirectory; each discipline and segment has its own `_meta.yaml`; each entry is its own YAML file named `<entrySlug>.yaml`:
 
   ```
   tech-radar/
@@ -145,12 +145,12 @@ The plugin accepts either:
   └── disciplines/
       └── <discipline-slug>/
           ├── _meta.yaml          # discipline meta fields
-          └── <quadrant-slug>/
-              ├── _meta.yaml      # quadrant meta fields
+          └── <segment-slug>/
+              ├── _meta.yaml      # segment meta fields
               └── <entry-slug>.yaml
   ```
 
-The mode is detected automatically by `parser.js` based on whether the path is a file or directory. The `path` plugin option is optional — if omitted, `index.js` auto-detects `tech-radar.yaml` then `tech-radar/` in `siteDir`. When a discipline or quadrant `_meta.yaml` is missing, the label falls back to a title-cased version of the slug via `slugToLabel()`.
+The mode is detected automatically by `parser.js` based on whether the path is a file or directory. The `path` plugin option is optional — if omitted, `index.js` auto-detects `tech-radar.yaml` then `tech-radar/` in `siteDir`. When a discipline or segment `_meta.yaml` is missing, the label falls back to a title-cased version of the slug via `slugToLabel()`.
 
 ### Validation
 
@@ -174,15 +174,15 @@ Plugin Node code (`src/index.js`, `src/parser.js`, `src/validator.js`) is CJS. T
 
 Unit tests (`tests/parser.test.js`, `tests/validator.test.js`) cover:
 
-- **Parser**: single-file parsing, directory parsing, both happy paths and missing-`radar:`-key / missing-root-`_meta.yaml` failures; meta-label fallback to `slugToLabel()` when a discipline or quadrant has no `_meta.yaml`; mixed `.yaml` / `.yml` entry files; entries prefixed with `_` are skipped.
-- **Validator**: ring, team, vertical, link-type, hold-reason, timeline, and team/vertical ring-override rules, plus structural edge cases (no disciplines, discipline without quadrants, quadrant without entries, radar with no `config`) and multi-entry / multi-timeline error accumulation. Error-path shape (`disc.quad.entry[.field]`) is asserted to keep it stable for tooling.
+- **Parser**: single-file parsing, directory parsing, both happy paths and missing-`radar:`-key / missing-root-`_meta.yaml` failures; meta-label fallback to `slugToLabel()` when a discipline or segment has no `_meta.yaml`; mixed `.yaml` / `.yml` entry files; entries prefixed with `_` are skipped.
+- **Validator**: ring, team, vertical, link-type, hold-reason, timeline, and team/vertical ring-override rules, plus structural edge cases (no disciplines, discipline without segments, segment without entries, radar with no `config`) and multi-entry / multi-timeline error accumulation. Error-path shape (`disc.seg.entry[.field]`) is asserted to keep it stable for tooling.
 
 Fixtures live in `tests/fixtures/`:
 
 - `valid-single.yaml`, `no-radar-key.yaml` — single-file mode cases.
 - `valid-dir/` — happy-path directory mode with all `_meta.yaml` files present.
 - `dir-no-root-yaml/` — missing-root-meta failure case.
-- `dir-meta-fallbacks/` — discipline and quadrant without `_meta.yaml`, plus a `.yml` entry and a `_`-prefixed entry that must be skipped.
+- `dir-meta-fallbacks/` — discipline and segment without `_meta.yaml`, plus a `.yml` entry and a `_`-prefixed entry that must be skipped.
 
 What is **not** unit-tested and intentionally left to the sample sites (`samples/uber-yaml`, `samples/dir-tree`):
 
@@ -242,7 +242,7 @@ Documented for context on past decisions — all fixed in the current tree.
 4. **`useRadarFilters` recomputed usage counts every render.** Wrapped in `React.useMemo` keyed on `allEntries`.
 5. **Inline styles moved to `radar.css`.**
 6. **`entryData` duplicated `config`.** Removed; components read it from `radar.config`.
-7. **Array-index `key` props.** Replaced with stable domain keys everywhere, including `RadarDiscipline`'s quadrant-links list.
+7. **Array-index `key` props.** Replaced with stable domain keys everywhere, including `RadarDiscipline`'s segment-links list.
 8. **Inline link-type lookup.** Every callsite now uses the shared `linkTypeLabel(config, type)` helper from `RadarComponents/links.js`.
 9. **Silent `catch {}` in `validate.js`.** Now narrowed to `ENOENT` / `MODULE_NOT_FOUND`; real config errors surface as a warning rather than being swallowed.
 10. **Placeholder parser tests.** Replaced with fixtures that actually exercise the `slugToLabel()` fallback, mixed `.yaml`/`.yml` entry extensions, and `_`-prefixed entry exclusion.

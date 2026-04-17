@@ -8,9 +8,9 @@ function validate(radar) {
   const validLinkTypes = Object.keys(linkTypes);
 
   for (const [discSlug, disc] of Object.entries(radar.disciplines || {})) {
-    for (const [quadSlug, quad] of Object.entries(disc.quadrants || {})) {
-      for (const [entrySlug, entry] of Object.entries(quad.entries || {})) {
-        const p = `${discSlug}.${quadSlug}.${entrySlug}`;
+    for (const [segSlug, seg] of Object.entries(disc.segments || {})) {
+      for (const [entrySlug, entry] of Object.entries(seg.entries || {})) {
+        const p = `${discSlug}.${segSlug}.${entrySlug}`;
 
         // Ring
         if (!VALID_RINGS.includes(entry.ring)) {

@@ -17,7 +17,7 @@ radar:
     engineering:
       meta:
         label: Engineering
-      quadrants:
+      segments:
         tools:
           meta:
             label: Tools

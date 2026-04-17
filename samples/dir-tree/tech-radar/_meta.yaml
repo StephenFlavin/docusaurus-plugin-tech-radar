@@ -11,10 +11,10 @@ meta:
         Moved DynamoDB to hold with sunset plan.
     - version: 3
       date: 2026-01-10
-      summary: Introduced devops quadrants and frontend discipline.
+      summary: Introduced devops segments and frontend discipline.
     - version: 2
       date: 2025-10-01
-      summary: First backend quadrants published.
+      summary: First backend segments published.
     - version: 1
       date: 2025-07-01
       summary: Initial radar with languages and frameworks only.

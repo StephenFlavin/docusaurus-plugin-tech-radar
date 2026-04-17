@@ -11,7 +11,7 @@ function slugToLabel(slug) {
 }
 
 export default function RadarEntry({ radar, entryData, sidebar }) {
-  const { slug, entry, discSlug, discLabel, quadSlug, quadLabel, pagination } = entryData;
+  const { slug, entry, discSlug, discLabel, segSlug, segLabel, pagination } = entryData;
   const config = radar.config;
 
   const ki = entry['key-individuals'] || [];
@@ -46,7 +46,7 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
   const breadcrumbs = [
     { label: 'Tech Radar', href: base },
     { label: discLabel, href: `${base}/${discSlug}` },
-    { label: `${quadLabel} / ${entry.label}` },
+    { label: `${segLabel} / ${entry.label}` },
   ];
 
   return (

@@ -15,7 +15,7 @@ function buildRadar(entryOverrides = {}, configOverrides = {}) {
     disciplines: {
       eng: {
         meta: { label: 'Engineering' },
-        quadrants: {
+        segments: {
           tools: {
             meta: { label: 'Tools' },
             entries: {
@@ -299,7 +299,7 @@ describe('validate - ring overrides (verticals)', () => {
 });
 
 describe('validate - error paths', () => {
-  test('path format is disc.quad.entry', () => {
+  test('path format is disc.seg.entry', () => {
     const errors = validate(buildRadar({ ring: 'bad' }));
     expect(errors[0].path).toBe('eng.tools.tool');
   });
@@ -323,7 +323,7 @@ describe('validate - structural edge cases', () => {
     expect(validate(radar)).toEqual([]);
   });
 
-  test('handles a discipline with no quadrants', () => {
+  test('handles a discipline with no segments', () => {
     const radar = {
       meta: {}, config: {},
       disciplines: { eng: { meta: { label: 'Eng' } } },
@@ -331,13 +331,13 @@ describe('validate - structural edge cases', () => {
     expect(validate(radar)).toEqual([]);
   });
 
-  test('handles a quadrant with no entries', () => {
+  test('handles a segment with no entries', () => {
     const radar = {
       meta: {}, config: {},
       disciplines: {
         eng: {
           meta: { label: 'Eng' },
-          quadrants: { tools: { meta: { label: 'Tools' } } },
+          segments: { tools: { meta: { label: 'Tools' } } },
         },
       },
     };
@@ -350,7 +350,7 @@ describe('validate - structural edge cases', () => {
       disciplines: {
         eng: {
           meta: { label: 'Eng' },
-          quadrants: {
+          segments: {
             tools: {
               meta: { label: 'Tools' },
               entries: { tool: { label: 'Tool', ring: 'adopt' } },
@@ -366,10 +366,10 @@ describe('validate - structural edge cases', () => {
 
   test('reports errors for every invalid entry, not just the first', () => {
     const radar = buildRadar();
-    // Add a second entry under the same quadrant with a bad ring.
-    radar.disciplines.eng.quadrants.tools.entries.other = { label: 'Other', ring: 'nope' };
+    // Add a second entry under the same segment with a bad ring.
+    radar.disciplines.eng.segments.tools.entries.other = { label: 'Other', ring: 'nope' };
     // And break the first entry too.
-    radar.disciplines.eng.quadrants.tools.entries.tool.ring = 'also-bad';
+    radar.disciplines.eng.segments.tools.entries.tool.ring = 'also-bad';
 
     const errors = validate(radar);
     const badRingErrors = errors.filter(e => e.message.includes('Invalid ring'));

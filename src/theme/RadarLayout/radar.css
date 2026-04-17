@@ -291,29 +291,29 @@
   color: var(--ifm-font-color-secondary);
 }
 
-/* ── Quadrant sections ───────────────────────────────────────── */
+/* ── Segment sections ───────────────────────────────────────── */
 
-.radar-quadrant {
+.radar-segment {
   margin-bottom: 2rem;
 }
 
-.radar-quadrant-header {
+.radar-segment-header {
   display: flex;
   align-items: baseline;
   gap: 0.6rem;
   margin-bottom: 0.3rem;
 }
 
-.radar-quadrant-header h3 {
+.radar-segment-header h3 {
   margin-bottom: 0;
 }
 
-.radar-quadrant-count {
+.radar-segment-count {
   font-size: 0.75rem;
   color: var(--ifm-font-color-secondary);
 }
 
-.radar-quadrant-guidance {
+.radar-segment-guidance {
   font-style: italic;
   color: var(--ifm-font-color-secondary);
   font-size: 0.88rem;
@@ -1031,14 +1031,14 @@ a.radar-discussion-item:hover {
   flex-wrap: wrap;
 }
 
-.radar-quadrant-links {
+.radar-segment-links {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-bottom: 0.75rem;
 }
 
-.radar-quadrant-link-item {
+.radar-segment-link-item {
   font-size: 0.78rem;
   color: var(--ifm-font-color-secondary);
 }
