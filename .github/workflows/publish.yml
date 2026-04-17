@@ -30,10 +30,11 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
-      # Trusted publishing requires npm >= 11.5.1; Node 20 ships an older npm.
+      # semantic-release 25 requires Node ^22.14.0 || >= 24.10.0.
+      # Trusted publishing requires npm >= 11.5.1; Node 22 ships an older npm.
       - name: Upgrade npm
         run: npm install -g npm@latest
 
