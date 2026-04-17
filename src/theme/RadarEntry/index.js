@@ -11,7 +11,7 @@ function slugToLabel(slug) {
 }
 
 export default function RadarEntry({ radar, entryData, sidebar }) {
-  const { slug, entry, discSlug, discLabel, quadSlug, quadLabel } = entryData;
+  const { slug, entry, discSlug, discLabel, quadSlug, quadLabel, pagination } = entryData;
   const config = radar.config;
 
   const ki = entry['key-individuals'] || [];
@@ -43,16 +43,18 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
 
   const base = radar.routeBasePath;
 
-  return (
-    <RadarLayout sidebar={sidebar} toc={toc} title={entry.label}>
-      <nav className="radar-breadcrumb">
-        <Link to={base}>Radar</Link>
-        {' › '}
-        <Link to={`${base}/${discSlug}`}>{discLabel}</Link>
-        {' › '}
-        {quadLabel}
-      </nav>
+  const breadcrumbs = [
+    { label: 'Tech Radar', href: base },
+    { label: discLabel, href: `${base}/${discSlug}` },
+    { label: quadLabel },
+    { label: entry.label },
+  ];
 
+  return (
+    <RadarLayout
+      sidebar={sidebar} toc={toc} breadcrumbs={breadcrumbs} pagination={pagination}
+      title={entry.label}
+    >
       <h1 className="radar-entry-title">{entry.label}</h1>
 
       <div className="radar-entry-ring-row">
@@ -253,9 +255,10 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
       {sections.map(([key, content]) => (
         <div key={key} className="radar-detail-section">
           <Heading as="h2" id={key}>{slugToLabel(key)}</Heading>
-          <div className="radar-section-body">
-            <pre className="radar-section-pre">{content}</pre>
-          </div>
+          <div
+            className="radar-section-body radar-markdown"
+            dangerouslySetInnerHTML={{ __html: content.html }}
+          />
         </div>
       ))}
 

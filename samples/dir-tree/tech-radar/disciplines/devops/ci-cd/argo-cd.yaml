@@ -1,8 +1,8 @@
 label: Argo CD
 ring: trial
 timeline:
-  assess: 2025-Q3
-  trial: 2026-Q1
+  assess: 2025-09-30
+  trial: 2026-03-31
 description: GitOps-based continuous delivery for Kubernetes.
 rationale: >
   Declarative deployments with drift detection.

@@ -31,5 +31,5 @@ radar:
                 - type: url
                   uri: https://example.com
               timeline:
-                assess: 2025-Q4
-                adopt: 2026-Q1
+                assess: 2025-12-31
+                adopt: 2026-03-31

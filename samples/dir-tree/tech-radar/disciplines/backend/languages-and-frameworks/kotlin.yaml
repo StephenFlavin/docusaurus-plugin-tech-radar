@@ -2,8 +2,8 @@ label: Kotlin
 ring: trial
 icon-url: /img/radar-entry-icons/kotlin.svg
 timeline:
-  assess: 2025-Q2
-  trial: 2025-Q3
+  assess: 2025-06-30
+  trial: 2025-09-30
 description: Gaining traction for new JVM services.
 rationale: >
   Coroutine support and null safety reduce
@@ -18,7 +18,7 @@ ring-overrides:
       ring: adopt
       reason: >
         Inventory has fully adopted Kotlin for all new
-        services since 2025-Q4.
+        services since 2025-12-31.
   verticals:
     digital-commerce:
       ring: adopt
@@ -46,7 +46,7 @@ discussions:
       uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/20891
   - type: meeting
     title: Kotlin trial kickoff
-    date: 2025-Q3
+    date: 2025-09-30
     link:
       type: recording
       uri: https://recordings.acme.internal/mtg-9210

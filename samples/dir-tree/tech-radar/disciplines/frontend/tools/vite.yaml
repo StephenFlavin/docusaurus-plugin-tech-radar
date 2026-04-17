@@ -1,8 +1,8 @@
 label: Vite
 ring: adopt
 timeline:
-  trial: 2025-Q1
-  adopt: 2025-Q3
+  trial: 2025-03-31
+  adopt: 2025-09-30
 description: Frontend build tool with native ES module support.
 rationale: >
   Fast dev server, clean plugin API, replaced Webpack.

@@ -1,8 +1,8 @@
 label: Apache Kafka
 ring: adopt
 timeline:
-  trial: 2024-Q2
-  adopt: 2025-Q1
+  trial: 2024-06-30
+  adopt: 2025-03-31
 description: Primary event streaming platform.
 rationale: >
   Proven at scale for event-driven architectures

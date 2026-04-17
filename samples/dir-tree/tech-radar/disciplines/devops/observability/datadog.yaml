@@ -1,7 +1,7 @@
 label: Datadog
 ring: adopt
 timeline:
-  adopt: 2024-Q1
+  adopt: 2024-03-31
 description: Primary observability platform.
 rationale: >
   Unified metrics, traces, and logs with strong alerting.

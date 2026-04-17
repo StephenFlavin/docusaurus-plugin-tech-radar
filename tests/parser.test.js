@@ -12,7 +12,7 @@ describe('parseRadar - single file', () => {
     const entry = radar.disciplines.engineering.quadrants.tools.entries['my-tool'];
     expect(entry.ring).toBe('adopt');
     expect(entry.teams).toEqual(['team-a']);
-    expect(entry.timeline).toEqual({ assess: '2025-Q4', adopt: '2026-Q1' });
+    expect(entry.timeline).toEqual({ assess: '2025-12-31', adopt: '2026-03-31' });
   });
 
   test('throws when radar: key is missing', () => {

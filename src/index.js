@@ -64,11 +64,19 @@ function pluginTechRadar(context, options) {
       const sidebarItems = buildSidebar(radar, baseUrl, routeBasePath);
       const sidebarPath = await createData('sidebar.json', JSON.stringify(sidebarItems));
 
+      // Flatten the radar into the linear page order used by prev/next pagination.
+      const pageSeq = flattenPageSequence(radar, routePath);
+
       // Overview route
+      const overviewPagination = paginationFor(pageSeq, 'overview');
+      const overviewPaginationPath = await createData(
+        'overview-pagination.json',
+        JSON.stringify(overviewPagination),
+      );
       addRoute({
         path: routePath(),
         component: '@theme/RadarOverview',
-        modules: { radar: dataPath, sidebar: sidebarPath },
+        modules: { radar: dataPath, sidebar: sidebarPath, pagination: overviewPaginationPath },
         exact: true,
       });
 
@@ -77,7 +85,11 @@ function pluginTechRadar(context, options) {
         // Discipline overview page
         const discData = await createData(
           `disc-${discSlug}.json`,
-          JSON.stringify({ slug: discSlug, discipline: disc })
+          JSON.stringify({
+            slug: discSlug,
+            discipline: disc,
+            pagination: paginationFor(pageSeq, `disc:${discSlug}`),
+          })
         );
 
         addRoute({
@@ -99,6 +111,7 @@ function pluginTechRadar(context, options) {
                 discLabel: disc.meta.label,
                 quadSlug,
                 quadLabel: quad.meta.label,
+                pagination: paginationFor(pageSeq, `entry:${discSlug}/${entrySlug}`),
               })
             );
 
@@ -200,4 +213,45 @@ function buildSidebar(radar, baseUrl, routeBasePath) {
 
 function ringOrder(ring) {
   return { adopt: 0, trial: 1, assess: 2, hold: 3 }[ring] ?? 4;
+}
+
+/**
+ * Produce the linear sequence used by the prev/next pagination:
+ *   Overview → Discipline → (entries, sorted by ring) → next Discipline → …
+ * Each item is `{ id, label, href }` where id namespaces the kind.
+ */
+function flattenPageSequence(radar, routePath) {
+  const seq = [{ id: 'overview', label: 'Tech Radar', href: routePath() }];
+  for (const [discSlug, disc] of Object.entries(radar.disciplines || {})) {
+    seq.push({
+      id: `disc:${discSlug}`,
+      label: disc.meta.label,
+      href: routePath(discSlug),
+    });
+    for (const quad of Object.values(disc.quadrants || {})) {
+      const entries = Object.entries(quad.entries || {})
+        .sort((a, b) => ringOrder(a[1].ring) - ringOrder(b[1].ring));
+      for (const [entrySlug, entry] of entries) {
+        seq.push({
+          id: `entry:${discSlug}/${entrySlug}`,
+          label: entry.label,
+          href: routePath(discSlug, entrySlug),
+        });
+      }
+    }
+  }
+  return seq;
+}
+
+function paginationFor(seq, id) {
+  const i = seq.findIndex(p => p.id === id);
+  if (i < 0) return { previous: null, next: null };
+  return {
+    previous: i > 0 ? pickPageFields(seq[i - 1]) : null,
+    next: i < seq.length - 1 ? pickPageFields(seq[i + 1]) : null,
+  };
+}
+
+function pickPageFields(p) {
+  return { label: p.label, href: p.href };
 }

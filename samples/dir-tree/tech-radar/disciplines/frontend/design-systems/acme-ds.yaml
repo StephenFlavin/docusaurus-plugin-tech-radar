@@ -1,7 +1,7 @@
 label: Acme Design System
 ring: adopt
 timeline:
-  adopt: 2025-Q1
+  adopt: 2025-03-31
 description: Internal component library and design tokens.
 rationale: >
   Consistency across products, accessibility built in.

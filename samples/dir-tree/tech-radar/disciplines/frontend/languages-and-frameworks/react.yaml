@@ -1,7 +1,7 @@
 label: React
 ring: adopt
 timeline:
-  adopt: 2024-Q1
+  adopt: 2024-03-31
 description: Primary UI framework.
 rationale: >
   Large ecosystem, strong hiring pipeline,

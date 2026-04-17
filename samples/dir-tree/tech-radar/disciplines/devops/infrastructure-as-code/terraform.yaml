@@ -1,7 +1,7 @@
 label: Terraform
 ring: adopt
 timeline:
-  adopt: 2024-Q1
+  adopt: 2024-03-31
 description: Infrastructure provisioning for AWS.
 rationale: >
   Mature, well-understood, strong module ecosystem.

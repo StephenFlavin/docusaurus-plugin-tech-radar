@@ -1,21 +1,81 @@
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
+const { marked } = require('marked');
+
+// Render inline content without wrapping <p> — lets us use markdown inside
+// headings / small fragments. For section bodies we use the block renderer.
+marked.use({ gfm: true, breaks: false });
 
 /**
  * Parse a radar definition from either a single YAML file or a directory.
+ * Entries' freeform `sections` are rendered from Markdown to HTML so the
+ * theme can drop them in with dangerouslySetInnerHTML.
  * @param {string} inputPath - Path to a .yaml file or a directory
  * @returns {object} Parsed radar object
  */
 function parseRadar(inputPath) {
   const stat = fs.statSync(inputPath);
 
+  let radar;
   if (stat.isFile()) {
-    return parseSingleFile(inputPath);
+    radar = parseSingleFile(inputPath);
   } else if (stat.isDirectory()) {
-    return parseDirectory(inputPath);
+    radar = parseDirectory(inputPath);
   } else {
     throw new Error(`Input path does not exist: ${inputPath}`);
+  }
+
+  normalizeDates(radar);
+  renderSections(radar);
+  return radar;
+}
+
+/**
+ * YAML 1.1/1.2 both parse unquoted `YYYY-MM-DD` as a Date. The theme and
+ * validator treat dates as strings (we sort with localeCompare, render as
+ * text, etc.), so normalise every Date we find back to `YYYY-MM-DD`.
+ * Rewriting in place keeps authors free to quote or not-quote dates.
+ */
+function normalizeDates(node) {
+  if (Array.isArray(node)) {
+    for (let i = 0; i < node.length; i++) {
+      if (node[i] instanceof Date) node[i] = toISODate(node[i]);
+      else normalizeDates(node[i]);
+    }
+    return;
+  }
+  if (node && typeof node === 'object') {
+    for (const key of Object.keys(node)) {
+      const v = node[key];
+      if (v instanceof Date) node[key] = toISODate(v);
+      else normalizeDates(v);
+    }
+  }
+}
+
+function toISODate(d) {
+  return d.toISOString().slice(0, 10);
+}
+
+/**
+ * Walk every entry and replace `sections[key]` (Markdown) with
+ * `{ raw, html }` so components can render HTML without bundling a
+ * Markdown parser client-side.
+ */
+function renderSections(radar) {
+  for (const disc of Object.values(radar.disciplines || {})) {
+    for (const quad of Object.values(disc.quadrants || {})) {
+      for (const entry of Object.values(quad.entries || {})) {
+        if (!entry || !entry.sections) continue;
+        const rendered = {};
+        for (const [key, value] of Object.entries(entry.sections)) {
+          const raw = typeof value === 'string' ? value : String(value ?? '');
+          rendered[key] = { raw, html: marked.parse(raw) };
+        }
+        entry.sections = rendered;
+      }
+    }
   }
 }
 

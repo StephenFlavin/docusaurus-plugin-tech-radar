@@ -1,7 +1,7 @@
 label: GitHub Actions
 ring: adopt
 timeline:
-  adopt: 2024-Q2
+  adopt: 2024-06-30
 description: CI platform for build, test, and release.
 rationale: >
   Tight GitHub integration, reusable workflows,

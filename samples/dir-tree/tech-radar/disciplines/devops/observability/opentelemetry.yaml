@@ -1,8 +1,8 @@
 label: OpenTelemetry
 ring: trial
 timeline:
-  assess: 2025-Q2
-  trial: 2026-Q1
+  assess: 2025-06-30
+  trial: 2026-03-31
 description: Vendor-neutral telemetry collection.
 rationale: >
   Unifies traces, metrics, and logs; reduces vendor lock-in.
@@ -37,7 +37,7 @@ discussions:
       uri: https://acmecorp.atlassian.net/wiki/spaces/PLAT/pages/30210
   - type: meeting
     title: OTel trial review
-    date: 2026-Q1
+    date: 2026-03-31
     link:
       type: recording
       uri: https://recordings.acme.internal/mtg-10200

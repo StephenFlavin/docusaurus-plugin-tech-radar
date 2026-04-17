@@ -861,13 +861,42 @@ a.radar-discussion-item:hover {
   margin-top: 0.15rem;
 }
 
-/* ── Entry detail page ───────────────────────────────────────── */
+/* ── Breadcrumbs + mobile TOC (match docs look) ──────────────── */
+/* We use the infima .breadcrumbs / .pagination-nav classes so the
+   styling inherits everything the classic theme defines, including
+   dark-mode colours and hover states. */
 
-.radar-breadcrumb {
-  font-size: 0.82rem;
-  margin-bottom: 0.5rem;
-  color: var(--ifm-font-color-secondary);
+.radar-breadcrumbs {
+  margin-bottom: 0.8rem;
 }
+
+.radar-breadcrumbs .breadcrumbs {
+  margin: 0;
+}
+
+.radar-breadcrumb-home-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  vertical-align: middle;
+  display: block;
+}
+
+/* Collapsible "On this page" — only render on narrow viewports where
+   the right-column TOC is hidden. */
+.radar-toc-mobile { display: none; }
+
+@media (max-width: 996px) {
+  .radar-toc-mobile {
+    display: block;
+    margin-bottom: 1rem;
+  }
+}
+
+.radar-pagination {
+  margin-top: 2rem;
+}
+
+/* ── Entry detail page ───────────────────────────────────────── */
 
 .radar-entry-title {
   margin-bottom: 0.3rem;
@@ -910,13 +939,47 @@ a.radar-discussion-item:hover {
   flex-wrap: wrap;
 }
 
-.radar-section-pre {
-  white-space: pre-wrap;
+/* Markdown-rendered freeform sections. We keep the inside close to
+   how Docusaurus styles a normal .markdown block so code fences and
+   lists look the same as in the docs. */
+.radar-markdown p {
+  margin: 0 0 0.6rem;
+}
+
+.radar-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.radar-markdown ul,
+.radar-markdown ol {
+  margin: 0 0 0.6rem;
+  padding-left: 1.5rem;
+}
+
+.radar-markdown pre {
+  margin: 0.5rem 0;
+  padding: 0.75rem 1rem;
+  background: var(--ifm-pre-background);
+  border-radius: var(--ifm-global-radius);
+  overflow-x: auto;
+  font-size: 0.85em;
+}
+
+.radar-markdown code {
+  background: var(--ifm-code-background);
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
+  font-size: 0.9em;
+}
+
+.radar-markdown pre code {
   background: transparent;
-  border: none;
   padding: 0;
-  font-family: inherit;
   font-size: inherit;
+}
+
+.radar-markdown a {
+  color: var(--ifm-link-color);
 }
 
 /* Smaller badge variant used inside discussion link refs */

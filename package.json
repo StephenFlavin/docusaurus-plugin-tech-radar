@@ -4,6 +4,11 @@
   "description": "A Docusaurus plugin that renders a Technology Radar from YAML definitions",
   "main": "src/index.js",
   "license": "MIT",
+  "author": "Stephen Flavin",
+  "homepage": "https://github.com/StephenFlavin/docusaurus-tech-radar",
+  "bugs": {
+    "url": "https://github.com/StephenFlavin/docusaurus-tech-radar/issues"
+  },
   "keywords": [
     "docusaurus",
     "docusaurus-plugin",
@@ -12,8 +17,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/docusaurus-plugin-tech-radar"
+    "url": "git+https://github.com/StephenFlavin/docusaurus-tech-radar.git"
   },
+  "files": [
+    "src",
+    "validate.js",
+    "README.md",
+    "LICENSE"
+  ],
   "peerDependencies": {
     "@docusaurus/core": "^3.0.0",
     "react": "^18.0.0",
@@ -23,6 +34,7 @@
     "test": "bun test tests/"
   },
   "dependencies": {
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "marked": "^18.0.0"
   }
 }

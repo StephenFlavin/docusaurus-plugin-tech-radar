@@ -1,16 +1,16 @@
 label: DynamoDB
 ring: hold
 timeline:
-  adopt: 2024-Q2
-  hold: 2026-Q1
+  adopt: 2024-06-30
+  hold: 2026-03-31
 description: Operational overhead not justified at our scale.
 rationale: >
   Hot partition issues and cost unpredictability.
 licence: Proprietary (AWS)
 hold_reason: >
   Do not start new projects on DynamoDB. Existing
-  workloads should plan migration by 2027-Q1.
-sunset_date: 2027-Q1
+  workloads should plan migration by 2027-03-31.
+sunset_date: 2027-03-31
 migration_target: postgresql
 teams: [payments]
 tags: [nosql, legacy]
@@ -32,11 +32,11 @@ discussions:
       uri: https://acmecorp.atlassian.net/wiki/spaces/SRE/pages/50200
   - type: meeting
     title: DynamoDB sunset decision
-    date: 2025-Q4
+    date: 2025-12-31
     link:
       type: recording
       uri: https://recordings.acme.internal/mtg-9870
 sections:
   migration-status: |
-    **Payments**: 60% migrated, ETA 2026-Q3.
+    **Payments**: 60% migrated, ETA 2026-09-30.
     **Legacy batch jobs**: Not started, blocked on PLAT-2210.
