@@ -23,15 +23,14 @@
 .radar-page {
   display: flex;
   width: 100%;
-  max-width: var(--ifm-container-width-xl, 1440px);
-  margin: 0 auto;
 }
 
 /* ── Left Sidebar ───────────────────────────────────────────── */
 
 .radar-sidebar {
-  width: 240px;
-  min-width: 240px;
+  width: var(--doc-sidebar-width, 300px);
+  min-width: var(--doc-sidebar-width, 300px);
+  flex-shrink: 0;
   border-right: 1px solid var(--ifm-toc-border-color);
   padding: 1rem 0;
   position: sticky;
