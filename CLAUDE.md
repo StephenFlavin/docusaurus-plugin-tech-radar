@@ -204,6 +204,12 @@ Releases are automated by **semantic-release** (see `.releaserc.json` and
 4. Publishes to npm with `--provenance`,
 5. Creates a matching GitHub Release.
 
+Auth to npm uses **trusted publishing** (OIDC) — no `NPM_TOKEN` is stored in
+the repo. The package owner has registered this repo + `publish.yml` as a
+trusted publisher on npmjs.com, and the job grants `id-token: write` so the
+runner can mint the OIDC token. Trusted publishing needs npm ≥ 11.5.1, so the
+workflow upgrades npm before running `semantic-release`.
+
 The `version` field in `package.json` is a placeholder
 (`0.0.0-semantically-released`) — `@semantic-release/npm` rewrites it at
 release time. **Do not bump it manually.**

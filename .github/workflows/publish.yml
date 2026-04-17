@@ -3,6 +3,10 @@ name: Release
 # Publishes docusaurus-plugin-tech-radar to npm via semantic-release. Uses
 # Conventional Commits on `main` to determine the next version, generate the
 # changelog, publish to npm, and create a GitHub release.
+#
+# Auth to npm is via trusted publishing (OIDC) — no NPM_TOKEN needed. The
+# package owner must register this repo + workflow as a trusted publisher in
+# the package settings on npmjs.com.
 
 on:
   push:
@@ -17,7 +21,7 @@ jobs:
       contents: write       # semantic-release pushes tags, CHANGELOG, version bump
       issues: write         # semantic-release comments on related issues
       pull-requests: write  # semantic-release comments on related PRs
-      id-token: write       # required for `npm publish --provenance`
+      id-token: write       # OIDC for npm trusted publishing + provenance
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,6 +33,10 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      # Trusted publishing requires npm >= 11.5.1; Node 20 ships an older npm.
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
       - name: Install dependencies
         run: npm ci
 
@@ -38,6 +46,4 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
