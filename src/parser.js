@@ -65,8 +65,8 @@ function toISODate(d) {
  */
 function renderSections(radar) {
   for (const disc of Object.values(radar.disciplines || {})) {
-    for (const quad of Object.values(disc.quadrants || {})) {
-      for (const entry of Object.values(quad.entries || {})) {
+    for (const seg of Object.values(disc.segments || {})) {
+      for (const entry of Object.values(seg.entries || {})) {
         if (!entry || !entry.sections) continue;
         const rendered = {};
         for (const [key, value] of Object.entries(entry.sections)) {
@@ -97,8 +97,8 @@ function parseSingleFile(filePath) {
  *   └── disciplines/
  *       └── <discipline>/
  *           ├── _meta.yaml      # discipline meta fields
- *           └── <quadrant>/
- *               ├── _meta.yaml  # quadrant meta fields
+ *           └── <segment>/
+ *               ├── _meta.yaml  # segment meta fields
  *               └── <entry>.yaml
  */
 function parseDirectory(dirPath) {
@@ -130,16 +130,16 @@ function parseDisciplineDir(dirPath) {
     label: slugToLabel(path.basename(dirPath)),
   });
 
-  const quadrants = {};
-  for (const quadName of sortedDirs(dirPath)) {
-    const quadPath = path.join(dirPath, quadName);
-    quadrants[quadName] = parseQuadrantDir(quadPath);
+  const segments = {};
+  for (const segName of sortedDirs(dirPath)) {
+    const segPath = path.join(dirPath, segName);
+    segments[segName] = parseSegmentDir(segPath);
   }
 
-  return { meta, quadrants };
+  return { meta, segments };
 }
 
-function parseQuadrantDir(dirPath) {
+function parseSegmentDir(dirPath) {
   const meta = readMeta(dirPath, {
     label: slugToLabel(path.basename(dirPath)),
   });

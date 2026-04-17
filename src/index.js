@@ -100,8 +100,8 @@ function pluginTechRadar(context, options) {
         });
 
         // Entry pages
-        for (const [quadSlug, quad] of Object.entries(disc.quadrants || {})) {
-          for (const [entrySlug, entry] of Object.entries(quad.entries || {})) {
+        for (const [segSlug, seg] of Object.entries(disc.segments || {})) {
+          for (const [entrySlug, entry] of Object.entries(seg.entries || {})) {
             const entryData = await createData(
               `entry-${discSlug}-${entrySlug}.json`,
               JSON.stringify({
@@ -109,8 +109,8 @@ function pluginTechRadar(context, options) {
                 entry,
                 discSlug,
                 discLabel: disc.meta.label,
-                quadSlug,
-                quadLabel: quad.meta.label,
+                segSlug,
+                segLabel: seg.meta.label,
                 pagination: paginationFor(pageSeq, `entry:${discSlug}/${entrySlug}`),
               })
             );
@@ -181,20 +181,20 @@ function buildSidebar(radar, baseUrl, routeBasePath) {
       items: [],
     };
 
-    for (const [quadSlug, quad] of Object.entries(disc.quadrants || {})) {
-      const quadItem = {
+    for (const [segSlug, seg] of Object.entries(disc.segments || {})) {
+      const segItem = {
         type: 'category',
-        label: quad.meta.label,
+        label: seg.meta.label,
         collapsed: true,
         collapsible: true,
         items: [],
       };
 
-      const entries = Object.entries(quad.entries || {})
+      const entries = Object.entries(seg.entries || {})
         .sort((a, b) => ringOrder(a[1].ring) - ringOrder(b[1].ring));
 
       for (const [entrySlug, entry] of entries) {
-        quadItem.items.push({
+        segItem.items.push({
           type: 'link',
           label: entry.label,
           href: href(discSlug, entrySlug),
@@ -202,7 +202,7 @@ function buildSidebar(radar, baseUrl, routeBasePath) {
         });
       }
 
-      discItem.items.push(quadItem);
+      discItem.items.push(segItem);
     }
 
     items.push(discItem);
@@ -228,8 +228,8 @@ function flattenPageSequence(radar, routePath) {
       label: disc.meta.label,
       href: routePath(discSlug),
     });
-    for (const quad of Object.values(disc.quadrants || {})) {
-      const entries = Object.entries(quad.entries || {})
+    for (const seg of Object.values(disc.segments || {})) {
+      const entries = Object.entries(seg.entries || {})
         .sort((a, b) => ringOrder(a[1].ring) - ringOrder(b[1].ring));
       for (const [entrySlug, entry] of entries) {
         seq.push({

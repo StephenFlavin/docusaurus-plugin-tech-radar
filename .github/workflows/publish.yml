@@ -1,8 +1,12 @@
-name: Publish to npm
+name: Release
 
-# Publishes docusaurus-plugin-tech-radar whenever a merge into main bumps the
-# version in package.json. Manual runs re-check the current version and publish
-# if it is missing from the registry.
+# Publishes docusaurus-plugin-tech-radar to npm via semantic-release. Uses
+# Conventional Commits on `main` to determine the next version, generate the
+# changelog, publish to npm, and create a GitHub release.
+#
+# Auth to npm is via trusted publishing (OIDC) — no NPM_TOKEN needed. The
+# package owner must register this repo + workflow as a trusted publisher in
+# the package settings on npmjs.com.
 
 on:
   push:
@@ -10,52 +14,36 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish:
-    name: Publish
+  release:
+    name: Release
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write  # required for `npm publish --provenance`
+      contents: write       # semantic-release pushes tags, CHANGELOG, version bump
+      issues: write         # semantic-release comments on related issues
+      pull-requests: write  # semantic-release comments on related PRs
+      id-token: write       # OIDC for npm trusted publishing + provenance
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
-
-      - name: Read package version
-        id: pkg
-        run: |
-          name=$(node -p "require('./package.json').name")
-          version=$(node -p "require('./package.json').version")
-          echo "name=$name" >> "$GITHUB_OUTPUT"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-
-      - name: Check if version is already on npm
-        id: check
-        run: |
-          if npm view "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }}" version >/dev/null 2>&1; then
-            echo "Already published: ${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }}"
-            echo "publish=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "Version ${{ steps.pkg.outputs.version }} is new — will publish"
-            echo "publish=true" >> "$GITHUB_OUTPUT"
-          fi
+          fetch-depth: 0
+          persist-credentials: false
 
       - uses: actions/setup-node@v4
-        if: steps.check.outputs.publish == 'true'
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      # Trusted publishing requires npm >= 11.5.1; Node 20 ships an older npm.
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
       - name: Install dependencies
-        if: steps.check.outputs.publish == 'true'
         run: npm ci
 
       - name: Run tests
-        if: steps.check.outputs.publish == 'true'
         run: npm test
 
-      - name: Publish to npm
-        if: steps.check.outputs.publish == 'true'
-        run: npm publish --access public --provenance
+      - name: Release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release

@@ -14,11 +14,11 @@ export default function RadarOverview({ radar, sidebar, pagination }) {
   const disciplineSummaries = [];
   for (const [dSlug, disc] of Object.entries(radar.disciplines)) {
     const discEntries = [];
-    for (const [qSlug, quad] of Object.entries(disc.quadrants || {})) {
-      for (const [eSlug, entry] of Object.entries(quad.entries || {})) {
+    for (const [sSlug, seg] of Object.entries(disc.segments || {})) {
+      for (const [eSlug, entry] of Object.entries(seg.entries || {})) {
         const withCtx = {
           ...entry, slug: eSlug, discSlug: dSlug,
-          discLabel: disc.meta.label, quadLabel: quad.meta.label,
+          discLabel: disc.meta.label, segLabel: seg.meta.label,
         };
         allEntries.push(withCtx);
         discEntries.push(withCtx);
@@ -115,7 +115,7 @@ export default function RadarOverview({ radar, sidebar, pagination }) {
             key={`${e.discSlug}-${e.slug}`}
             entry={e} slug={e.slug} discSlug={e.discSlug}
             routeBasePath={radar.routeBasePath}
-            subtitle={`${e.discLabel} › ${e.quadLabel}`}
+            subtitle={`${e.discLabel} › ${e.segLabel}`}
             config={radar.config}
             teamFilter={filters.teamFilter}
             verticalFilter={filters.verticalFilter}

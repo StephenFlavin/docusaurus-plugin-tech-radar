@@ -10,7 +10,7 @@ function seededRandom(str, salt) {
   return ((h & 0x7fffffff) % 1000) / 1000;
 }
 
-export function RadarViz({ quadrants, basePath, filters }) {
+export function RadarViz({ segments, basePath, filters }) {
   const { teamFilter, verticalFilter, tagFilter, ringFilter, search } = filters;
 
   const size = 520;
@@ -19,7 +19,7 @@ export function RadarViz({ quadrants, basePath, filters }) {
   const maxR = 230;
   const ringRadii = [78, 138, 188, maxR];
   const ringNames = ['adopt', 'trial', 'assess', 'hold'];
-  const anglePerQuad = (2 * Math.PI) / Math.max(quadrants.length, 1);
+  const anglePerSeg = (2 * Math.PI) / Math.max(segments.length, 1);
   const startAngle = -Math.PI / 2;
 
   return (
@@ -55,24 +55,24 @@ export function RadarViz({ quadrants, basePath, filters }) {
           );
         })}
 
-        {/* Quadrant segments */}
-        {quadrants.map(([qSlug, quad], qi) => {
-          const a1 = startAngle + qi * anglePerQuad;
-          const midAngle = a1 + anglePerQuad / 2;
+        {/* Segments */}
+        {segments.map(([sSlug, seg], si) => {
+          const a1 = startAngle + si * anglePerSeg;
+          const midAngle = a1 + anglePerSeg / 2;
           const lx = cx + Math.cos(a1) * maxR;
           const ly = cy + Math.sin(a1) * maxR;
           const lbx = cx + Math.cos(midAngle) * (maxR + 16);
           const lby = cy + Math.sin(midAngle) * (maxR + 16);
-          const label = quad.meta.label.length > 18
-            ? quad.meta.label.slice(0, 16) + '…'
-            : quad.meta.label;
+          const label = seg.meta.label.length > 18
+            ? seg.meta.label.slice(0, 16) + '…'
+            : seg.meta.label;
 
-          const visibleEntries = Object.entries(quad.entries || {}).filter(([, entry]) =>
+          const visibleEntries = Object.entries(seg.entries || {}).filter(([, entry]) =>
             entryMatchesFilters(entry, teamFilter, verticalFilter, tagFilter, ringFilter, search)
           );
 
           return (
-            <g key={qSlug}>
+            <g key={sSlug}>
               <line x1={cx} y1={cy} x2={lx} y2={ly}
                 stroke="var(--ifm-toc-border-color)" strokeWidth="0.5" />
               <text x={lbx} y={lby}
@@ -89,8 +89,8 @@ export function RadarViz({ quadrants, basePath, filters }) {
                 const innerR = ringIdx === 0 ? 14 : ringRadii[ringIdx - 1] + 8;
                 const outerR = ringRadii[ringIdx] - 8;
                 const r = innerR + (outerR - innerR) * seededRandom(eSlug, 0);
-                const aSpread = anglePerQuad * 0.78;
-                const aOffset = (anglePerQuad - aSpread) / 2;
+                const aSpread = anglePerSeg * 0.78;
+                const aOffset = (anglePerSeg - aSpread) / 2;
                 const a = a1 + aOffset + aSpread * seededRandom(eSlug, 1);
                 const ex = cx + Math.cos(a) * r;
                 const ey = cy + Math.sin(a) * r;

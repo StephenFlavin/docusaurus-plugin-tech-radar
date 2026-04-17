@@ -10,7 +10,7 @@ describe('parseRadar - single file', () => {
     const radar = parseRadar(path.join(fixtures, 'valid-single.yaml'));
     expect(radar.meta.title).toBe('Test Radar');
     expect(radar.meta.version).toBe(1);
-    const entry = radar.disciplines.engineering.quadrants.tools.entries['my-tool'];
+    const entry = radar.disciplines.engineering.segments.tools.entries['my-tool'];
     expect(entry.ring).toBe('adopt');
     expect(entry.teams).toEqual(['team-a']);
     expect(entry.timeline).toEqual({ assess: '2025-12-31', adopt: '2026-03-31' });
@@ -28,14 +28,14 @@ describe('parseRadar - directory mode', () => {
     const radar = parseRadar(path.join(fixtures, 'valid-dir'));
     expect(radar.meta.title).toBe('Dir Radar');
     expect(radar.disciplines.backend.meta.label).toBe('Backend Engineering');
-    const entry = radar.disciplines.backend.quadrants.languages.entries.java;
+    const entry = radar.disciplines.backend.segments.languages.entries.java;
     expect(entry.ring).toBe('adopt');
     expect(entry.label).toBe('Java');
   });
 
-  test('reads quadrant meta from _meta.yaml', () => {
+  test('reads segment meta from _meta.yaml', () => {
     const radar = parseRadar(path.join(fixtures, 'valid-dir'));
-    expect(radar.disciplines.backend.quadrants.languages.meta.label).toBe('Languages');
+    expect(radar.disciplines.backend.segments.languages.meta.label).toBe('Languages');
   });
 
   test('throws when root _meta.yaml is missing', () => {
@@ -53,19 +53,19 @@ describe('parseRadar - directory mode meta fallbacks', () => {
     expect(disc.meta.label).toBe('Persistence And Messaging');
   });
 
-  test('falls back to slug-derived quadrant label when _meta.yaml is absent', () => {
-    expect(disc.quadrants.datastores.meta.label).toBe('Datastores');
+  test('falls back to slug-derived segment label when _meta.yaml is absent', () => {
+    expect(disc.segments.datastores.meta.label).toBe('Datastores');
   });
 
   test('accepts .yml entry files alongside .yaml', () => {
-    const entries = disc.quadrants.datastores.entries;
+    const entries = disc.segments.datastores.entries;
     expect(entries.redis).toBeDefined();
     expect(entries.kafka).toBeDefined();
     expect(entries.kafka.ring).toBe('trial');
   });
 
   test('ignores entry files starting with _', () => {
-    const entries = disc.quadrants.datastores.entries;
+    const entries = disc.segments.datastores.entries;
     expect(entries._draft).toBeUndefined();
     expect(entries.draft).toBeUndefined();
   });
