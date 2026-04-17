@@ -2,7 +2,7 @@ import React from 'react';
 import Heading from '@theme/Heading';
 import RadarLayout from '@theme/RadarLayout';
 import {
-  EntryCard, FilterBar, RadarViz, RingStats,
+  EntryCard, FilterBar, RadarViz, RingStats, LinkList,
   useRadarFilters, ringOrder, effectiveRing, linkTypeLabel,
 } from '@theme/RadarComponents';
 
@@ -97,14 +97,7 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
               <div className="radar-segment-guidance">{seg.meta.guidance}</div>
             )}
             {seg.meta.links && seg.meta.links.length > 0 && (
-              <div className="radar-segment-links">
-                {seg.meta.links.map(l => (
-                  <span key={l.uri} className="radar-segment-link-item">
-                    <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
-                    {' '}{l.label || l.uri}
-                  </span>
-                ))}
-              </div>
+              <LinkList config={config} links={seg.meta.links} />
             )}
             <div className="radar-entry-grid">
               {entries.map(e => (
@@ -139,15 +132,7 @@ export default function RadarDiscipline({ radar, discData, sidebar }) {
       {links.length > 0 && (
         <div className="radar-detail-section">
           <Heading as="h2" id="links">Links</Heading>
-          <div className="radar-link-list">
-            {links.map(l => (
-              <div key={l.uri} className="radar-link-item">
-                <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
-                <span className="radar-link-label">{l.label || l.uri}</span>
-                <span className="radar-link-uri">{l.uri}</span>
-              </div>
-            ))}
-          </div>
+          <LinkList config={config} links={links} />
         </div>
       )}
     </RadarLayout>

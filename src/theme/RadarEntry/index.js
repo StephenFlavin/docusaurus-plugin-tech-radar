@@ -2,7 +2,7 @@ import React from 'react';
 import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
 import RadarLayout from '@theme/RadarLayout';
-import { linkTypeLabel } from '@theme/RadarComponents';
+import { linkTypeLabel, LinkList } from '@theme/RadarComponents';
 
 // NOTE: slugToLabel is also defined in src/parser.js (CJS).
 // The CJS/ESM boundary prevents sharing one file; both copies are intentional.
@@ -199,19 +199,7 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
       {links.length > 0 && (
         <div className="radar-detail-section">
           <Heading as="h2" id="links">Links</Heading>
-          <div className="radar-link-list">
-            {links.map(l => (
-              <Link key={l.uri} to={l.uri} className="radar-link-item">
-                <span className="radar-link-type-badge">{linkTypeLabel(config, l.type)}</span>
-                <div className="radar-link-body">
-                  <div className="radar-link-label">{l.label || l.uri}</div>
-                  {l.description && (
-                    <div className="radar-link-description">{l.description}</div>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
+          <LinkList config={config} links={links} />
         </div>
       )}
 
