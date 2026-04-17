@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-plugin-tech-radar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Docusaurus plugin that renders a Technology Radar from YAML definitions",
   "main": "src/index.js",
   "license": "MIT",

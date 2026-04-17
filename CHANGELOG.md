@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/StephenFlavin/docusaurus-plugin-tech-radar/compare/v1.0.0...v1.0.1) (2026-04-17)
+
+
+### Bug Fixes
+
+* links on diciplines page ([d14568a](https://github.com/StephenFlavin/docusaurus-plugin-tech-radar/commit/d14568a67c81e99c042d0957c82ca9ed5d189ce1))
+
 # 1.0.0 (2026-04-17)
 
 
