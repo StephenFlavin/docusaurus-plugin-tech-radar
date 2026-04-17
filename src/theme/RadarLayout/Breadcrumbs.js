@@ -18,7 +18,7 @@ export function Breadcrumbs({ items }) {
   return (
     <nav className="radar-breadcrumbs" aria-label="Breadcrumbs">
       <ul className="breadcrumbs" itemScope itemType="https://schema.org/BreadcrumbList">
-        <li className="breadcrumbs__item">
+        <li className="breadcrumbs__item breadcrumbs__item--home">
           <Link className="breadcrumbs__link" href={homeHref} aria-label="Home page">
             <HomeIcon />
           </Link>

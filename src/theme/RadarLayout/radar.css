@@ -878,8 +878,9 @@ a.radar-discussion-item:hover {
 .radar-breadcrumb-home-icon {
   width: 1.1rem;
   height: 1.1rem;
-  vertical-align: middle;
-  display: block;
+  vertical-align: top;
+  position: relative;
+  top: 1px;
 }
 
 /* Collapsible "On this page" — only render on narrow viewports where
