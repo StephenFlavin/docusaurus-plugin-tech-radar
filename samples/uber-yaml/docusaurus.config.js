@@ -58,10 +58,26 @@ const config = {
             label: 'Tech Radar',
             position: 'left',
           },
+          {
+            label: '(docusaurus-plugin-tech-radar demo)',
+            position: 'right',
+            href: 'https://github.com/StephenFlavin/docusaurus-plugin-tech-radar',
+          },
         ],
       },
       footer: {
         style: 'dark',
+        links: [
+          {
+            title: 'More',
+            items: [
+              {
+                label: 'GitHub',
+                href: 'https://github.com/StephenFlavin/docusaurus-plugin-tech-radar',
+              },
+            ],
+          },
+        ],
         copyright: `Built with Docusaurus.`,
       },
     }),
