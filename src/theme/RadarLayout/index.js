@@ -45,6 +45,14 @@ export default function RadarLayout({
 
         <main className="radar-main">
           {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
+          {sidebar && sidebar.length > 0 && (
+            <details className="radar-sidebar-mobile">
+              <summary>Tech Radar navigation</summary>
+              <nav className="radar-sidebar-nav">
+                <SidebarItems items={sidebar} />
+              </nav>
+            </details>
+          )}
           {hasToc && (
             <TOCCollapsible
               className="radar-toc-mobile"

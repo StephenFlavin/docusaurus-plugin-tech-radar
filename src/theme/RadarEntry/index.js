@@ -46,8 +46,7 @@ export default function RadarEntry({ radar, entryData, sidebar }) {
   const breadcrumbs = [
     { label: 'Tech Radar', href: base },
     { label: discLabel, href: `${base}/${discSlug}` },
-    { label: quadLabel },
-    { label: entry.label },
+    { label: `${quadLabel} / ${entry.label}` },
   ];
 
   return (
