@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
 import RadarLayout from '@theme/RadarLayout';
 import {
@@ -6,17 +7,33 @@ import {
   useRadarFilters, ringOrder, effectiveRing,
 } from '@theme/RadarComponents';
 
+const RINGS = ['adopt', 'trial', 'assess', 'hold'];
+
 export default function RadarOverview({ radar, sidebar, pagination }) {
   const allEntries = [];
+  const disciplineSummaries = [];
   for (const [dSlug, disc] of Object.entries(radar.disciplines)) {
+    const discEntries = [];
     for (const [qSlug, quad] of Object.entries(disc.quadrants || {})) {
       for (const [eSlug, entry] of Object.entries(quad.entries || {})) {
-        allEntries.push({
+        const withCtx = {
           ...entry, slug: eSlug, discSlug: dSlug,
           discLabel: disc.meta.label, quadLabel: quad.meta.label,
-        });
+        };
+        allEntries.push(withCtx);
+        discEntries.push(withCtx);
       }
     }
+    const ringCounts = Object.fromEntries(RINGS.map(r => [r, 0]));
+    for (const e of discEntries) ringCounts[e.ring] = (ringCounts[e.ring] || 0) + 1;
+    disciplineSummaries.push({
+      slug: dSlug,
+      label: disc.meta.label,
+      description: disc.meta.description,
+      tags: disc.meta.tags || [],
+      total: discEntries.length,
+      ringCounts,
+    });
   }
 
   const filters = useRadarFilters(allEntries);
@@ -30,6 +47,7 @@ export default function RadarOverview({ radar, sidebar, pagination }) {
   // mdx-loader's TOCItem). `value` is the display string.
   const toc = [
     { id: 'rings', value: 'Rings', level: 2 },
+    { id: 'disciplines', value: 'Disciplines', level: 2 },
     { id: 'entries', value: 'All Entries', level: 2 },
     ...(radar.meta.changelog?.length ? [{ id: 'changelog', value: 'Changelog', level: 2 }] : []),
   ];
@@ -55,6 +73,35 @@ export default function RadarOverview({ radar, sidebar, pagination }) {
         ringFilter={filters.ringFilter}
         setRingFilter={filters.setRingFilter}
       />
+
+      <Heading as="h2" id="disciplines">Disciplines</Heading>
+      <div className="radar-discipline-grid">
+        {disciplineSummaries.map(d => (
+          <Link
+            key={d.slug}
+            to={`${radar.routeBasePath}/${d.slug}`}
+            className="radar-discipline-card"
+          >
+            <div className="radar-discipline-card-title">{d.label}</div>
+            {d.description && (
+              <p className="radar-discipline-card-desc">{d.description}</p>
+            )}
+            <div className="radar-discipline-card-stats">
+              <span className="radar-discipline-card-total">{d.total} entries</span>
+              {RINGS.filter(r => d.ringCounts[r] > 0).map(r => (
+                <span key={r} className={`radar-ring-text--${r}`}>
+                  {d.ringCounts[r]} {r}
+                </span>
+              ))}
+            </div>
+            {d.tags.length > 0 && (
+              <div className="radar-discipline-card-tags">
+                {d.tags.map(t => <span key={t} className="radar-tag">{t}</span>)}
+              </div>
+            )}
+          </Link>
+        ))}
+      </div>
 
       <FilterBar filters={filters} config={radar.config} />
 
