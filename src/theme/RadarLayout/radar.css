@@ -63,25 +63,24 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.35rem 0.6rem;
+  padding: var(--ifm-menu-link-padding-vertical, 0.375rem) var(--ifm-menu-link-padding-horizontal, 0.75rem);
   border-radius: 0.375rem;
-  color: var(--ifm-font-color-secondary);
+  color: var(--ifm-menu-color, var(--ifm-font-color-secondary));
   text-decoration: none;
-  font-size: 0.8rem;
   line-height: 1.4;
   transition: background 150ms, color 150ms;
 }
 
 .radar-sidebar-link:hover {
   background: var(--ifm-menu-color-background-hover);
-  color: var(--ifm-font-color-base);
+  color: var(--ifm-menu-color, var(--ifm-font-color-base));
   text-decoration: none;
 }
 
 .radar-sidebar-link--active {
   background: var(--ifm-menu-color-background-active);
-  color: var(--ifm-color-primary);
-  font-weight: 600;
+  color: var(--ifm-menu-color-active, var(--ifm-color-primary));
+  font-weight: var(--ifm-font-weight-semibold, 600);
 }
 
 .radar-sidebar-category-header {
