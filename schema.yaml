@@ -1,0 +1,438 @@
+# ============================================================================
+# Tech Radar YAML Schema Reference
+# ============================================================================
+#
+# This file documents every field accepted by the tech-radar plugin.
+# It is a valid YAML file and can serve as a starting template.
+#
+# Two input modes are supported:
+#
+#   1. Single-file mode  — one YAML file with a top-level `radar:` key.
+#   2. Directory mode    — a directory tree where each discipline, segment,
+#      and entry is its own file. The root `_meta.yaml` holds `meta:` and
+#      `config:` (no `radar:` wrapper).
+#
+# This file uses single-file mode. See the "Directory mode" section at the
+# bottom for the directory layout equivalent.
+#
+# Field markers:
+#   REQUIRED  — build fails if missing
+#   optional  — omit freely
+#   COND      — required under certain conditions (noted inline)
+#
+# ============================================================================
+
+radar:
+
+  # --------------------------------------------------------------------------
+  # meta — radar-wide metadata
+  # --------------------------------------------------------------------------
+  meta:
+    title: Acme Corp Technology Radar          # REQUIRED — radar display title
+    version: 4                                 # REQUIRED — integer version number
+    date: 2026-04-13                           # REQUIRED — ISO 8601 date (YYYY-MM-DD)
+    cadence: quarterly                         # optional — update frequency hint
+
+    # optional — version history (array of changelog entries)
+    changelog:
+      - version: 4                             # REQUIRED — version number
+        date: 2026-04-13                       # REQUIRED — ISO 8601 date
+        summary: >                             # REQUIRED — human-readable summary (Markdown)
+          Added data discipline. Promoted OpenTelemetry to trial.
+      - version: 3
+        date: 2026-01-10
+        summary: Introduced devops segments and frontend discipline.
+      - version: 2
+        date: 2025-10-01
+        summary: First backend segments published.
+      - version: 1
+        date: 2025-07-01
+        summary: Initial radar.
+
+  # --------------------------------------------------------------------------
+  # config — shared definitions referenced by entries
+  # --------------------------------------------------------------------------
+  config:
+
+    # optional — defines the types of links entries can reference.
+    # Each key is a link-type slug used in `links[].type` fields.
+    link-types:
+      url:
+        label: Website                         # optional — display name (defaults to title-cased slug)
+        icon-uri: https://cdn.example.com/link.svg  # optional — icon URL
+
+      slack:
+        label: Slack
+        icon-uri: https://cdn.example.com/slack.svg
+        # optional — regex that entry link URIs of this type must match (error if violated)
+        uri-pattern: "^https://acmecorp\\.slack\\.com/.+"
+        # optional — regex that entry link labels of this type must match (error if violated)
+        # label-pattern: "^#[a-z0-9_-]+$"
+
+      confluence:
+        label: Confluence
+        icon-uri: https://cdn.example.com/confluence.svg
+        uri-pattern: "^https://acmecorp\\.atlassian\\.net/wiki/"
+
+      jira:
+        label: Jira
+        icon-uri: https://cdn.example.com/jira.svg
+        uri-pattern: "^https://acmecorp\\.atlassian\\.net/browse/[A-Z]+-[0-9]+$"
+
+      github:
+        label: GitHub
+        icon-uri: https://cdn.example.com/github.svg
+        uri-pattern: "^https://github\\.com/.+"
+
+      recording:
+        label: Recording
+        icon-uri: https://cdn.example.com/video.svg
+        uri-pattern: "^https://recordings\\.acme\\.internal/.+"
+
+    # optional — teams that entries can belong to.
+    # Each key is a team slug used in entry `teams` arrays and `ring-overrides`.
+    teams:
+      payments:
+        label: Payments                        # REQUIRED — display name
+        description: Checkout, billing, and payment processing.  # optional
+      inventory:
+        label: Inventory
+        description: Stock management and fulfilment.
+      platform:
+        label: Platform Engineering
+        description: Developer tooling, CI/CD, and observability.
+
+    # optional — business verticals that entries can belong to.
+    # Each key is a vertical slug used in entry `verticals` arrays and `ring-overrides`.
+    verticals:
+      supply-chain:
+        label: Supply Chain                    # REQUIRED — display name
+        description: Warehousing, logistics, and fulfilment.  # optional
+      digital-commerce:
+        label: Digital Commerce
+        description: Online storefront and customer experience.
+
+  # --------------------------------------------------------------------------
+  # disciplines — top-level groupings (e.g. Backend, Frontend, DevOps)
+  # --------------------------------------------------------------------------
+  # Each key is the discipline slug used in URLs: /radar/<discipline-slug>
+  disciplines:
+
+    backend:
+
+      # Discipline-level metadata
+      meta:
+        label: Backend Engineering             # optional — display name (defaults to title-cased slug)
+        description: >                         # optional — Markdown description
+          Server-side languages, frameworks, data stores,
+          and patterns powering our service layer.
+
+        # optional — subject matter experts for this discipline
+        key-individuals:
+          - name: Sarah Chen                   # REQUIRED — person's name
+            role: Tech Lead                    # REQUIRED — title or role
+
+        tags: [services, apis, jvm]            # optional — discipline-level tags (array of strings)
+
+        # optional — discipline-level links (same structure as entry links)
+        links:
+          - type: slack                        # REQUIRED — must match a key in config.link-types
+            uri: "https://acmecorp.slack.com/archives/backend-engineering"  # optional — validated against uri-pattern
+            label: Backend community           # optional — validated against label-pattern
+
+      # -----------------------------------------------------------------------
+      # segments — sub-groupings within a discipline
+      # -----------------------------------------------------------------------
+      # Each key is the segment slug.
+      segments:
+
+        languages-and-frameworks:
+
+          # Segment-level metadata
+          meta:
+            label: Languages & Frameworks      # optional — display name (defaults to title-cased slug)
+            description: Primary languages and their ecosystems.  # optional — Markdown
+            guidance: >                        # optional — Markdown guidance/recommendations
+              Prefer JVM-based languages unless a compelling
+              case exists for an alternative runtime.
+
+            # optional — segment-level links
+            links:
+              - type: confluence
+                uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/00100
+                label: Language selection criteria
+
+          # -------------------------------------------------------------------
+          # entries — individual technology items on the radar
+          # -------------------------------------------------------------------
+          # Each key is the entry slug used in URLs: /radar/<disc>/<entry>
+          entries:
+
+            # ==================================================================
+            # FULL ENTRY — every possible field shown
+            # ==================================================================
+            java:
+              label: Java                      # REQUIRED — display name
+              ring: adopt                      # REQUIRED — one of: adopt, trial, assess, hold
+
+              description: Core backend language across services.  # optional — short description
+              rationale: >                     # optional — why this ring (Markdown)
+                Mature ecosystem, strong hiring pipeline,
+                well-understood operationally.
+
+              # optional — when this entry moved between rings
+              # Keys must be valid ring names. Values are date strings (YYYY-Qn or YYYY-MM-DD).
+              timeline:
+                assess: 2023-Q4                # example: quarter format
+                trial: 2024-03-31              # example: date format
+                adopt: 2024-09-30
+
+              licence: GPL-2.0 WITH Classpath-exception-2.0  # optional — SPDX or freeform
+
+              # optional — compliance requirements
+              compliance:
+                frameworks: [SOC2, ISO27001, PCI-DSS]  # optional — array of framework names
+                notes: >                       # optional — Markdown
+                  PII columns must use column-level encryption.
+
+              # optional — team slugs this entry applies to
+              # Each value must exist as a key in config.teams (error if not).
+              teams: [payments, inventory]
+
+              # optional — vertical slugs this entry applies to
+              # Each value must exist as a key in config.verticals (error if not).
+              verticals: [supply-chain, digital-commerce]
+
+              tags: [jvm, core]                # optional — freeform tags (array of strings)
+
+              # optional — freeform constraints object (arbitrary keys/values)
+              constraints:
+                min_version: "21"
+                approved_distributions:
+                  - Eclipse Temurin
+                  - Amazon Corretto
+                hosting: AWS
+
+              # optional — external references
+              # Each link's `type` must match a key in config.link-types.
+              links:
+                - type: url                    # REQUIRED — link-type slug
+                  uri: https://openjdk.org     # optional — validated against type's uri-pattern
+                  label: OpenJDK               # optional — validated against type's label-pattern
+                  description: Official project site.  # optional — tooltip/context
+                - type: confluence
+                  uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/10500
+                  label: Internal standards
+                - type: slack
+                  uri: "https://acmecorp.slack.com/archives/backend-java"
+                  label: Java support channel
+
+              # optional — decision records, meetings, RFCs, etc.
+              discussions:
+                - type: rfc                    # REQUIRED — freeform type string (no validation on value)
+                  title: Java as primary backend language  # REQUIRED — discussion title
+                  # `date` is optional (useful for meetings, post-mortems)
+                  link:                        # optional — nested link (same validation as entry links)
+                    type: confluence
+                    uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/10234
+
+                - type: meeting
+                  title: Language selection review
+                  date: 2024-03-31             # optional — ISO 8601 date
+                  link:
+                    type: recording
+                    uri: https://recordings.acme.internal/mtg-8821
+
+                - type: thread
+                  title: Virtual threads discussion
+                  link:
+                    type: slack
+                    uri: "https://acmecorp.slack.com/archives/backend-java/p1685000000"
+
+              # optional — subject matter experts for this entry
+              key-individuals:
+                - name: Sarah Chen
+                  role: Tech Lead
+
+              # optional — team/vertical-specific ring overrides
+              ring-overrides:
+                # optional — per-team overrides
+                teams:
+                  payments:                    # must exist in config.teams (error if not)
+                    ring: hold                 # REQUIRED — valid ring (error if invalid)
+                    reason: >                  # optional — but warning raised if missing
+                      Payments is migrating to Kotlin for all new
+                      microservices. No new Java services after 2026-06-30.
+                # optional — per-vertical overrides
+                verticals:
+                  digital-commerce:            # must exist in config.verticals (error if not)
+                    ring: trial
+                    reason: >
+                      Evaluating Go as an alternative for
+                      latency-critical services.
+
+              # optional — freeform Markdown sections (arbitrary keys)
+              # Values are Markdown strings, rendered to HTML at build time.
+              sections:
+                getting-started: |
+                  Use the `eng-bootstrap` CLI to scaffold a new Java service:
+
+                  ```bash
+                  eng-bootstrap new --lang java --template service
+                  ```
+                migration-notes: |
+                  Teams moving from Java 17 should review the
+                  Virtual Threads guide before upgrading.
+
+              # ----------------------------------------------------------------
+              # Hold-specific fields
+              # ----------------------------------------------------------------
+              # hold_reason: COND — REQUIRED when ring is "hold" (error if missing)
+              # hold_reason: >
+              #   Do not start new projects on this technology.
+              #   Existing workloads should plan migration by 2027-03-31.
+
+              # sunset_date: optional — planned deprecation date (recommended for hold entries)
+              # sunset_date: 2027-03-31
+
+              # migration_target: optional — slug of the suggested replacement entry
+              # migration_target: kotlin
+
+            # ==================================================================
+            # MINIMAL ENTRY — only required fields
+            # ==================================================================
+            go:
+              label: Go
+              ring: assess
+
+            # ==================================================================
+            # HOLD ENTRY — shows required hold_reason and related fields
+            # ==================================================================
+            legacy-orm:
+              label: Legacy ORM
+              ring: hold
+              hold_reason: >                   # REQUIRED when ring is "hold"
+                No longer maintained. Migrate to the standard
+                JPA/Hibernate stack.
+              sunset_date: 2027-06-30          # optional — planned end-of-life
+              migration_target: hibernate      # optional — replacement entry slug
+              description: Deprecated internal ORM layer.
+              timeline:
+                adopt: 2022-Q1
+                hold: 2026-Q1
+              teams: [payments]
+              links:
+                - type: jira
+                  uri: https://acmecorp.atlassian.net/browse/PLAT-3100
+                  label: Migration epic
+
+# ============================================================================
+# DIRECTORY MODE LAYOUT
+# ============================================================================
+#
+# Instead of one file, spread the radar across a directory tree:
+#
+#   tech-radar/
+#   +-- _meta.yaml                        # root meta + config (no `radar:` wrapper)
+#   +-- disciplines/
+#       +-- backend/
+#       |   +-- _meta.yaml                # discipline meta fields only
+#       |   +-- languages-and-frameworks/
+#       |   |   +-- _meta.yaml            # segment meta fields only
+#       |   |   +-- java.yaml             # entry fields only (no nesting)
+#       |   |   +-- kotlin.yaml
+#       |   |   +-- go.yaml
+#       |   +-- persistence-and-messaging/
+#       |       +-- _meta.yaml
+#       |       +-- postgresql.yaml
+#       |       +-- kafka.yaml
+#       +-- devops/
+#           +-- _meta.yaml
+#           +-- ...
+#
+# Root _meta.yaml example:
+#
+#   meta:
+#     title: Acme Corp Technology Radar
+#     version: 4
+#     date: 2026-04-13
+#     cadence: quarterly
+#     changelog: [...]
+#   config:
+#     link-types: {...}
+#     teams: {...}
+#     verticals: {...}
+#
+# Discipline _meta.yaml example:
+#
+#   label: Backend Engineering
+#   description: Server-side languages, frameworks, and data stores.
+#   key-individuals:
+#     - name: Sarah Chen
+#       role: Tech Lead
+#   tags: [services, apis]
+#   links:
+#     - type: slack
+#       uri: "https://acmecorp.slack.com/archives/backend"
+#       label: Backend community
+#
+# Segment _meta.yaml example:
+#
+#   label: Languages & Frameworks
+#   description: Primary languages and their ecosystems.
+#   guidance: Prefer JVM-based languages.
+#   links:
+#     - type: confluence
+#       uri: https://acmecorp.atlassian.net/wiki/spaces/ENG/pages/100
+#       label: Language selection criteria
+#
+# Entry file (e.g. java.yaml) example:
+#
+#   label: Java
+#   ring: adopt
+#   description: Core backend language.
+#   teams: [payments, inventory]
+#   ...all other entry fields as shown above...
+#
+# Notes:
+#   - Slugs are derived from directory/file names (minus .yaml/.yml extension).
+#   - If a discipline or segment _meta.yaml is missing, the label is
+#     auto-generated from the slug (e.g. "persistence-and-messaging"
+#     becomes "Persistence And Messaging").
+#   - Both .yaml and .yml extensions are accepted.
+#   - Files starting with _ (other than _meta.yaml) are skipped.
+#
+# ============================================================================
+# VALIDATION RULES SUMMARY
+# ============================================================================
+#
+# Errors (abort the build):
+#   - ring is not one of: adopt, trial, assess, hold
+#   - team in entry.teams not found in config.teams
+#   - vertical in entry.verticals not found in config.verticals
+#   - link type not found in config.link-types
+#   - link URI does not match the type's uri-pattern
+#   - link label does not match the type's label-pattern
+#   - ring is "hold" but hold_reason is missing
+#   - invalid ring name in timeline
+#   - team in ring-overrides.teams not found in config.teams
+#   - vertical in ring-overrides.verticals not found in config.verticals
+#   - invalid ring in ring-overrides
+#
+# Warnings (logged but build continues):
+#   - ring-override entry is missing a reason
+#
+# ============================================================================
+# PLUGIN OPTIONS (in docusaurus.config.js)
+# ============================================================================
+#
+# plugins: [
+#   ['docusaurus-plugin-tech-radar', {
+#     path: 'tech-radar.yaml',   // optional — path to file or directory
+#                                 //   defaults to auto-detecting tech-radar.yaml
+#                                 //   then tech-radar/ in siteDir
+#     routeBasePath: 'radar',    // optional — URL base path (default: 'radar')
+#   }],
+# ],
+#
+# ============================================================================
