@@ -30,8 +30,8 @@
 /* ── Left Sidebar ───────────────────────────────────────────── */
 
 .radar-sidebar {
-  width: 280px;
-  min-width: 280px;
+  width: var(--doc-sidebar-width, 300px);
+  min-width: var(--doc-sidebar-width, 300px);
   border-right: 1px solid var(--ifm-toc-border-color);
   padding: 1rem 0;
   position: sticky;
@@ -140,7 +140,6 @@
   flex: 1;
   min-width: 0;
   padding: 2rem;
-  max-width: 860px;
 }
 
 /* ── Right TOC ──────────────────────────────────────────────── */
