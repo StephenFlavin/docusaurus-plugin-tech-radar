@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-plugin-tech-radar",
-  "version": "0.1.0",
+  "version": "0.0.0-semantically-released",
   "description": "A Docusaurus plugin that renders a Technology Radar from YAML definitions",
   "main": "src/index.js",
   "license": "MIT",
@@ -31,13 +31,17 @@
     "react-dom": "^18.0.0"
   },
   "scripts": {
-    "test": "node --test tests/parser.test.js tests/validator.test.js"
+    "test": "node --test tests/parser.test.js tests/validator.test.js",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
     "marked": "^18.0.0"
   },
   "devDependencies": {
-    "expect": "^30.3.0"
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "expect": "^30.3.0",
+    "semantic-release": "^24.2.0"
   }
 }

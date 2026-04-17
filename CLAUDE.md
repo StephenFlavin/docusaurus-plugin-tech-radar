@@ -192,6 +192,35 @@ What is **not** unit-tested and intentionally left to the sample sites (`samples
 
 Running the two sample `npm run build`s and `npm run validate`s is the integration gate for those.
 
+## Releases & commit conventions
+
+Releases are automated by **semantic-release** (see `.releaserc.json` and
+`.github/workflows/publish.yml`). On every push to `main` the workflow runs
+`npx semantic-release`, which:
+
+1. Parses commit messages since the last tag,
+2. Picks the next version (patch / minor / major),
+3. Writes `CHANGELOG.md`, bumps `package.json`, creates a git tag,
+4. Publishes to npm with `--provenance`,
+5. Creates a matching GitHub Release.
+
+The `version` field in `package.json` is a placeholder
+(`0.0.0-semantically-released`) — `@semantic-release/npm` rewrites it at
+release time. **Do not bump it manually.**
+
+Because the version is derived from commit messages, **all commits to `main`
+must follow the [Conventional Commits](https://www.conventionalcommits.org/)
+specification**:
+
+- `feat: …` → minor bump
+- `fix: …` / `perf: …` → patch bump
+- `feat!: …` or a `BREAKING CHANGE:` footer → major bump
+- `chore: …`, `docs: …`, `refactor: …`, `test: …`, `ci: …`, `build: …`, `style: …` → no release
+
+Scopes are encouraged (e.g. `feat(parser): support .yml entry files`,
+`fix(validator): accept empty discussions list`). Squash-merge uses the PR
+title as the commit message, so PR titles must follow the same format.
+
 ## Follow-ups
 
 None open — previous items have been addressed. Add new entries here when
