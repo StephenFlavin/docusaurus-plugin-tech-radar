@@ -7,7 +7,7 @@ const config = {
   favicon: 'img/favicon.ico',
 
   url: 'https://stephenflavin.github.io',
-  baseUrl: '/docusaurus-tech-radar/',
+  baseUrl: '/docusaurus-plugin-tech-radar/',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
